@@ -26,7 +26,7 @@ public class Robot extends TimedRobot {
     private RelativeEncoder encoder;
 
     // Set CAN ID for the SPARK MAX
-    private static final int SPARK_MAX_CAN_ID = 6;
+    private static final int SPARK_MAX_CAN_ID = 11;
 
     // PID coefficients
     private static final double kP = 0.1;
@@ -69,9 +69,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        // Check if Y button is pressed to increment position
+        // Check if Y button is pressed to increment position 
+        // Moves the linear actuator clockwise 180 degrees
         if (xboxController.getYButtonPressed()) {
-            targetPosition += 36.5; // Increment target position
+            targetPosition += 35.72901935; // Increment target position
             while (encoder.getPosition()<targetPosition)
               sparkMax.set(0.1);
             sparkMax.set(0);
@@ -95,18 +96,39 @@ public class Robot extends TimedRobot {
         
 
         // Check if A button is pressed to decrement position
+        // Moves the linear actuator counterclockwise 180 degrees
         if (xboxController.getAButtonPressed()) {
-            targetPosition -= 36.5; // Decrement target position
+            targetPosition -= 35.7502; // Decrement target position
               while (encoder.getPosition()>targetPosition)
               {
                 sparkMax.set(-0.1);
               }
               sparkMax.set(0);
-            /*while (encoder.getPosition()>targetPosition && encoder.getPosition()>1)
-              sparkMax.set(-0.1);
-            sparkMax.set(0); */
-          
+            }
+              // Check if LeftBumper is pressed to decrement position
+              //Counterclockwise
+        if (xboxController.getLeftBumperPressed()) {
+            targetPosition -= 17.5995; // Decrement target position
+              while (encoder.getPosition()>targetPosition)
+                sparkMax.set(-0.1);
+              sparkMax.set(0);
         }
+        
+        // Check if RightBumper is pressed to decrement position
+        //Clockwise
+        if (xboxController.getRightBumperPressed()) {
+            targetPosition += 17.7865; // Increment target position
+            while (encoder.getPosition()<targetPosition)
+            {
+              sparkMax.set(0.1);
+            }
+            sparkMax.set(0);
+            
+        }
+
+        //while (encoder.getPosition()>targetPosition && encoder.getPosition()>1)
+              //sparkMax.set(-0.1);
+            //sparkMax.set(0);
 
         // Send target position to the PID controller
        // pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
