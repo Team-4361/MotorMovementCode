@@ -10,7 +10,7 @@ import frc.robot.Robot;
 import frc.robot.util.auto.PhotonCameraModule;
 
 import java.util.Optional;
-
+//pipeline is specific type of target that is tracker (i.e. aprilTag or color)
 public class DriveTargetCommand extends Command {
     private final PhotonCameraModule camera;
     private final boolean stopOnEnd;
@@ -73,6 +73,7 @@ public class DriveTargetCommand extends Command {
      * @param interrupted whether the command was interrupted/canceled
      */
     @Override
+    // 
     public void end(boolean interrupted) {
         if (DriverStation.isAutonomous()) {
             Robot.swerve.lockPose();
