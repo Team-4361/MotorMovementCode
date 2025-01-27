@@ -17,7 +17,7 @@ import swervelib.SwerveDrive;
 import swervelib.SwerveModule;
 import swervelib.parser.SwerveParser;
 //import swervelib.telemetry.Alert;
-import swervelib.telemetry.SwerveDriveTelemetry;
+//import swervelib.telemetry.SwerveDriveTelemetry;
 
 import java.io.File;
 import java.io.IOException;

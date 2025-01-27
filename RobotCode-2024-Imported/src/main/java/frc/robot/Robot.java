@@ -31,12 +31,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.commands.climber.LeftClimbDownCommand;
 import frc.robot.commands.climber.RightClimbDownCommand;
-import frc.robot.commands.intake.AmpCommand;
-import frc.robot.commands.intake.AutoIntakeNoteCommand;
-import frc.robot.commands.intake.IntakeNoteCommand;
-import frc.robot.commands.intake.OuttakeNoteCommand;
-import frc.robot.commands.shooter.ShootCommand;
-import frc.robot.commands.shooter.SlowShootCommand;
+//import frc.robot.commands.intake.AmpCommand;
+//import frc.robot.commands.intake.AutoIntakeNoteCommand;
+//import frc.robot.commands.intake.IntakeNoteCommand;
+//import frc.robot.commands.intake.OuttakeNoteCommand;
+//import frc.robot.commands.shooter.ShootCommand;
+//import frc.robot.commands.shooter.SlowShootCommand;
 //import frc.robot.util.auto.PhotonCameraModule;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -55,8 +55,8 @@ import static frc.robot.Constants.Power.POWER_MODULE_TYPE;
 import static frc.robot.Constants.Presets.TRAP_PRESET_GROUP;
 import static frc.robot.Constants.Shooter.SHOOT_SPEED;
 import static frc.robot.Constants.FrontCamera.*;
-import static frc.robot.Constants.ShooterCamera.SHOOTER_PIPELINES;
-import static frc.robot.Constants.ShooterCamera.SHOOT_CAMERA_TRANSFORM;
+//import static frc.robot.Constants.ShooterCamera.SHOOTER_PIPELINES;
+//import static frc.robot.Constants.ShooterCamera.SHOOT_CAMERA_TRANSFORM;
 import static frc.robot.Constants.Systems.FRONT_CAMERA;
 import static frc.robot.Constants.Systems.SHOOTER_CAMERA;
 import static frc.robot.subsystems.ClimberSubsystem.MoveDirection.UP;
@@ -76,12 +76,12 @@ public class Robot extends TimedRobot {
 
     public static PowerDistribution pdh;
     public static SwerveDriveSubsystem swerve;
-    public static PhotonCameraModule frontCamera;
-    public static PhotonCameraModule shooterCamera;
-    public static ShooterSubsystem shooter;
-    public static IntakeSubsystem intake;
-    public static IndexSubsystem index;
-    public static ClimberSubsystem climber;
+   //public static PhotonCameraModule frontCamera;
+    //public static PhotonCameraModule shooterCamera;
+    //public static ShooterSubsystem shooter;
+    //public static IntakeSubsystem intake;
+    //public static IndexSubsystem index;
+    //public static ClimberSubsystem climber;
    // public static FingerSubsystem arm;
 
     private SendableChooser<Command> autoChooser;
@@ -148,21 +148,21 @@ public class Robot extends TimedRobot {
         xbox = new CommandXboxController(XBOX_CONTROLLER_ID);
         pdh = new PowerDistribution(POWER_CAN_ID, POWER_MODULE_TYPE);
 
-        intake = new IntakeSubsystem();
-        shooter = new ShooterSubsystem();
-        index = new IndexSubsystem();
-        climber = new ClimberSubsystem();
+        //intake = new IntakeSubsystem();
+        //shooter = new ShooterSubsystem();
+        //index = new IndexSubsystem();
+        //climber = new ClimberSubsystem();
         //arm = new FingerSubsystem();
 
-        frontCamera = new PhotonCameraModule(FRONT_CAMERA, FRONT_CAMERA_TRANSFORM, FRONT_PIPELINES);
-        shooterCamera = new PhotonCameraModule(SHOOTER_CAMERA, SHOOT_CAMERA_TRANSFORM, SHOOTER_PIPELINES);
+        //frontCamera = new PhotonCameraModule(FRONT_CAMERA, FRONT_CAMERA_TRANSFORM, FRONT_PIPELINES);
+        //shooterCamera = new PhotonCameraModule(SHOOTER_CAMERA, SHOOT_CAMERA_TRANSFORM, SHOOTER_PIPELINES);
         swerve = new SwerveDriveSubsystem();
 
-        NamedCommands.registerCommand("IntakeCommand", new IntakeNoteCommand());
-        NamedCommands.registerCommand("ShootCommand", new ShootCommand());
-        NamedCommands.registerCommand("FirstShootCommand", new ShootCommand(1));
-        NamedCommands.registerCommand("AmpUpCommand", new AmpCommand());
-        NamedCommands.registerCommand("AmpDownCommand", Commands.runOnce(() -> TRAP_PRESET_GROUP.setPreset(0)));
+        //NamedCommands.registerCommand("IntakeCommand", new IntakeNoteCommand());
+        //NamedCommands.registerCommand("ShootCommand", new ShootCommand());
+        //NamedCommands.registerCommand("FirstShootCommand", new ShootCommand(1));
+        //NamedCommands.registerCommand("AmpUpCommand", new AmpCommand());
+        //NamedCommands.registerCommand("AmpDownCommand", Commands.runOnce(() -> TRAP_PRESET_GROUP.setPreset(0)));
         NamedCommands.registerCommand("ResetGyroCommand", Commands.runOnce(() -> {
             Robot.swerve.reset();
             Robot.swerve.hasResetGyro = true; // force it in auto
@@ -242,15 +242,15 @@ public class Robot extends TimedRobot {
         //         ), true
         // ));
 
-        xbox.b().whileTrue(new IntakeNoteCommand());
-        xbox.a().onTrue(new ShootCommand());
-        xbox.y().whileTrue(new SlowShootCommand(false));
-        xbox.x().whileTrue(new OuttakeNoteCommand());
+        //xbox.b().whileTrue(new IntakeNoteCommand());
+        //xbox.a().onTrue(new ShootCommand());
+        //xbox.y().whileTrue(new SlowShootCommand(false));
+        //xbox.x().whileTrue(new OuttakeNoteCommand());
 
         xbox.leftBumper().whileTrue(new RightClimbDownCommand());
         xbox.rightBumper().whileTrue(new LeftClimbDownCommand());
 
-        xbox.back().whileTrue(Commands.runEnd(
+        /*xbox.back().whileTrue(Commands.runEnd(
                 () -> Robot.climber.moveRight(UP),
                 () -> Robot.climber.stopRight()
         ));
@@ -265,7 +265,7 @@ public class Robot extends TimedRobot {
         ));
 
         xbox.povDown().onTrue(Commands.runOnce(() -> TRAP_PRESET_GROUP.setPreset(0)));
-        xbox.povUp().onTrue(new AmpCommand());
+        xbox.povUp().onTrue(new AmpCommand());*/
     }
 
     /**
