@@ -1,0 +1,1 @@
+So basically all this code is to move motors and also to move other stuff like the swerve drive! Everything here is for stuff like the shep mech - aka lin act that goes 90 degrees or the piston move so it very very cool! Also very nice code trust. 😉
