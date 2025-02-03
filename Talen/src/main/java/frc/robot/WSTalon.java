@@ -8,95 +8,100 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 public class WSTalon extends TimedRobot {
-    private WPI_TalonSRX motor; // Talon SRX motor controller
-    private Encoder encoder;   // Encoder connected to DIO ports
-    private PIDController pidController;
+    private WPI_TalonSRX motor; // First Talon SRX motor controller
+    private Encoder encoder;   // First encoder
+    private WPI_TalonSRX motor2; // Second Talon SRX motor controller
+    private Encoder encoder2;   // Second encoder
+    private PIDController pidController1; // PID for motor 1
+    private PIDController pidController2; // PID for motor 2
     private Joystick joystick; // Joystick for button control
 
-    private static final int CPR = 2048; // Change this to your encoder's counts per revolution
-    private static final double MOTOR_GEAR_RATIO = 1.0; // Change if you have a gearbox
-    private static final double KP = 0.0666; // Increase for a stronger response
-    private static final double KI = 0.00002; // Small integral gain
-    private static final double KD = 0.0010; // Derivative gain for smooth control
-    
+    private static final int CPR = 2048; // Encoder counts per revolution
+    private static final double MOTOR_GEAR_RATIO = 1.0;
+    private static final double KP = 0.0666;
+    private static final double KI = 0.00002;
+    private static final double KD = 0.0010;
 
-    private double targetAngle = 0.0; // Current target angle
+    private double targetAngle1 = 0.0; // Target angle for motor 1
+    private double targetAngle2 = 0.0; // Target angle for motor 2
 
     @Override
     public void robotInit() {
-        // Initialize motor, encoder, and joystick
-        motor = new WPI_TalonSRX(2); // Replace '1' with your Talon SRX CAN ID
-        encoder = new Encoder(0, 1); // Replace '0' and '1' with your DIO ports
-        joystick = new Joystick(0);  // Replace '0' with your joystick's USB port
+        // Initialize motors and encoders
+        motor = new WPI_TalonSRX(2);
+        encoder = new Encoder(0, 1);
+        motor2 = new WPI_TalonSRX(12);
+        encoder2 = new Encoder(2, 3);
+        joystick = new Joystick(0);
 
-        encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO)); // Convert counts to degrees
+        encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO)); 
+        encoder2.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO));
 
-        // Set up PID controller
-        pidController = new PIDController(KP, KI, KD);
-        pidController.setTolerance(0.5); // Tolerance in degrees
+        // Set up PID controllers
+        pidController1 = new PIDController(KP, KI, KD);
+        pidController2 = new PIDController(KP, KI, KD);
+        pidController1.setTolerance(0.5);
+        pidController2.setTolerance(0.5);
     }
 
     @Override
     public void teleopPeriodic() {
-        // Read joystick axis (right thumbstick X-axis)
         double joystickInput = joystick.getRawAxis(4); 
     
-        // Apply deadband to prevent small drift
         double deadband = 0.05;
         if (Math.abs(joystickInput) < deadband) {
             joystickInput = 0;
         }
     
-        // Scale joystick input for precision movement
-        double precisionScaling = 5.0; // Adjust max angle change per second
-        targetAngle += joystickInput * precisionScaling;
-    
-        // Handle button-based angle adjustments
-        if (joystick.getRawButtonPressed(1)) { // A button
-            targetAngle += 60.0; 
-        }
-        if (joystick.getRawButtonPressed(3)) { // X button
-            targetAngle -= 60.0; 
-        }
-        if (joystick.getRawButtonPressed(2)) { // B button
-            targetAngle = 0.0; 
-        }
-        if (joystick.getRawButtonPressed(4)) { // Y button
-            encoder.reset();
-            targetAngle = 0.0; 
-        }
-        if (joystick.getRawButtonPressed(5)) { // Left bumper
-            targetAngle += 90.0; 
-        }
-        if (joystick.getRawButtonPressed(6)) { // Right bumper
-            targetAngle -= 90.0; 
-        }
-    
-        // Get the current angle from the encoder
-        double currentAngle = encoder.getDistance();
-    
-        // Calculate the PID output
-        double pidOutput = pidController.calculate(currentAngle, targetAngle);
-    
-        // Limit the PID output to [-1, 1] to prevent excessive power
-        pidOutput = Math.max(-1, Math.min(1, pidOutput));
-    
-        // Corrective action: ensure motor keeps moving until within tolerance
-        if (!pidController.atSetpoint()) {
-            motor.set(TalonSRXControlMode.PercentOutput, pidOutput);
+        double precisionScaling = 5.0;
+        targetAngle1 += joystickInput * precisionScaling;
+        targetAngle2 += joystickInput * precisionScaling;
+
+        // Button-based control for motor 1
+        if (joystick.getRawButtonPressed(1)) {
+             targetAngle1 += 60.0; 
+             targetAngle2 -= 60.0;
+            
+            } 
+        if (joystick.getRawButtonPressed(3)) {
+             targetAngle1 -= 60.0;
+             targetAngle2 += 60.0; 
+            } 
+        if (joystick.getRawButtonPressed(2)) { targetAngle1 = 0.0; targetAngle2 = 0.0; } 
+        if (joystick.getRawButtonPressed(4)) {
+             encoder.reset();
+             targetAngle1 = 0.0;
+             encoder2.reset(); 
+             targetAngle2 = 0.0;
+
+            } 
+
+        // Button-based control for motor 2
+
+        if (joystick.getRawButtonPressed(7)) { targetAngle2 = 0.0; } 
+
+        double currentAngle1 = encoder.getDistance();
+        double currentAngle2 = encoder2.getDistance();
+
+        double pidOutput1 = pidController1.calculate(currentAngle1, targetAngle1);
+        double pidOutput2 = pidController2.calculate(currentAngle2, targetAngle2);
+
+        pidOutput1 = Math.max(-1, Math.min(1, pidOutput1));
+        pidOutput2 = Math.max(-1, Math.min(1, pidOutput2));
+
+        if (!pidController1.atSetpoint()) {
+            motor.set(TalonSRXControlMode.PercentOutput, pidOutput1);
         } else {
-            motor.set(TalonSRXControlMode.PercentOutput, 0); // Stop motor when target is reached
+            motor.set(TalonSRXControlMode.PercentOutput, 0);
         }
-    
-        // Debugging information
-        System.out.println("Current Angle: " + currentAngle);
-        System.out.println("Target Angle: " + targetAngle);
-        System.out.println("PID Output: " + pidOutput);
-    
-        // Safety: Adjust target angle dynamically if drift is detected
-        if (Math.abs(currentAngle - targetAngle) > 5.0) { // If error > 5 degrees
-            System.out.println("Correcting angle drift...");
+
+        if (!pidController2.atSetpoint()) {
+            motor2.set(TalonSRXControlMode.PercentOutput, pidOutput2);
+        } else {
+            motor2.set(TalonSRXControlMode.PercentOutput, 0);
         }
+
+        System.out.println("Motor 1 -> Current Angle: " + currentAngle1 + " | Target: " + targetAngle1 + " | Output: " + pidOutput1);
+        System.out.println("Motor 2 -> Current Angle: " + currentAngle2 + " | Target: " + targetAngle2 + " | Output: " + pidOutput2);
     }
-    
-}    
+}
