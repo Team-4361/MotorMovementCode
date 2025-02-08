@@ -1,6 +1,8 @@
 package frc.robot;
 
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import com.revrobotics.spark.SparkMax;
@@ -11,14 +13,23 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
 
-
+import frc.robot.Constants;
 
 
 public class Robot extends TimedRobot {
     // Declare motor, encoder, and controller
     private SparkMax sparkMax;
+    private SparkMax lElevatorSparkMax;
+    private SparkMax rElevatorSparkMax;
+    public static double elevatorSpeed = 0.5;
+    public static int leftElevatorMotorID = 9;
+    public static int rightElevatorMotorID = 10;
+    public static PIDController elevatorPID = new PIDController(0.0,0.0, 0.0);
+    private RelativeEncoder eEncoderL;
+    private RelativeEncoder eEncoderR;
     private RelativeEncoder encoder;
     private XboxController xboxController;
+    private Joystick lJoystick;
 
     // SPARK MAX CAN ID and speed settings
     private static final int SPARK_MAX_CAN_ID = 6;
@@ -35,15 +46,20 @@ public class Robot extends TimedRobot {
 
     // Target position for the motor
     private double targetPosition = 0.0;
-
+    private double elevatorPosition = 0.0;
     @Override
     public void robotInit() {
         // Initialize the SPARK MAX motor controller
         sparkMax = new SparkMax(SPARK_MAX_CAN_ID, MotorType.kBrushless);
-
+        lElevatorSparkMax = new SparkMax(leftElevatorMotorID, MotorType.kBrushless);
+        rElevatorSparkMax = new SparkMax(rightElevatorMotorID, MotorType.kBrushless);
         SparkMaxConfig config = new SparkMaxConfig();
+        SparkMaxConfig eConfig = new SparkMaxConfig();
         config.encoder.positionConversionFactor(9.0 / 40.0); // Example: Adjust for gear ratio or scaling
+        eConfig.encoder.positionConversionFactor(kDefaultPeriod);
         sparkMax.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        lElevatorSparkMax.configure(eConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        rElevatorSparkMax.configure(eConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
         // Initialize the Xbox controller
@@ -51,7 +67,8 @@ public class Robot extends TimedRobot {
 
         // Retrieve the encoder
         encoder = sparkMax.getEncoder();
-
+        eEncoderL = lElevatorSparkMax.getEncoder();
+        eEncoderR = rElevatorSparkMax.getEncoder();
         // Set the position conversion factor (e.g., 1 motor rotation = 5 inches)
         double inchesPerRotation = 5.0;
 
@@ -60,6 +77,16 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        if(lJoystick.getRawButtonPressed(4))
+        {
+            elevatorPosition = 30.6;
+        }
+        if(lJoystick.getRawButtonPressed(5))
+        {
+            elevatorPosition = 0;
+        }
+        
+
         // Increment position with Y button
         if (xboxController.getYButtonPressed()) {
             targetPosition = 3; // Increment by 1 rotation
