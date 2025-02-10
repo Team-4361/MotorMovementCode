@@ -24,17 +24,17 @@ public class Robot extends TimedRobot {
     private XboxController xboxController;
 
     // SPARK MAX CAN ID and speed settings
-    private static final int SPARK_MAX_CAN_ID = 6;
-    private static final int LEFT_MOTOR_ID = 11;  // Set to your left motor's CAN ID
+    private static final int SPARK_MAX_CAN_ID = 11;
+    private static final int LEFT_MOTOR_ID = 6;  // Set to your left motor's CAN ID
     private static final int RIGHT_MOTOR_ID = 29; // Set to your right motor's CAN ID
 
 
-    private static final double POSITION_TOLERANCE = 0.02;
+    private static final double POSITION_TOLERANCE = 0.01;
 
     // PID constants
-    private static final double kP = 1.0; // Proportional gain
-    private static final double kI = 0.2; // Integral gain
-    private static final double kD = 0.0; // Derivative gain
+    private static final double kP = 2.0; // Proportional gain
+    private static final double kI = 0.1; // Integral gain
+    private static final double kD = 0.01; // Derivative gain
 
     // PID variables
     private double integral = 0.0;
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
         sparkMax = new SparkMax(SPARK_MAX_CAN_ID, MotorType.kBrushless);
 
         SparkMaxConfig config = new SparkMaxConfig();
-        config.encoder.positionConversionFactor(0.0143); // Example: Adjust for gear ratio or scaling
+        config.encoder.positionConversionFactor(0.01428); // Example: Adjust for gear ratio or scaling
         config.idleMode(IdleMode.kBrake);
         sparkMax.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         leftMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
 
         // Increment position with Y button
         if (xboxController.getYButtonPressed()) {
-            targetPosition = 3; // Increment by 1 rotation
+            targetPosition -= 4; // Increment by 1 rotation
         }
 
         // Reset position with X button
@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
 
         // Decrement position with A button
         if (xboxController.getAButtonPressed()) {
-            targetPosition = -3; // Decrement by 1 rotation
+            targetPosition =+ 4; // Decrement by 1 rotation
         }
 
         // Decrement position counterclockwise with Left Bumper
@@ -149,7 +149,6 @@ public class Robot extends TimedRobot {
         System.out.println("Target Position: " + targetPosition);
         System.out.println("PID Output: " + pidOutput);
     }
-
     @Override
     public void disabledInit() {
         // Stop the motor when the robot is disabled
