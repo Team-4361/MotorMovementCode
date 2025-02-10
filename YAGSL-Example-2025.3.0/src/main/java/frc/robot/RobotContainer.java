@@ -30,9 +30,10 @@ public class RobotContainer
 {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final         CommandXboxController driverXbox = new CommandXboxController(0);
-  final CommandJoystick joystickL = new CommandJoystick(1);
-  final CommandJoystick joystickR = new CommandJoystick(2);
+ 
+  final CommandJoystick joystickL = new CommandJoystick(0);
+  final CommandJoystick joystickR = new CommandJoystick(1);
+  final CommandXboxController driverXbox = new CommandXboxController(2);
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
@@ -44,7 +45,7 @@ public class RobotContainer
                                                                 //() -> driverXbox.getLeftY() * -1,
                                                                 () -> joystickL.getY() * -1,
                                                                 () -> joystickL.getX() * -1)
-                                                            .withControllerRotationAxis(joystickR::getX)
+                                                            .withControllerRotationAxis(joystickR::getZ)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -73,15 +74,15 @@ public class RobotContainer
   SwerveInputStream driveDirectAngleKeyboard     = driveAngularVelocityKeyboard.copy()
                                                                                .withControllerHeadingAxis(() ->
                                                                                                               Math.sin(
-                                                                                                                  driverXbox.getRawAxis(
-                                                                                                                      2) *
+                                                                                                                  joystickL.getRawAxis(
+                                                                                                                      0) *
                                                                                                                   Math.PI) *
                                                                                                               (Math.PI *
                                                                                                                2),
                                                                                                           () ->
                                                                                                               Math.cos(
-                                                                                                                  driverXbox.getRawAxis(
-                                                                                                                      2) *
+                                                                                                                  joystickL.getRawAxis(
+                                                                                                                      0) *
                                                                                                                   Math.PI) *
                                                                                                               (Math.PI *
                                                                                                                2))
@@ -138,13 +139,13 @@ public class RobotContainer
 
       driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      joystickL.button(11).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().onTrue(Commands.none());
       driverXbox.rightBumper().onTrue(Commands.none());
     } else
     {
-      driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      joystickL.button(11).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
