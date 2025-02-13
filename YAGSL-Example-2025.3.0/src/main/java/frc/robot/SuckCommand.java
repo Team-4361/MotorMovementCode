@@ -2,6 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -38,8 +40,8 @@ public class SuckCommand {
     // Target position for the motor
     private double targetPosition = 0.0;
 
-    @Override
-    public void robotInit() {
+   // @Override
+   // public void robotInit() {
         // Initialize the SPARK MAX motor controller
        
 
@@ -48,16 +50,19 @@ public class SuckCommand {
 
 
         // Set the position conversion factor
+    //}
+
+    //@Override
+    //public void teleopPeriodic() {
+    public void negRotation()
+    {
+        targetPosition -= 4; // Increment by 1 rotation
     }
-
-    @Override
-    public void teleopPeriodic() {
-
         
 
         // Increment position with Y button
         if (xboxController.getYButtonPressed()) {
-            targetPosition -= 4; // Increment by 1 rotation
+            
         }
 
         // Reset position with X button
@@ -121,22 +126,22 @@ public class SuckCommand {
         // Update the previous error
         previousError = error;
 
-        // Print current and target positions for debugging
-        System.out.println("Current Position: " + currentPosition);
-        System.out.println("Target Position: " + targetPosition);
-        System.out.println("PID Output: " + pidOutput);
+        if(tuningEnabled)
+        {// Print current and target positions for debugging
+            SmartDashboard.putNumber("Current Position", currentPosition);
+            //System.out.println("Current Position: " + currentPosition);
+            //System.out.println("Target Position: " + targetPosition);
+            SmartDashboard.putNumber("Target Position", targetPosition);
+            SmartDashboard.putNumber("PID Output", pidOutput);
+            //System.out.println("PID Output: " + pidOutput);
+        }
     }
-    @Override
-    public void disabledInit() {
+    public void stopMotor() {
         // Stop the motor when the robot is disabled
         sparkMax.stopMotor();
         leftMotor.stopMotor();
         rightMotor.stopMotor();
     }
 
-
-
-
 }
-
 

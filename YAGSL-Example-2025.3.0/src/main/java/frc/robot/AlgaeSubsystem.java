@@ -5,7 +5,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeSubsystem extends SubsystemBase{
-    // initialized xbox 
+    // initialized xbox rayz
     xboxController = new XboxController(0);
 
     // Retrieve the encoder
