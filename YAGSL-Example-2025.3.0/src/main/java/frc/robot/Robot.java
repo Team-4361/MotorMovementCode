@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.drivingConstants;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
  * described in the TimedRobot documentation. If you change the name of this class or the package after creating this
@@ -18,35 +17,34 @@ import frc.robot.Constants.drivingConstants;
  */
 public class Robot extends TimedRobot
 {
-    private static CommandXboxController xbox;
-    private static Robot   instance;
-    private        Command m_autonomousCommand;
-  
-    private RobotContainer m_robotContainer;
-  
-    private Timer disabledTimer;
-  
-    public Robot()
-    {
-      instance = this;
-    }
-  
-    public static Robot getInstance()
-    {
-      return instance;
-    }
-  
-    /**
-     * This function is run when the robot is first started up and should be used for any initialization code.
-     */
-    @Override
-    public void robotInit()
-    {
-      // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-      // autonomous chooser on the dashboard.
-      m_robotContainer = new RobotContainer();
-  
-      xbox = new CommandXboxController(2);
+
+  private static Robot   instance;
+  private        Command m_autonomousCommand;
+
+  private RobotContainer m_robotContainer;
+
+  private Timer disabledTimer;
+
+  public Robot()
+  {
+    instance = this;
+  }
+
+  public static Robot getInstance()
+  {
+    return instance;
+  }
+
+  /**
+   * This function is run when the robot is first started up and should be used for any initialization code.
+   */
+  @Override
+  public void robotInit()
+  {
+    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // autonomous chooser on the dashboard.
+    m_robotContainer = new RobotContainer();
+
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
@@ -80,15 +78,18 @@ public class Robot extends TimedRobot
   @Override
   public void disabledInit()
   {
-    m_robotContainer.setMotorBrake(true);
+    m_robotContainer.setMotorBrake(true); //sets drive motors to brake/coast mode 
     disabledTimer.reset();
     disabledTimer.start();
   }
-
+/**
+ * This function sets the drive motors to coast mode after the robot enters Disabled mode.
+ * The drive motors are set to coast mode after disabledTimer reaches WHEEL_LOCK_TIME
+ */
   @Override
   public void disabledPeriodic()
   {
-    if (disabledTimer.hasElapsed(Constants.DrivebaseConstants.WHEEL_LOCK_TIME))
+    if (disabledTimer.hasElapsed(Constants.DrivebaseConstants.WHEEL_LOCK_TIME)) 
     {
       m_robotContainer.setMotorBrake(false);
       disabledTimer.stop();
@@ -141,9 +142,6 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic()
   {
-    boolean leftBumperHeld = xbox.getLeftBumper();
-    boolean rightBumperHeld = xbox.getRightBumper(); 
-
   }
 
   @Override

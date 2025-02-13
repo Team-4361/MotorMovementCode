@@ -86,7 +86,7 @@ public class SuckCommand {
             targetPosition = 6; // Increment by 0.5 rotation
         }
         
-        if (rightBumperHeld) {
+        if (rightBumperHeld) { //change to button imports?
             leftMotor.set(-0.5);
             rightMotor.set(-0.5);
         } else if (leftBumperHeld) {
