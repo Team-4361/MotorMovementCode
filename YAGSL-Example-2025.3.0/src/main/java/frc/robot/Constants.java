@@ -31,14 +31,21 @@ public final class Constants
   public static final SparkMax ALGAE_LEFT = new SparkMax(9, MotorType.kBrushless);
   public static final SparkMax ALGAE_RIGHT = new SparkMax(10, MotorType.kBrushless);
   public static final SparkMax ROTATION_ALGAE_ID = new SparkMax(11, MotorType.kBrushless);
+  public static class Coral
+  { public static final int CPR_TALON = 2048;
+    public static final double MOTOR_GEAR_RATIO = 1.0;
+    public static final double KP = 0.0666;
+    public static final double KI = 0.00002;
+    public static final double KD = 0.0010; 
+  }
   
 
   // Maximum speed of the robot in meters per second, used to limit acceleration.
     public static final class drivingConstants
     {         /** The Left Joystick ID (typically 0) */
-      //public static final int LEFT_STICK_ID = 0;
+      public static final int LEFT_STICK_ID = 0;
       /** The Right Joystick ID (typically 1) */
-      //public static final  RIGHT_STICK_ID = 1;
+      public static final int  RIGHT_STICK_ID = 1;
       /** The Xbox Controller (typically 2) */
       public static final int XBOX_ID = 2; 
 
