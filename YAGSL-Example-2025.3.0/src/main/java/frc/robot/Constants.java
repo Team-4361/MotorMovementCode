@@ -28,16 +28,22 @@ public final class Constants
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(30)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED  = Units.feetToMeters(15.1);
-  public static final SparkMax ALGAE_LEFT = new SparkMax(9, MotorType.kBrushless);
-  public static final SparkMax ALGAE_RIGHT = new SparkMax(10, MotorType.kBrushless);
-  public static final SparkMax ROTATION_ALGAE_ID = new SparkMax(11, MotorType.kBrushless);
+  public static final boolean isDebug = true;
   
   public static final class Coral
   { public static final int CPR_TALON = 2048;
     public static final double MOTOR_GEAR_RATIO = 1.0;
+    public static final int LEFT_ELEVATOR_ID = 12;
+    public static final int RIGHT_ELEVATOR_ID = 13;
+    public static final int BUCKET_ID = 14;
     public static final double KP = 0.0666;
     public static final double KI = 0.00002;
     public static final double KD = 0.0010; 
+    public static double L1_POS;
+    public static double L2_POS;
+    public static double L3_POS;
+    public static double L4_POS;
+    
   }
   
 
@@ -62,14 +68,14 @@ public final class Constants
   public static final class DrivebaseConstants
   {
 
-    // Hold time on motor brakes when disabled
+    /** Hold time on motor brakes when disabled*/
     public static final double WHEEL_LOCK_TIME = 10; // seconds
   }
 
   public static class OperatorConstants
   {
 
-    // Joystick Deadband
+    /**  Joystick Deadband */
     public static final double DEADBAND        = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
@@ -77,13 +83,17 @@ public final class Constants
   }
 
   public static class Algae {
-    public static final int LEFT_MOTOR_ID = 6;  // Set to your left motor's CAN ID
-    public static final int RIGHT_MOTOR_ID = 29; // Set to your right motor's CAN ID
-    public static final int ALGAE_MOTOR_ID = 29; // Set to your motor id for the thing that moves algae up and down i gues
+    public static final int LEFT_MOTOR_ID = 9;  // Set to your left motor's CAN ID
+    public static final int RIGHT_MOTOR_ID = 10; // Set to your right motor's CAN ID
+    public static final int ALGAE_MOTOR_ID = 11; // Set to your motor id for the thing that moves algae up and down i gues
     public static final double ALGAE_SPEED = 0.75; //motorspeed
+    public static final double POSITION_TOLERANCE = 0.02;
+    public static final double kP = 1.0;
+    public static final double kI = 0.2;
+    public static final double kD = 0.1;
+  
 
-
-  }
+  } 
 
 
 
