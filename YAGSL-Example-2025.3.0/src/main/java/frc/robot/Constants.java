@@ -74,4 +74,12 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+
+  public static class Algae {
+    public static final int LEFT_MOTOR_ID = 6;  // Set to your left motor's CAN ID
+    public static final int RIGHT_MOTOR_ID = 29; // Set to your right motor's CAN ID
+    public static final double ALGAE_SPEED = 0.75; //motorspeed
+
+  }
+
 }
