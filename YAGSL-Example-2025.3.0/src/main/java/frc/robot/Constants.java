@@ -79,8 +79,12 @@ public final class Constants
   public static class Algae {
     public static final int LEFT_MOTOR_ID = 6;  // Set to your left motor's CAN ID
     public static final int RIGHT_MOTOR_ID = 29; // Set to your right motor's CAN ID
+    public static final int ALGAE_MOTOR_ID = 29; // Set to your motor id for the thing that moves algae up and down i gues
     public static final double ALGAE_SPEED = 0.75; //motorspeed
 
+
   }
+
+
 
 }
