@@ -31,7 +31,8 @@ public final class Constants
   public static final SparkMax ALGAE_LEFT = new SparkMax(9, MotorType.kBrushless);
   public static final SparkMax ALGAE_RIGHT = new SparkMax(10, MotorType.kBrushless);
   public static final SparkMax ROTATION_ALGAE_ID = new SparkMax(11, MotorType.kBrushless);
-  public static class Coral
+  
+  public static final class Coral
   { public static final int CPR_TALON = 2048;
     public static final double MOTOR_GEAR_RATIO = 1.0;
     public static final double KP = 0.0666;
