@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.algaesubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -17,7 +20,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot
 {
-
+  public static CommandXboxController xbox;
+  public static CommandJoystick leftStick;
+  public static CommandJoystick rightStick;
+  //public static SwerveSubsystem swerve;
+  public static algaesubsystem algae;
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
@@ -43,6 +50,10 @@ public class Robot extends TimedRobot
   {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    leftStick = new CommandJoystick(Constants.drivingConstants.LEFT_STICK_ID);
+    rightStick = new CommandJoystick(Constants.drivingConstants.RIGHT_STICK_ID);
+    xbox = new CommandXboxController(Constants.drivingConstants.XBOX_ID);
+
     m_robotContainer = new RobotContainer();
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
@@ -53,6 +64,8 @@ public class Robot extends TimedRobot
     {
       DriverStation.silenceJoystickConnectionWarning(true);
     }
+  }
+  private void configureBindings() {
   }
 
   /**

@@ -9,10 +9,12 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.fasterxml.jackson.databind.cfg.ContextAttributes;
+//import com.fasterxml.jackson.databind.cfg.ContextAttributes;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants;
@@ -31,13 +33,17 @@ public class CoralSubsystem extends SubsystemBase {
     private static final int CPR = 2048; // Encoder counts per revolution
     private static final double MOTOR_GEAR_RATIO = 1.0;
     private double targetAngle1 = 0.0; 
-    private double integral = 0.0;
+    private final RelativeEncoder lEncoder  = leftMotor.getEncoder();
+    private final RelativeEncoder rEncoder = rightMotor.getEncoder();
+    /*private double integral = 0.0;
     private double previousError = 0.0;
     private double targetPosition = 0.0; // Target position for PID control
+    */
 
     public CoralSubsystem() {
         leftMotor = new SparkMax(Constants.Coral.LEFT_ELEVATOR_ID, MotorType.kBrushless);
         rightMotor = new SparkMax(Constants.Coral.RIGHT_ELEVATOR_ID, MotorType.kBrushless);
+        
         bucketTalon = new WPI_TalonSRX(Constants.Coral.BUCKET_ID);
        
 
@@ -52,15 +58,17 @@ public class CoralSubsystem extends SubsystemBase {
         encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO)); 
         pidController1 = new PIDController(kP, kI, kD);
         pidController1.setTolerance(0.5);
+        //ElevatorFeedforward m_feedforward = new ElevatorFeedforward(0.0, 0.0, 0.0, 0.0, 0.0);
 
     }
 
     /** Sets the target position for the PID loop */
-    public void setTargetPosition(double position) {
+   /*  public void setTargetPosition(double position) {
         targetPosition = position;
         integral = 0.0; // Reset integral term when setting a new target
         previousError = 0.0; // Reset previous error
-    }
+    }*/
+
 
     /** Runs the PID loop to move the motor to the target position */
     @Override
@@ -98,6 +106,10 @@ public class CoralSubsystem extends SubsystemBase {
             System.out.println("Motor 1 -> Current Angle: " + currentAngle1 + " | Target: " + targetAngle1 + " | Output: " + pidOutput1);
         }
 }
+    public void seedElevatorMotorPosition()
+    {
+
+    }
     public void forwardBucket()
     {
         targetAngle1 += 45.0;   
