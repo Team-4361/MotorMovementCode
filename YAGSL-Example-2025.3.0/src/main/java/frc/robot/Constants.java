@@ -43,6 +43,7 @@ public final class Constants
     public static double L2_POS;
     public static double L3_POS;
     public static double L4_POS;
+    public static final double ELEVATOR_SPEED = 0.2;
     
   }
   

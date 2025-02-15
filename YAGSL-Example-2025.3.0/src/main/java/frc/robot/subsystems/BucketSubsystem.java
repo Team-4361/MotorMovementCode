@@ -19,11 +19,9 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants;
 
-public class CoralSubsystem extends SubsystemBase {
+public class BucketSubsystem extends SubsystemBase {
     private WPI_TalonSRX bucketTalon;
     private Encoder encoder;
-    private SparkMax leftMotor;
-    private SparkMax rightMotor;
     private SparkMax sparkMax;
     //private static final double POSITION_TOLERANCE = 0.02;
     private PIDController pidController1;
@@ -33,27 +31,20 @@ public class CoralSubsystem extends SubsystemBase {
     private static final int CPR = 2048; // Encoder counts per revolution
     private static final double MOTOR_GEAR_RATIO = 1.0;
     private double targetAngle1 = 0.0; 
-    private final RelativeEncoder lEncoder  = leftMotor.getEncoder();
-    private final RelativeEncoder rEncoder = rightMotor.getEncoder();
+    //private final RelativeEncoder lEncoder  = leftMotor.getEncoder();
+    //private final RelativeEncoder rEncoder = rightMotor.getEncoder();
+    //stuff from old talon code that idk is needed
     /*private double integral = 0.0;
     private double previousError = 0.0;
     private double targetPosition = 0.0; // Target position for PID control
     */
 
-    public CoralSubsystem() {
-        leftMotor = new SparkMax(Constants.Coral.LEFT_ELEVATOR_ID, MotorType.kBrushless);
-        rightMotor = new SparkMax(Constants.Coral.RIGHT_ELEVATOR_ID, MotorType.kBrushless);
-        
+    public BucketSubsystem() {
         bucketTalon = new WPI_TalonSRX(Constants.Coral.BUCKET_ID);
-       
-
         SparkMaxConfig config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(0.0143);
         config.idleMode(IdleMode.kBrake);
-
         sparkMax.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        leftMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        rightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         encoder = new Encoder(0, 1); // Get encoder from SparkMax
         encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO)); 
         pidController1 = new PIDController(kP, kI, kD);
@@ -106,10 +97,10 @@ public class CoralSubsystem extends SubsystemBase {
             System.out.println("Motor 1 -> Current Angle: " + currentAngle1 + " | Target: " + targetAngle1 + " | Output: " + pidOutput1);
         }
 }
-    public void seedElevatorMotorPosition()
+    /*public void seedElevatorMotorPosition()
     {
-
-    }
+        //yagsl code 
+    }*/
     public void forwardBucket()
     {
         targetAngle1 += 45.0;   
@@ -128,8 +119,9 @@ public class CoralSubsystem extends SubsystemBase {
     {
         targetAngle1 = 0.0;
     }
-    public void elevatorMove()
+    public void stopBucket()
     {
         
     }
+
 }
