@@ -19,6 +19,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private SparkMax rightMotor;
     //private static final double POSITION_TOLERANCE = 0.02;
     private PIDController pidController1;
+    private ElevatorFeedforward m_feedforward;
     private static final double kP = 0.0666;
     private static final double kI = 0.00002;
     private static final double kD = 0.0010;
@@ -29,6 +30,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private double previousError = 0.0;
     private double targetPosition = 0.0; // Target position for PID control
     */
+    
 
     public ElevatorSubsystem() {
         leftMotor = new SparkMax(Constants.Coral.LEFT_ELEVATOR_ID, MotorType.kBrushless);
@@ -40,7 +42,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         rightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         pidController1 = new PIDController(kP, kI, kD);
         pidController1.setTolerance(0.5);
-        //ElevatorFeedforward m_feedforward = new ElevatorFeedforward(0.0, 0.0, 0.0, 0.0, 0.0);
+        ElevatorFeedforward m_feedforward = new ElevatorFeedforward(0.0, 0.0, 0.0, 0.0, 0.0);
 
     }
 

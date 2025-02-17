@@ -25,7 +25,8 @@ import frc.robot.commands.coral.BucketMoveF45;
 import frc.robot.commands.coral.ElevatorDownCommand;
 import frc.robot.commands.coral.ElevatorUpCommand;
 import frc.robot.subsystems.BucketSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.KerklunkSubsystem;
+import frc.robot.subsystems.WinchSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -41,7 +42,8 @@ public class Robot extends TimedRobot
   public static algaesubsystem algae;
   public static ElevatorSubsystem elevator;
   public static BucketSubsystem bucket;
-  public static ClimberSubsystem climber;
+  public static WinchSubsystem winch;
+  public static KerklunkSubsystem kerklunk;
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
@@ -74,7 +76,8 @@ public class Robot extends TimedRobot
     algae = new algaesubsystem();
     elevator = new ElevatorSubsystem();
     bucket = new BucketSubsystem();
-    climber = new ClimberSubsystem();
+    winch = new WinchSubsystem();
+    kerklunk = new KerklunkSubsystem();
     NamedCommands.registerCommand("ElevatorUpCommand", new ElevatorUpCommand(elevator));
 
 

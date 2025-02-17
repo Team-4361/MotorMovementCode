@@ -12,21 +12,12 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
 
 public class ClimberSubsystem extends SubsystemBase {
-    private SparkMax sparkMax;
-    private SparkMax lClimberSparkMax;
-    private SparkMax rClimberSparkMax;
-    public static double ClimberSpeed = 0.5;
-    public static int leftClimberMotorID = 9;
-    public static int rightClimberMotorID = 10;
-    public static PIDController ClimberPID = new PIDController(0.0, 0.0, 0.0);
-    private RelativeEncoder eEncoderL;
-    private RelativeEncoder eEncoderR;
+    private SparkMax climberMotor;
     private RelativeEncoder encoder;
-    private Joystick driverStationJoystick; // Driver Station Joystick
+    private Joystick driverStationJoystick;
 
-    private static final int SPARK_MAX_CAN_ID = 6;
+    private static final int CLIMBER_MOTOR_ID = 6;
     private static final double POSITION_TOLERANCE = 0.02;
-
     private static final double kP = 0.5;
     private static final double kI = 0.2;
     private static final double kD = 0.0;
@@ -34,51 +25,42 @@ public class ClimberSubsystem extends SubsystemBase {
     private double integral = 0.0;
     private double previousError = 0.0;
     private double targetPosition = 0.0;
-    private double ClimberPosition = 0.0;
 
     public ClimberSubsystem() {
-        sparkMax = new SparkMax(SPARK_MAX_CAN_ID, MotorType.kBrushless);
-        lClimberSparkMax = new SparkMax(leftClimberMotorID, MotorType.kBrushless);
-        rClimberSparkMax = new SparkMax(rightClimberMotorID, MotorType.kBrushless);
-        driverStationJoystick = new Joystick(0); // Initialize Joystick on USB Port 0
+        climberMotor = new SparkMax(CLIMBER_MOTOR_ID, MotorType.kBrushless);
+        driverStationJoystick = new Joystick(0);
 
         SparkMaxConfig config = new SparkMaxConfig();
-        SparkMaxConfig eConfig = new SparkMaxConfig();
         config.encoder.positionConversionFactor(9.0 / 40.0);
-        sparkMax.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        lClimberSparkMax.configure(eConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        rClimberSparkMax.configure(eConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        encoder = sparkMax.getEncoder();
-        eEncoderL = lClimberSparkMax.getEncoder();
-        eEncoderR = rClimberSparkMax.getEncoder();
+        climberMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        
+        encoder = climberMotor.getEncoder();
     }
     
     public void teleopPeriodic() {
-        if (driverStationJoystick.getRawButtonPressed(4)) { // Button 4 -> Move Climber to 30.6
-            ClimberPosition = 30.6;
+        if (driverStationJoystick.getRawButtonPressed(4)) {
+            targetPosition = 30.6;
         }
-        if (driverStationJoystick.getRawButtonPressed(5)) { // Button 5 -> Move Climber to 0
-            ClimberPosition = 0;
+        if (driverStationJoystick.getRawButtonPressed(5)) {
+            targetPosition = 0;
         }
-
-        if (driverStationJoystick.getRawButtonPressed(1)) { // Button 1 (Trigger) -> Move up
+        if (driverStationJoystick.getRawButtonPressed(1)) {
             targetPosition = 3;
         }
-        if (driverStationJoystick.getRawButtonPressed(2)) { // Button 2 -> Reset position
+        if (driverStationJoystick.getRawButtonPressed(2)) {
             targetPosition = 0.0;
         }
-        if (driverStationJoystick.getRawButtonPressed(3)) { // Button 3 -> Reset encoder
+        if (driverStationJoystick.getRawButtonPressed(3)) {
             encoder.setPosition(0);
             targetPosition = 0.0;
         }
-        if (driverStationJoystick.getRawButtonPressed(6)) { // Button 6 -> Move down
+        if (driverStationJoystick.getRawButtonPressed(6)) {
             targetPosition = -3;
         }
-        if (driverStationJoystick.getRawButtonPressed(7)) { // Button 7 -> Decrease position
+        if (driverStationJoystick.getRawButtonPressed(7)) {
             targetPosition = -6;
         }
-        if (driverStationJoystick.getRawButtonPressed(8)) { // Button 8 -> Increase position
+        if (driverStationJoystick.getRawButtonPressed(8)) {
             targetPosition = 6;
         }
 
@@ -92,9 +74,9 @@ public class ClimberSubsystem extends SubsystemBase {
         pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
 
         if (Math.abs(error) > POSITION_TOLERANCE) {
-            sparkMax.set(pidOutput);
+            climberMotor.set(pidOutput);
         } else {
-            sparkMax.set(0);
+            climberMotor.set(0);
         }
 
         previousError = error;
@@ -105,8 +87,6 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public void stop() {
-        sparkMax.stopMotor();
-        lClimberSparkMax.stopMotor();
-        rClimberSparkMax.stopMotor();
+        climberMotor.stopMotor();
     }
 }
