@@ -4,11 +4,29 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.algaesubsystem;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.commands.algae.AlgaeDownCommand;
+import frc.robot.commands.algae.AlgaeExtrudeCommand;
+import frc.robot.commands.algae.AlgaeSuckCommand;
+import frc.robot.commands.algae.AlgaeUpCommand;
+import frc.robot.commands.coral.BucketMoveB45;
+import frc.robot.commands.coral.BucketMoveF45;
+import frc.robot.commands.coral.ElevatorDownCommand;
+import frc.robot.commands.coral.ElevatorUpCommand;
+import frc.robot.subsystems.BucketSubsystem;
+import frc.robot.subsystems.KerklunkSubsystem;
+import frc.robot.subsystems.WinchSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -17,7 +35,15 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot
 {
-
+  public static CommandXboxController xbox;
+  public static CommandJoystick leftStick;
+  public static CommandJoystick rightStick;
+  public static SwerveSubsystem swerve;
+  public static algaesubsystem algae;
+  public static ElevatorSubsystem elevator;
+  public static BucketSubsystem bucket;
+  public static WinchSubsystem winch;
+  public static KerklunkSubsystem kerklunk;
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
@@ -43,6 +69,18 @@ public class Robot extends TimedRobot
   {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    leftStick = new CommandJoystick(Constants.drivingConstants.LEFT_STICK_ID);
+    rightStick = new CommandJoystick(Constants.drivingConstants.RIGHT_STICK_ID);
+    xbox = new CommandXboxController(Constants.drivingConstants.XBOX_ID);
+
+    algae = new algaesubsystem();
+    elevator = new ElevatorSubsystem();
+    bucket = new BucketSubsystem();
+    winch = new WinchSubsystem();
+    kerklunk = new KerklunkSubsystem();
+    NamedCommands.registerCommand("ElevatorUpCommand", new ElevatorUpCommand(elevator));
+
+
     m_robotContainer = new RobotContainer();
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
@@ -53,7 +91,21 @@ public class Robot extends TimedRobot
     {
       DriverStation.silenceJoystickConnectionWarning(true);
     }
+    configureBindings();
   }
+  private void configureBindings() 
+  {
+    xbox.povDown().whileTrue(new ElevatorDownCommand(elevator));
+    xbox.povUp().whileTrue(new ElevatorUpCommand(elevator));
+    xbox.povLeft().onTrue(new BucketMoveB45(bucket));
+    xbox.povRight().onTrue(new BucketMoveF45(bucket));
+    xbox.leftTrigger().onTrue(new AlgaeSuckCommand(algae));
+    xbox.rightTrigger().onTrue(new AlgaeExtrudeCommand(algae));
+    //xbox.b().toggleOnTrue(m_autonomousCommand)     could use to toggle modes for certain control schemes?
+    xbox.b().onTrue(new AlgaeUpCommand(algae));
+    xbox.x().onTrue(new AlgaeDownCommand(algae));
+  }
+
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics that you want ran

@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 public class WSTalon extends TimedRobot {
     private WPI_TalonSRX motor; // First Talon SRX motor controller
     private Encoder encoder;   // First encoder
-    private WPI_TalonSRX motor2; // Second Talon SRX motor controller
-    private Encoder encoder2;   // Second encoder
+    //private WPI_TalonSRX motor2; // Second Talon SRX motor controller
+    ///private Encoder encoder2;   // Second encoder
     private PIDController pidController1; // PID for motor 1
-    private PIDController pidController2; // PID for motor 2
+    //private PIDController pidController2; // PID for motor 2
     private Joystick joystick; // Joystick for button control
 
     private static final int CPR = 2048; // Encoder counts per revolution
@@ -30,18 +30,18 @@ public class WSTalon extends TimedRobot {
         // Initialize motors and encoders
         motor = new WPI_TalonSRX(2);
         encoder = new Encoder(0, 1);
-        motor2 = new WPI_TalonSRX(12);
-        encoder2 = new Encoder(2, 3);
+        //motor2 = new WPI_TalonSRX(12);
+        //encoder2 = new Encoder(2, 3);
         joystick = new Joystick(0);
 
         encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO)); 
-        encoder2.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO));
+        //encoder2.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO));
 
         // Set up PID controllers
         pidController1 = new PIDController(KP, KI, KD);
-        pidController2 = new PIDController(KP, KI, KD);
+        //pidController2 = new PIDController(KP, KI, KD);
         pidController1.setTolerance(0.5);
-        pidController2.setTolerance(0.5);
+        //pidController2.setTolerance(0.5);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class WSTalon extends TimedRobot {
         }
     
         double precisionScaling = 5.0;
-        targetAngle1 += joystickInput * precisionScaling;
-        targetAngle2 += joystickInput * precisionScaling;
+        //targetAngle1 += joystickInput * precisionScaling;
+        //targetAngle2 += joystickInput * precisionScaling;
 
         // Button-based control for motor 1
         if (joystick.getRawButtonPressed(1)) {
@@ -71,8 +71,8 @@ public class WSTalon extends TimedRobot {
         if (joystick.getRawButtonPressed(4)) {
              encoder.reset();
              targetAngle1 = 0.0;
-             encoder2.reset(); 
-             targetAngle2 = 0.0;
+             //encoder2.reset(); 
+             //targetAngle2 = 0.0;
 
             } 
 
@@ -81,13 +81,13 @@ public class WSTalon extends TimedRobot {
         if (joystick.getRawButtonPressed(7)) { targetAngle2 = 0.0; } 
 
         double currentAngle1 = encoder.getDistance();
-        double currentAngle2 = encoder2.getDistance();
+        //double currentAngle2 = encoder2.getDistance();
 
         double pidOutput1 = pidController1.calculate(currentAngle1, targetAngle1);
-        double pidOutput2 = pidController2.calculate(currentAngle2, targetAngle2);
+        //double pidOutput2 = pidController2.calculate(currentAngle2, targetAngle2);
 
         pidOutput1 = Math.max(-1, Math.min(1, pidOutput1));
-        pidOutput2 = Math.max(-1, Math.min(1, pidOutput2));
+        //pidOutput2 = Math.max(-1, Math.min(1, pidOutput2));
 
         if (!pidController1.atSetpoint()) {
             motor.set(TalonSRXControlMode.PercentOutput, pidOutput1);
@@ -95,13 +95,12 @@ public class WSTalon extends TimedRobot {
             motor.set(TalonSRXControlMode.PercentOutput, 0);
         }
 
-        if (!pidController2.atSetpoint()) {
+        /*if (!pidController2.atSetpoint()) {
             motor2.set(TalonSRXControlMode.PercentOutput, pidOutput2);
         } else {
             motor2.set(TalonSRXControlMode.PercentOutput, 0);
-        }
+        }*/
 
-        System.out.println("Motor 1 -> Current Angle: " + currentAngle1 + " | Target: " + targetAngle1 + " | Output: " + pidOutput1);
-        System.out.println("Motor 2 -> Current Angle: " + currentAngle2 + " | Target: " + targetAngle2 + " | Output: " + pidOutput2);
+         //System.out.println("Motor 2 -> Current Angle: " + currentAngle2 + " | Target: " + targetAngle2 + " | Output: " + pidOutput2);
     }
 }

@@ -7,32 +7,27 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class algaesubsystem extends SubsystemBase {
-    private SparkMax sparkMax;
-    private RelativeEncoder encoder;
-    private SparkMax leftMotor;
-    private SparkMax rightMotor;
+    private final SparkMax sparkMax;
+    private final SparkMax leftMotor;
+    private final SparkMax rightMotor;
+    private final RelativeEncoder encoder;
+    private final PIDController pidController;
 
-    private static final double POSITION_TOLERANCE = 0.02;
-
-    // PID constants
-    private static final double kP = 1.0;
-    private static final double kI = 0.2;
-    private static final double kD = 0.1;
-
-    private double integral = 0.0;
-    private double previousError = 0.0;
-    private double targetPosition = 0.0; // Target position for PID control
+    private double targetPosition = 0.0;
 
     public algaesubsystem() {
+        // Initialize motors
         leftMotor = new SparkMax(Constants.Algae.LEFT_MOTOR_ID, MotorType.kBrushless);
         rightMotor = new SparkMax(Constants.Algae.RIGHT_MOTOR_ID, MotorType.kBrushless);
         sparkMax = new SparkMax(Constants.Algae.ALGAE_MOTOR_ID, MotorType.kBrushless);
 
+        // Configure motors
         SparkMaxConfig config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(0.0143);
         config.idleMode(IdleMode.kBrake);
@@ -41,59 +36,81 @@ public class algaesubsystem extends SubsystemBase {
         leftMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        encoder = sparkMax.getEncoder(); // Get encoder from SparkMax
+        // Initialize encoder
+        encoder = sparkMax.getEncoder();
+
+        // Initialize PID Controller
+        pidController = new PIDController(Constants.Algae.kP, Constants.Algae.kI, Constants.Algae.kD);
+        pidController.setTolerance(Constants.Algae.POSITION_TOLERANCE);
+
+        if (Constants.isDebug) {
+            // Send initial PID values to SmartDashboard
+            SmartDashboard.putNumber("PID/kP", Constants.Algae.kP);
+            SmartDashboard.putNumber("PID/kI", Constants.Algae.kI);
+            SmartDashboard.putNumber("PID/kD", Constants.Algae.kD);
+            SmartDashboard.putNumber("Algae/Target Position", targetPosition);
+        }
     }
 
-    /** Sets the target position for the PID loop */
+    /** Sets the target position for PID control */
     public void setTargetPosition(double position) {
         targetPosition = position;
-        integral = 0.0; // Reset integral term when setting a new target
-        previousError = 0.0; // Reset previous error
+        pidController.reset();
     }
 
-    /** Runs the PID loop to move the motor to the target position */
     @Override
     public void periodic() {
         double currentPosition = encoder.getPosition();
-        double error = targetPosition - currentPosition;
+        double pidOutput = pidController.calculate(currentPosition, targetPosition);
 
-        integral += error * 0.02; // Assuming a 20ms loop time
-        double derivative = (error - previousError) / 0.02;
+        // Limit motor power
+        pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
 
-        double pidOutput = (kP * error) + (kI * integral) + (kD * derivative);
-        pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput)); // Limit output
-
-        if (Math.abs(error) > POSITION_TOLERANCE) {
+        // Only move if outside tolerance
+        if (!pidController.atSetpoint()) {
             sparkMax.set(pidOutput);
         } else {
             sparkMax.set(0);
         }
 
-        previousError = error;
+        if (Constants.isDebug) {
+            // Update PID values from SmartDashboard
+            pidController.setP(SmartDashboard.getNumber("PID/kP", Constants.Algae.kP));
+            pidController.setI(SmartDashboard.getNumber("PID/kI", Constants.Algae.kI));
+            pidController.setD(SmartDashboard.getNumber("PID/kD", Constants.Algae.kD));
 
-        // Debugging output
-        System.out.println("Current Position: " + currentPosition);
-        System.out.println("Target Position: " + targetPosition);
-        System.out.println("PID Output: " + pidOutput);
+            // Display real-time data
+            SmartDashboard.putNumber("Algae/Current Position", currentPosition);
+            SmartDashboard.putNumber("Algae/Target Position", targetPosition);
+            SmartDashboard.putNumber("Algae/PID Output", pidOutput);
+        }
     }
 
     /** Moves algae out (extrudes) */
     public void extrude() {
-        leftMotor.set(-Constants.Algae.ALGAE_SPEED); 
-        rightMotor.set(-Constants.Algae.ALGAE_SPEED);
+        setMotors(-Constants.Algae.ALGAE_SPEED);
     }
 
     /** Pulls algae in (sucks) */
     public void suck() {
-        leftMotor.set(Constants.Algae.ALGAE_SPEED);
-        rightMotor.set(Constants.Algae.ALGAE_SPEED);
+        setMotors(Constants.Algae.ALGAE_SPEED);
     }
 
     /** Stops all motors */
     public void stop() {
-        leftMotor.set(0);
-        rightMotor.set(0);
-        sparkMax.set(0);
+        setMotors(0);
+        leftMotor.stopMotor();
+        rightMotor.stopMotor();
     }
 
+    /** Stops vertical movement */
+    public void stopUpAndDown() {
+        sparkMax.stopMotor();
+    }
+
+    /** Helper method to set left and right motors safely */
+    private void setMotors(double speed) {
+        leftMotor.set(speed);
+        rightMotor.set(speed);
+    }
 }
