@@ -75,6 +75,7 @@ public class AutoBalanceCommand extends Command
    * The action to take when the command ends. Called when either the command finishes normally -- that is it is called
    * when {@link #isFinished()} returns true -- or when  it is interrupted/canceled. This is where you may want to wrap
    * up loose ends, like shutting off a motor that was being used in the command.
+   * In this case, the action being taken is preventing the swerve drive from moving.
    *
    * @param interrupted whether the command was interrupted/canceled
    */
