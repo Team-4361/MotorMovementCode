@@ -15,7 +15,7 @@ public class WinchSubsystem extends SubsystemBase {
     private DigitalInput limitSwitch;
     private PIDController winchPID;
 
-    private static final int WINCH_MOTOR_ID = 8; // Change to your CAN ID
+    private static final int WINCH_MOTOR_ID = 15; // Change to your CAN ID
     private static final double WINCH_SPEED = 0.799; // Speed for manual movement
     private static final int LIMIT_SWITCH_PORT = 0; // DIO Port for limit switch
 

@@ -42,7 +42,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         rightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         pidController1 = new PIDController(kP, kI, kD);
         pidController1.setTolerance(0.5);
-        ElevatorFeedforward m_feedforward = new ElevatorFeedforward(0.0, 0.0, 0.0, 0.0, 0.0);
+        //ElevatorFeedforward m_feedforward = new ElevatorFeedforward(0.0, 0.0, 0.0, 0.0, 0.0);
 
     }
 

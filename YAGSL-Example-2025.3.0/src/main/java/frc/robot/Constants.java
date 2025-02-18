@@ -33,9 +33,9 @@ public final class Constants
   public static final class Coral
   { public static final int CPR_TALON = 2048;
     public static final double MOTOR_GEAR_RATIO = 1.0;
-    public static final int LEFT_ELEVATOR_ID = 12;
-    public static final int RIGHT_ELEVATOR_ID = 13;
-    public static final int BUCKET_ID = 14;
+    public static final int LEFT_ELEVATOR_ID = 9;
+    public static final int RIGHT_ELEVATOR_ID = 14;
+    public static final int BUCKET_ID = 10;
     public static final double KP = 0.0666;
     public static final double KI = 0.00002;
     public static final double KD = 0.0010; 
@@ -84,7 +84,7 @@ public final class Constants
   }
 
   public static class Algae {
-    public static final int LEFT_MOTOR_ID = 9;  // Set to your left motor's CAN ID
+    public static final int LEFT_MOTOR_ID = 12;  // Set to your left motor's CAN ID
     public static final int RIGHT_MOTOR_ID = 10; // Set to your right motor's CAN ID
     public static final int ALGAE_MOTOR_ID = 11; // Set to your motor id for the thing that moves algae up and down i gues
     public static final double ALGAE_SPEED = 0.75; //motorspeed
