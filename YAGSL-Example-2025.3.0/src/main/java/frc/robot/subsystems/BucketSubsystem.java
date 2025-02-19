@@ -22,7 +22,6 @@ import frc.robot.Constants;
 public class BucketSubsystem extends SubsystemBase {
     private WPI_TalonSRX bucketTalon;
     private Encoder encoder;
-    private SparkMax sparkMax;
     //private static final double POSITION_TOLERANCE = 0.02;
     private PIDController pidController1;
     private static final double kP = 0.0666;
@@ -44,7 +43,6 @@ public class BucketSubsystem extends SubsystemBase {
         SparkMaxConfig config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(0.0143);
         config.idleMode(IdleMode.kBrake);
-        sparkMax.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         encoder = new Encoder(0, 1); // Get encoder from SparkMax
         encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO)); 
         pidController1 = new PIDController(kP, kI, kD);
