@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.coral.ElevatorDownCommand;
+import frc.robot.commands.coral.ElevatorUpCommand;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -36,8 +39,10 @@ public class RobotContainer
   final CommandJoystick joystickR = new CommandJoystick(1);
   final CommandXboxController driverXbox = new CommandXboxController(Constants.drivingConstants.XBOX_ID);
   // The robot's subsystems and commands are defined here...
+  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
+                                                                            
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
@@ -156,6 +161,8 @@ public class RobotContainer
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
+      driverXbox.povDown().whileTrue(new ElevatorDownCommand(elevator));
+      driverXbox.povUp().whileTrue(new ElevatorUpCommand(elevator));
     }
 
   }
