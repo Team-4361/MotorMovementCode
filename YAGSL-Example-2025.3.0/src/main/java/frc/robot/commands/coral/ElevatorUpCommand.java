@@ -15,12 +15,12 @@ private final ElevatorSubsystem elevator;
     @Override
     public void initialize()
     {
-        elevator.elevatorMoveDown();
+        elevator.elevatorMoveUp();
     }
     @Override
     public void execute()
     {
-        elevator.elevatorMoveDown();
+        elevator.elevatorMoveUp();
     }
 
     @Override
@@ -34,5 +34,4 @@ private final ElevatorSubsystem elevator;
     {
         return false; //idr how to implement this 
     }
-
 }
