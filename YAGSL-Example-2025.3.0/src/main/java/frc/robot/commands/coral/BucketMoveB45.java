@@ -14,13 +14,16 @@ private final BucketSubsystem coral;
     @Override
     public void initialize()
     {
-
-        coral.backwardsBucket();
+        if (!coral.atTarget())
+            coral.backwardsBucketAngle();
+        //coral.backwardsBucket();
     }
     @Override
     public void execute()
     {
-        coral.backwardsBucket();
+        if (!coral.atTarget())
+            coral.backwardsBucketAngle();
+        //coral.backwardsBucket();
     }
 
     @Override

@@ -7,6 +7,9 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import javax.lang.model.util.ElementScanner14;
+
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 //import com.fasterxml.jackson.databind.cfg.ContextAttributes;
@@ -20,7 +23,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
+
 public class BucketSubsystem extends SubsystemBase {
+        
 /*    private WPI_TalonSRX bucketTalon;
     private Encoder encoder;
     //private static final double POSITION_TOLERANCE = 0.02;
@@ -37,8 +42,8 @@ public class BucketSubsystem extends SubsystemBase {
     /*private double integral = 0.0;
     private double previousError = 0.0;
     private double targetPosition = 0.0; // Target position for PID control
-    
-
+    */
+    /* 
     public BucketSubsystem() {
         bucketTalon = new WPI_TalonSRX(Constants.Coral.BUCKET_ID);
         SparkMaxConfig config = new SparkMaxConfig();
@@ -124,28 +129,55 @@ public class BucketSubsystem extends SubsystemBase {
     }
 */
 private final SparkMax motor;
-private final Encoder encoder;
+private final RelativeEncoder encoder;
 private final PIDController pidController;
 
-private static final int MOTOR_ID = 15; // Change if needed
-private static final int CPR = 2048; // Encoder counts per revolution
-private static final double MOTOR_GEAR_RATIO = 1.0;
+private static final int MOTOR_ID = 6; // Change if needed
+private static final int CPR = 42; // Encoder counts per revolution, was 2048 with one on rio, 42 for neo550
+private static final double MOTOR_GEAR_RATIO = 500;
 private static final double KP = 0.0666;
 private static final double KI = 0.00002;
 private static final double KD = 0.0010;
 private static final double MAX_POWER = 0.15;
+//private final DCMotor bGearbox;
+//private final Encoder e;
 
 private double targetAngle1 = 0.0; 
 
 public BucketSubsystem() {
     motor = new SparkMax(MOTOR_ID, MotorType.kBrushed);
-    encoder = new Encoder(0, 1); // External encoder on RoboRIO
+    //encoder = new Encoder(0, 1); // External encoder on RoboRIO
+    encoder = motor.getEncoder();
+    //e.setDistancePerPulse(CPR);
+    //bGearbox = new DCMotor(MOTOR_GEAR_RATIO, MAX_POWER, KP, KI, KD, MOTOR_ID);
 
-    encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO));
+    //encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO));
     pidController = new PIDController(KP, KI, KD);
     pidController.setTolerance(0.5);
-    SmartDashboard.putNumber("Encoder Pos" , encoder.getDistance());
-   
+    SmartDashboard.putNumber("Encoder Pos" , encoder.getPosition());
+}
+
+public void forwardBucketAngle()
+{
+    targetAngle1 += 360.0;
+}
+
+public boolean atTarget()
+{
+    if (encoder.getPosition()==targetAngle1)
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+
+}
+
+public void backwardsBucketAngle()
+{
+    targetAngle1 -= 360.0;
 }
 
 public void forwardBucket() {
@@ -159,7 +191,7 @@ public void backwardsBucket() {
 }
 
 public void resetBucket() {
-    encoder.reset();
+    //encoder.reset();
     targetAngle1 = 0.0;
 }
 
@@ -173,7 +205,7 @@ public void stopBucket() {
 
 @Override
 public void periodic() {
-    double currentAngle = encoder.getDistance();
+    double currentAngle = encoder.getPosition();
     double pidOutput = pidController.calculate(currentAngle, targetAngle1);
 
     pidOutput = Math.max(-1, Math.min(1, pidOutput));

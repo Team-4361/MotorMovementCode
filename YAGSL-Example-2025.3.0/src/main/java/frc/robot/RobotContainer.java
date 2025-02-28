@@ -173,8 +173,10 @@ public class RobotContainer
       driverXbox.rightBumper().onTrue(Commands.none());
       driverXbox.povDown().whileTrue(new ElevatorDownCommand(elevator));
       driverXbox.povUp().whileTrue(new ElevatorUpCommand(elevator));
-      driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket));
-      driverXbox.povRight().whileTrue(new BucketMoveF45(bucket));
+      //driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); // speed verision
+      //driverXbox.povRight().whileTrue(new BucketMoveF45(bucket));
+      driverXbox.povLeft().onTrue(new BucketMoveB45(bucket)); //  full rotation test version
+      driverXbox.povRight().onTrue(new BucketMoveF45(bucket)); // 
       driverXbox.b().whileTrue(new AlgaeExtrudeCommand(algae));
       driverXbox.x().whileTrue(new AlgaeSuckCommand(algae));
       driverXbox.y().whileTrue(new AlgaeUpCommand(algae));
