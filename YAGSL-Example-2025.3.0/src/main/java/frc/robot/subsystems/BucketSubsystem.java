@@ -17,10 +17,11 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class BucketSubsystem extends SubsystemBase {
-    private WPI_TalonSRX bucketTalon;
+/*    private WPI_TalonSRX bucketTalon;
     private Encoder encoder;
     //private static final double POSITION_TOLERANCE = 0.02;
     private PIDController pidController1;
@@ -36,7 +37,7 @@ public class BucketSubsystem extends SubsystemBase {
     /*private double integral = 0.0;
     private double previousError = 0.0;
     private double targetPosition = 0.0; // Target position for PID control
-    */
+    
 
     public BucketSubsystem() {
         bucketTalon = new WPI_TalonSRX(Constants.Coral.BUCKET_ID);
@@ -56,11 +57,11 @@ public class BucketSubsystem extends SubsystemBase {
         targetPosition = position;
         integral = 0.0; // Reset integral term when setting a new target
         previousError = 0.0; // Reset previous error
-    }*/
+    }
 
 
     /** Runs the PID loop to move the motor to the target position */
-    @Override
+  /*   @Override
     public void periodic() {
         if(Constants.isDebug)
         {
@@ -98,7 +99,7 @@ public class BucketSubsystem extends SubsystemBase {
     /*public void seedElevatorMotorPosition()
     {
         //yagsl code 
-    }*/
+    }*//* *
     public void forwardBucket()
     {
         targetAngle1 += 45.0;   
@@ -121,5 +122,73 @@ public class BucketSubsystem extends SubsystemBase {
     {
         
     }
+*/
+private final SparkMax motor;
+private final Encoder encoder;
+private final PIDController pidController;
+
+private static final int MOTOR_ID = 15; // Change if needed
+private static final int CPR = 2048; // Encoder counts per revolution
+private static final double MOTOR_GEAR_RATIO = 1.0;
+private static final double KP = 0.0666;
+private static final double KI = 0.00002;
+private static final double KD = 0.0010;
+private static final double MAX_POWER = 0.15;
+
+private double targetAngle1 = 0.0; 
+
+public BucketSubsystem() {
+    motor = new SparkMax(MOTOR_ID, MotorType.kBrushed);
+    encoder = new Encoder(0, 1); // External encoder on RoboRIO
+
+    encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO));
+    pidController = new PIDController(KP, KI, KD);
+    pidController.setTolerance(0.5);
+    SmartDashboard.putNumber("Encoder Pos" , encoder.getDistance());
+   
+}
+
+public void forwardBucket() {
+    //targetAngle1 += 5.0;
+    motor.set(MAX_POWER);
+}
+
+public void backwardsBucket() {
+    //targetAngle1 -= 5.0;
+    motor.set(-MAX_POWER);
+}
+
+public void resetBucket() {
+    encoder.reset();
+    targetAngle1 = 0.0;
+}
+
+public void zeroBucket() {
+    targetAngle1 = 0.0;
+}
+
+public void stopBucket() {
+    motor.stopMotor();
+}
+
+@Override
+public void periodic() {
+    double currentAngle = encoder.getDistance();
+    double pidOutput = pidController.calculate(currentAngle, targetAngle1);
+
+    pidOutput = Math.max(-1, Math.min(1, pidOutput));
+
+    pidOutput *= MAX_POWER;
+
+    if (!pidController.atSetpoint()) {
+        motor.set(pidOutput);
+    } else {
+        motor.set(0);
+    }
+    System.out.println(currentAngle);
+    System.out.println(pidOutput);
+
+
+}
 
 }

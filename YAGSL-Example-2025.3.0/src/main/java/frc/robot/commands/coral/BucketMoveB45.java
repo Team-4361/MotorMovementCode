@@ -26,7 +26,7 @@ private final BucketSubsystem coral;
     @Override
     public void end(boolean interrupted)
     {
-        coral.zeroBucket();
+        coral.stopBucket();
     }
 
     @Override
