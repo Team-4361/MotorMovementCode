@@ -54,7 +54,7 @@ public class algaesubsystem extends SubsystemBase {
 
     public void setMotor(double speed)
     {
-        
+        sparkMax.set(speed);
     }
     /** Sets the target position for PID control */
     public void setTargetPosition(double position) {
