@@ -14,12 +14,12 @@ private final ElevatorSubsystem elevator;
     @Override
     public void initialize()
     {
-        elevator.elevatorMoveUp();
+        elevator.elevatorMoveDown();
     }
     @Override
     public void execute()
     {
-        elevator.elevatorMoveUp();
+        elevator.elevatorMoveDown();
     }
 
     @Override

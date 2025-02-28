@@ -73,13 +73,12 @@ public class Robot extends TimedRobot
     rightStick = new CommandJoystick(Constants.drivingConstants.RIGHT_STICK_ID);
     xbox = new CommandXboxController(Constants.drivingConstants.XBOX_ID);
 
-    algae = new algaesubsystem();
+    /*algae = new algaesubsystem();
     elevator = new ElevatorSubsystem();
     bucket = new BucketSubsystem();
     winch = new WinchSubsystem();
     kerklunk = new KerklunkSubsystem();
-    NamedCommands.registerCommand("ElevatorUpCommand", new ElevatorUpCommand(elevator));
-
+    NamedCommands.registerCommand("ElevatorUpCommand", new ElevatorUpCommand(elevator));*/
 
     m_robotContainer = new RobotContainer();
 
@@ -91,9 +90,9 @@ public class Robot extends TimedRobot
     {
       DriverStation.silenceJoystickConnectionWarning(true);
     }
-    configureBindings();
+    //configureBindings();
   }
-  private void configureBindings() 
+  /*private void configureBindings() 
   {
     xbox.povDown().whileTrue(new ElevatorDownCommand(elevator));
     xbox.povUp().whileTrue(new ElevatorUpCommand(elevator));
@@ -104,7 +103,7 @@ public class Robot extends TimedRobot
     //xbox.b().toggleOnTrue(m_autonomousCommand)     could use to toggle modes for certain control schemes?
     xbox.b().onTrue(new AlgaeUpCommand(algae));
     xbox.x().onTrue(new AlgaeDownCommand(algae));
-  }
+  }*/
 
 
   /**

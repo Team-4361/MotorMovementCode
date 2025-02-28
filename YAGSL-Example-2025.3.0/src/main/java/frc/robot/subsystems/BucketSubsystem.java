@@ -7,6 +7,9 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import javax.lang.model.util.ElementScanner14;
+
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 //import com.fasterxml.jackson.databind.cfg.ContextAttributes;
@@ -17,10 +20,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
+
 public class BucketSubsystem extends SubsystemBase {
-    private WPI_TalonSRX bucketTalon;
+        
+/*    private WPI_TalonSRX bucketTalon;
     private Encoder encoder;
     //private static final double POSITION_TOLERANCE = 0.02;
     private PIDController pidController1;
@@ -37,7 +43,7 @@ public class BucketSubsystem extends SubsystemBase {
     private double previousError = 0.0;
     private double targetPosition = 0.0; // Target position for PID control
     */
-
+    /* 
     public BucketSubsystem() {
         bucketTalon = new WPI_TalonSRX(Constants.Coral.BUCKET_ID);
         SparkMaxConfig config = new SparkMaxConfig();
@@ -56,11 +62,11 @@ public class BucketSubsystem extends SubsystemBase {
         targetPosition = position;
         integral = 0.0; // Reset integral term when setting a new target
         previousError = 0.0; // Reset previous error
-    }*/
+    }
 
 
     /** Runs the PID loop to move the motor to the target position */
-    @Override
+  /*   @Override
     public void periodic() {
         if(Constants.isDebug)
         {
@@ -98,7 +104,7 @@ public class BucketSubsystem extends SubsystemBase {
     /*public void seedElevatorMotorPosition()
     {
         //yagsl code 
-    }*/
+    }*//* *
     public void forwardBucket()
     {
         targetAngle1 += 45.0;   
@@ -121,5 +127,100 @@ public class BucketSubsystem extends SubsystemBase {
     {
         
     }
+*/
+private final SparkMax motor;
+private final RelativeEncoder encoder;
+private final PIDController pidController;
+
+private static final int MOTOR_ID = 6; // Change if needed
+private static final int CPR = 42; // Encoder counts per revolution, was 2048 with one on rio, 42 for neo550
+private static final double MOTOR_GEAR_RATIO = 500;
+private static final double KP = 0.0666;
+private static final double KI = 0.00002;
+private static final double KD = 0.0010;
+private static final double MAX_POWER = 0.15;
+//private final DCMotor bGearbox;
+//private final Encoder e;
+
+private double targetAngle1 = 0.0; 
+
+public BucketSubsystem() {
+    motor = new SparkMax(MOTOR_ID, MotorType.kBrushed);
+    //encoder = new Encoder(0, 1); // External encoder on RoboRIO
+    encoder = motor.getEncoder();
+    //e.setDistancePerPulse(CPR);
+    //bGearbox = new DCMotor(MOTOR_GEAR_RATIO, MAX_POWER, KP, KI, KD, MOTOR_ID);
+
+    //encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO));
+    pidController = new PIDController(KP, KI, KD);
+    pidController.setTolerance(0.5);
+    SmartDashboard.putNumber("Encoder Pos" , encoder.getPosition());
+}
+
+public void forwardBucketAngle()
+{
+    targetAngle1 += 360.0;
+}
+
+public boolean atTarget()
+{
+    if (encoder.getPosition()==targetAngle1)
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+
+}
+
+public void backwardsBucketAngle()
+{
+    targetAngle1 -= 360.0;
+}
+
+public void forwardBucket() {
+    //targetAngle1 += 5.0;
+    motor.set(MAX_POWER);
+}
+
+public void backwardsBucket() {
+    //targetAngle1 -= 5.0;
+    motor.set(-MAX_POWER);
+}
+
+public void resetBucket() {
+    //encoder.reset();
+    targetAngle1 = 0.0;
+}
+
+public void zeroBucket() {
+    targetAngle1 = 0.0;
+}
+
+public void stopBucket() {
+    motor.stopMotor();
+}
+
+@Override
+public void periodic() {
+    double currentAngle = encoder.getPosition();
+    double pidOutput = pidController.calculate(currentAngle, targetAngle1);
+
+    pidOutput = Math.max(-1, Math.min(1, pidOutput));
+
+    pidOutput *= MAX_POWER;
+
+    if (!pidController.atSetpoint()) {
+        motor.set(pidOutput);
+    } else {
+        motor.set(0);
+    }
+    System.out.println(currentAngle);
+    System.out.println(pidOutput);
+
+
+}
 
 }

@@ -18,6 +18,17 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.algae.AlgaeExtrudeCommand;
+import frc.robot.commands.algae.AlgaeSuckCommand;
+import frc.robot.commands.algae.AlgaeUpCommand;
+import frc.robot.commands.algae.AlgaeDownCommand;
+import frc.robot.commands.coral.BucketMoveB45;
+import frc.robot.commands.coral.BucketMoveF45;
+import frc.robot.commands.coral.ElevatorDownCommand;
+import frc.robot.commands.coral.ElevatorUpCommand;
+import frc.robot.subsystems.BucketSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.algaesubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -36,8 +47,12 @@ public class RobotContainer
   final CommandJoystick joystickR = new CommandJoystick(1);
   final CommandXboxController driverXbox = new CommandXboxController(Constants.drivingConstants.XBOX_ID);
   // The robot's subsystems and commands are defined here...
+  private final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  private final BucketSubsystem bucket = new BucketSubsystem();
+  private final algaesubsystem algae = new algaesubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
+                                                                            
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
@@ -156,9 +171,23 @@ public class RobotContainer
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
+      driverXbox.povDown().whileTrue(new ElevatorDownCommand(elevator));
+      driverXbox.povUp().whileTrue(new ElevatorUpCommand(elevator));
+      //driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); // speed verision
+      //driverXbox.povRight().whileTrue(new BucketMoveF45(bucket));
+      driverXbox.povLeft().onTrue(new BucketMoveB45(bucket)); //  full rotation test version
+      driverXbox.povRight().onTrue(new BucketMoveF45(bucket)); // 
+      driverXbox.b().whileTrue(new AlgaeExtrudeCommand(algae));
+      driverXbox.x().whileTrue(new AlgaeSuckCommand(algae));
+      driverXbox.y().whileTrue(new AlgaeUpCommand(algae));
+      driverXbox.a().whileTrue(new AlgaeDownCommand(algae));
+
+
+        
+      }
     }
 
-  }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
