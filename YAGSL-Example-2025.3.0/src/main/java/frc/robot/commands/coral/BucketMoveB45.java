@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.BucketSubsystem;
 public class BucketMoveB45 extends Command {
 private final BucketSubsystem coral;
+private double currentAngle;
 
     public BucketMoveB45(BucketSubsystem subsystem) {
         this.coral = subsystem;
@@ -14,28 +15,26 @@ private final BucketSubsystem coral;
     @Override
     public void initialize()
     {
-        if (!coral.atTarget())
-            coral.backwardsBucketAngle();
-        //coral.backwardsBucket();
+
     }
     @Override
     public void execute()
     {
-        if (!coral.atTarget())
-            coral.backwardsBucketAngle();
+        
+        coral.setPower(-0.5);
         //coral.backwardsBucket();
     }
 
     @Override
     public void end(boolean interrupted)
     {
-        coral.stopBucket();
+        coral.stop();
     }
 
     @Override
     public boolean isFinished()
     {
-        return false; //idr how to implement this 
+        return false;
     }
 
 }

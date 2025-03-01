@@ -32,6 +32,8 @@ import frc.robot.subsystems.algaesubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
+import frc.robot.subsystems.KerklunkSubsystem;
+import frc.robot.commands.climber.KerklunkCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -47,11 +49,12 @@ public class RobotContainer
   final CommandJoystick joystickR = new CommandJoystick(1);
   final CommandXboxController driverXbox = new CommandXboxController(Constants.drivingConstants.XBOX_ID);
   // The robot's subsystems and commands are defined here...
+  private final KerklunkSubsystem kerklunk = new KerklunkSubsystem();  
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final BucketSubsystem bucket = new BucketSubsystem();
   private final algaesubsystem algae = new algaesubsystem();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                "swerve/neo"));
+                                                                                   "swerve/neo"));
                                                                             
 
   /**
@@ -175,13 +178,14 @@ public class RobotContainer
       driverXbox.povUp().whileTrue(new ElevatorUpCommand(elevator));
       //driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); // speed verision
       //driverXbox.povRight().whileTrue(new BucketMoveF45(bucket));
-      driverXbox.povLeft().onTrue(new BucketMoveB45(bucket)); //  full rotation test version
-      driverXbox.povRight().onTrue(new BucketMoveF45(bucket)); // 
+      driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); //  full rotation test version
+      driverXbox.povRight().whileTrue(new BucketMoveF45(bucket)); // 
       driverXbox.b().whileTrue(new AlgaeExtrudeCommand(algae));
       driverXbox.x().whileTrue(new AlgaeSuckCommand(algae));
       driverXbox.y().whileTrue(new AlgaeUpCommand(algae));
       driverXbox.a().whileTrue(new AlgaeDownCommand(algae));
-
+      driverXbox.leftTrigger().whileTrue(new KerklunkCommand(kerklunk, 0.0));
+      driverXbox.rightTrigger().whileTrue(new KerklunkCommand(kerklunk, 90.0));
 
         
       }

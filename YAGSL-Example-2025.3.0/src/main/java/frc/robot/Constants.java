@@ -35,7 +35,7 @@ public final class Constants
     public static final double MOTOR_GEAR_RATIO = 1.0;
     public static final int LEFT_ELEVATOR_ID = 9;
     public static final int RIGHT_ELEVATOR_ID = 14;
-    public static final int BUCKET_ID = 15;
+    public static final int BUCKET_ID = 6;
     public static final double KP = 0.0666;
     public static final double KI = 0.00002;
     public static final double KD = 0.0010; 
@@ -47,7 +47,12 @@ public final class Constants
     
   }
   
-
+  public static final class climberConstants
+  {
+    public static final int KERKLUNK_PORT = 0; //placehodlr for when we get actual port
+    public static final int WINCH_MOTOR_ID = 10;
+  }
+  
   // Maximum speed of the robot in meters per second, used to limit acceleration.
     public static final class drivingConstants
     {         /** The Left Joystick ID (typically 0) */
