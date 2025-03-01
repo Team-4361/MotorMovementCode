@@ -70,19 +70,23 @@ public class BucketSubsystem extends SubsystemBase {
     private static final int BUCKET_MOTOR_ID = 6;
     private static final double BUCKET_SPEED = 0.8;
 
-    private static final double kP = 0.1;
+    private static final double kP = 1.0;
     private static final double kI = 0.0;
     private static final double kD = 0.0;
     
     private double targetPosition = 0.0;
-    
+    private static final double GEAR_RATIO = 500.0; // 500:1 gear ratio
+    private static final double COUNTS_PER_REV = 42.0; // 42 counts per revolution
+    private static final double DEGREES_PER_MOTOR_REV = 360.0; // 1 motor rev = 360 degrees
+
+    private static final double POSITION_CONVERSION_FACTOR = 1;
 
     public BucketSubsystem() {
         bucketMotor = new SparkMax(6, MotorType.kBrushless);
         bucketEncoder = bucketMotor.getEncoder();
         
         SparkMaxConfig config = new SparkMaxConfig();
-        config.encoder.positionConversionFactor(1); // Converts encoder readings to degrees
+        config.encoder.positionConversionFactor(POSITION_CONVERSION_FACTOR); // Converts encoder readings to degrees
         bucketMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
         //driverStationJoystick = new Joystick(0);
