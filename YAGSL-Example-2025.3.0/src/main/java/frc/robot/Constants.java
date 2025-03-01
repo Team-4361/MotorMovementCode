@@ -87,6 +87,21 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+/** AE = Algae Elevator
+ * 
+*/
+
+public static class AE {
+  public static final int ROTATE_MOTOR_ID = 16;
+  public static final int OUTER_MOTOR_ID = 17;
+  public static final double AE_SPEED = 0.05;
+  public static final double POSITION_TOLERANCE = 0.02;
+  public static final double kP = 1.0;
+  public static final double kI = 0.2;
+  public static final double kD = 0.1;
+
+
+}
 
   public static class Algae {
     public static final int LEFT_MOTOR_ID = 12;  // Set to your left motor's CAN ID

@@ -22,6 +22,10 @@ import frc.robot.commands.algae.AlgaeExtrudeCommand;
 import frc.robot.commands.algae.AlgaeSuckCommand;
 import frc.robot.commands.algae.AlgaeUpCommand;
 import frc.robot.commands.algae.AlgaeDownCommand;
+import frc.robot.commands.algae.AlgaeElevatorExtrudeCommand;
+import frc.robot.commands.algae.AlgaeElevatorSuckCommand;
+import frc.robot.commands.algae.AlgaeElevatorUpCommand;
+import frc.robot.commands.algae.AlgaeElevatorDownCommand;
 import frc.robot.commands.coral.BucketMoveB45;
 import frc.robot.commands.coral.BucketMoveF45;
 import frc.robot.commands.coral.ElevatorDownCommand;
@@ -29,6 +33,7 @@ import frc.robot.commands.coral.ElevatorUpCommand;
 import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.algaesubsystem;
+import frc.robot.subsystems.ElevatorAlgae;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -53,8 +58,12 @@ public class RobotContainer
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final BucketSubsystem bucket = new BucketSubsystem();
   private final algaesubsystem algae = new algaesubsystem();
+  private final ElevatorAlgae AE = new ElevatorAlgae();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                    "swerve/neo"));
+
+
+  
                                                                             
 
   /**
@@ -112,6 +121,14 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevator));
+    NamedCommands.registerCommand("ElevatorDown", new ElevatorDownCommand(elevator));
+    NamedCommands.registerCommand("BucketMoveF45", new BucketMoveF45(bucket));
+    NamedCommands.registerCommand("BucketMoveB45", new BucketMoveB45(bucket));
+    NamedCommands.registerCommand("AlgaeDown", new AlgaeDownCommand(algae));
+    NamedCommands.registerCommand("AlgaeUp", new AlgaeUpCommand(algae));    
+    NamedCommands.registerCommand("AlgaeSuck", new AlgaeSuckCommand(algae));
+    NamedCommands.registerCommand("AlgaeExtrude", new AlgaeExtrudeCommand(algae));    
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);

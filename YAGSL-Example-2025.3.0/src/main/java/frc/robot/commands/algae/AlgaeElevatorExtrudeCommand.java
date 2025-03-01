@@ -1,13 +1,12 @@
 package frc.robot.commands.algae;
 
-import frc.robot.Constants;
-import frc.robot.subsystems.algaesubsystem;
+import frc.robot.subsystems.ElevatorAlgae;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class AlgaeUpCommand extends Command {
-    private final algaesubsystem algae;
+public class AlgaeElevatorExtrudeCommand extends Command {
+    private final ElevatorAlgae algae;
 
-    public AlgaeUpCommand(algaesubsystem subsystem) {
+    public AlgaeElevatorExtrudeCommand(ElevatorAlgae subsystem) {
         this.algae = subsystem;
         // Declare subsystem dependency so no other command can use it at the same time.
         addRequirements(algae);
@@ -16,33 +15,20 @@ public class AlgaeUpCommand extends Command {
     // Called once when the command is initially scheduled.
     @Override
     public void initialize() {
-        algae.setTargetPosition(600);
-        if(Constants.isDebug)
-        {
-            algae.setMotor(Constants.Algae.ALGAE_SPEED);
-        }
-        
+        algae.extrude();
     }
 
     // Called repeatedly while the command is scheduled.
     @Override
     public void execute() {
         // Optionally, call extrude continuously (if needed)
-        algae.setTargetPosition(600);
-        if(Constants.isDebug)
-        {
-            algae.setMotor(Constants.Algae.ALGAE_SPEED);
-        }
-
+        algae.extrude();
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        algae.stopUpAndDown();
-        if(Constants.isDebug)
-        {algae.setMotor(0.0);
-        }
+        algae.stop();
     }
 
     // Returns true when the command should end.
