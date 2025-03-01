@@ -35,7 +35,7 @@ public final class Constants
     public static final double MOTOR_GEAR_RATIO = 1.0;
     public static final int LEFT_ELEVATOR_ID = 9;
     public static final int RIGHT_ELEVATOR_ID = 14;
-    public static final int BUCKET_ID = 6;
+    public static final int BUCKET_ID = 15;
     public static final double KP = 0.0666;
     public static final double KI = 0.00002;
     public static final double KD = 0.0010; 

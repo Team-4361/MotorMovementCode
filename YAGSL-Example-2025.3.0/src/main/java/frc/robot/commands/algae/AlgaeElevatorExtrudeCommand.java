@@ -1,4 +1,4 @@
-package frc.robot.commands.algae;
+/*package frc.robot.commands.algae;
 
 import frc.robot.subsystems.ElevatorAlgae;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,4 +36,4 @@ public class AlgaeElevatorExtrudeCommand extends Command {
     public boolean isFinished() {
         return false;  // It will run until the trigger is released.
     }
-}
+}*/

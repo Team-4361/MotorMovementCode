@@ -73,12 +73,6 @@ public class Robot extends TimedRobot
     rightStick = new CommandJoystick(Constants.drivingConstants.RIGHT_STICK_ID);
     xbox = new CommandXboxController(Constants.drivingConstants.XBOX_ID);
 
-    /*algae = new algaesubsystem();
-    elevator = new ElevatorSubsystem();
-    bucket = new BucketSubsystem();
-    winch = new WinchSubsystem();
-    kerklunk = new KerklunkSubsystem();
-    NamedCommands.registerCommand("ElevatorUpCommand", new ElevatorUpCommand(elevator));*/
 
     m_robotContainer = new RobotContainer();
 

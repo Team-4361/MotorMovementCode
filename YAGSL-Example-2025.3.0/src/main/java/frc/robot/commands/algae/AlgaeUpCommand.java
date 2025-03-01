@@ -16,23 +16,19 @@ public class AlgaeUpCommand extends Command {
     // Called once when the command is initially scheduled.
     @Override
     public void initialize() {
-        algae.setTargetPosition(600);
-        if(Constants.isDebug)
-        {
+        //algae.setTargetPosition(600);
+ 
             algae.setMotor(Constants.Algae.ALGAE_SPEED);
-        }
+        
         
     }
 
     // Called repeatedly while the command is scheduled.
     @Override
     public void execute() {
-        // Optionally, call extrude continuously (if needed)
-        algae.setTargetPosition(600);
-        if(Constants.isDebug)
-        {
+        //algae.setTargetPosition(600);
             algae.setMotor(Constants.Algae.ALGAE_SPEED);
-        }
+
 
     }
 
@@ -40,9 +36,7 @@ public class AlgaeUpCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         algae.stopUpAndDown();
-        if(Constants.isDebug)
-        {algae.setMotor(0.0);
-        }
+
     }
 
     // Returns true when the command should end.

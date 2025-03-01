@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+/*package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -52,7 +52,7 @@ public class ElevatorAlgae extends SubsystemBase {
         rotateMax.set(speed);
     }
     /** Sets the target position for PID control */
-    public void setTargetPosition(double position) {
+   /*  public void setTargetPosition(double position) {
         targetPosition = position;
         pidController.reset();
     }
@@ -86,30 +86,30 @@ public class ElevatorAlgae extends SubsystemBase {
     }
 
     /** Moves algae out (extrudes) */
-    public void extrude() {
+   /* * /public void extrude() {
         setMotors(-Constants.AE.AE_SPEED);
-    }
+    } 
 
-    /** Pulls algae in (sucks) */
-    public void suck() {
+    /** Pulls algae in (sucks) **/
+    /*public void suck() {
         setMotors(Constants.AE.AE_SPEED);
     }
 
-    /** Stops all motors */
-    public void stop() {
+    /** Stops all motors **/
+   /*  public void stop() {
         setMotors(0);
         outerSparkMax.stopMotor();
 
     }
 
-    /** Stops vertical movement */
-    public void stopUpAndDown() {
-        rotateMax.stopMotor();
-    }
+     /** Stops vertical movement **/
+    /*public void stopUpAndDown() {
+     rotateMax.stopMotor();
+    } 
 
-    /** Helper method to set left and right motors safely */
-    private void setMotors(double speed) {
+    /** Helper method to set left and right motors safely **/
+    /*private void setMotors(double speed) {
         outerSparkMax.set(speed);
     }
     
-}
+}*/

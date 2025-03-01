@@ -17,7 +17,7 @@ public class algaesubsystem extends SubsystemBase {
     private final SparkMax leftMotor;
     private final SparkMax rightMotor;
     private final RelativeEncoder encoder;
-    private final PIDController pidController;
+    //private final PIDController pidController;
 
     private double targetPosition = 0.0;
 
@@ -40,8 +40,8 @@ public class algaesubsystem extends SubsystemBase {
         encoder = sparkMax.getEncoder();
 
         // Initialize PID Controller
-        pidController = new PIDController(Constants.Algae.kP, Constants.Algae.kI, Constants.Algae.kD);
-        pidController.setTolerance(Constants.Algae.POSITION_TOLERANCE);
+        //pidController = new PIDController(Constants.Algae.kP, Constants.Algae.kI, Constants.Algae.kD);
+        //pidController.setTolerance(Constants.Algae.POSITION_TOLERANCE);
 
         if (Constants.isDebug) {
             // Send initial PID values to SmartDashboard
@@ -57,36 +57,36 @@ public class algaesubsystem extends SubsystemBase {
         sparkMax.set(speed);
     }
     /** Sets the target position for PID control */
-    public void setTargetPosition(double position) {
+   /*  public void setTargetPosition(double position) {
         targetPosition = position;
         pidController.reset();
-    }
+    }*/
 
     @Override
     public void periodic() {
-        double currentPosition = encoder.getPosition();
-        double pidOutput = pidController.calculate(currentPosition, targetPosition);
+        //double currentPosition = encoder.getPosition();
+        //double pidOutput = pidController.calculate(currentPosition, targetPosition);
 
         // Limit motor power
-        pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
+       // pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
 
         // Only move if outside tolerance
-        if (!pidController.atSetpoint()) {
+        /*if (!pidController.atSetpoint()) {
             sparkMax.set(pidOutput);
         } else {
             sparkMax.set(0);
-        }
+        }*/
 
         if (Constants.isDebug) {
             // Update PID values from SmartDashboard
-            pidController.setP(SmartDashboard.getNumber("PID/kP", Constants.Algae.kP));
-            pidController.setI(SmartDashboard.getNumber("PID/kI", Constants.Algae.kI));
-            pidController.setD(SmartDashboard.getNumber("PID/kD", Constants.Algae.kD));
+            //pidController.setP(SmartDashboard.getNumber("PID/kP", Constants.Algae.kP));
+            //pidController.setI(SmartDashboard.getNumber("PID/kI", Constants.Algae.kI));
+            //pidController.setD(SmartDashboard.getNumber("PID/kD", Constants.Algae.kD));
 
             // Display real-time data
-            SmartDashboard.putNumber("Algae/Current Position", currentPosition);
-            SmartDashboard.putNumber("Algae/Target Position", targetPosition);
-            SmartDashboard.putNumber("Algae/PID Output", pidOutput);
+            ///SmartDashboard.putNumber("Algae/Current Position", currentPosition);
+            //SmartDashboard.putNumber("Algae/Target Position", targetPosition);
+            //SmartDashboard.putNumber("Algae/PID Output", pidOutput);
         }
     }
 

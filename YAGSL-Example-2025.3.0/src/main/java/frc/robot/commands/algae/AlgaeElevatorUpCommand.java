@@ -1,4 +1,4 @@
-package frc.robot.commands.algae;
+/*package frc.robot.commands.algae;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.ElevatorAlgae;
@@ -50,4 +50,4 @@ public class AlgaeElevatorUpCommand extends Command {
     public boolean isFinished() {
         return false;  // It will run until the trigger is released.
     }
-}
+}*/

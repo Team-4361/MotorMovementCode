@@ -22,10 +22,10 @@ import frc.robot.commands.algae.AlgaeExtrudeCommand;
 import frc.robot.commands.algae.AlgaeSuckCommand;
 import frc.robot.commands.algae.AlgaeUpCommand;
 import frc.robot.commands.algae.AlgaeDownCommand;
-import frc.robot.commands.algae.AlgaeElevatorExtrudeCommand;
-import frc.robot.commands.algae.AlgaeElevatorSuckCommand;
-import frc.robot.commands.algae.AlgaeElevatorUpCommand;
-import frc.robot.commands.algae.AlgaeElevatorDownCommand;
+//import frc.robot.commands.algae.AlgaeElevatorExtrudeCommand;
+//import frc.robot.commands.algae.AlgaeElevatorSuckCommand;
+//import frc.robot.commands.algae.AlgaeElevatorUpCommand;
+//import frc.robot.commands.algae.AlgaeElevatorDownCommand;
 import frc.robot.commands.coral.BucketMoveB45;
 import frc.robot.commands.coral.BucketMoveF45;
 import frc.robot.commands.coral.ElevatorDownCommand;
@@ -33,7 +33,7 @@ import frc.robot.commands.coral.ElevatorUpCommand;
 import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.algaesubsystem;
-import frc.robot.subsystems.ElevatorAlgae;
+//import frc.robot.subsystems.ElevatorAlgae;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -58,7 +58,7 @@ public class RobotContainer
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final BucketSubsystem bucket = new BucketSubsystem();
   private final algaesubsystem algae = new algaesubsystem();
-  private final ElevatorAlgae AE = new ElevatorAlgae();
+  //private final ElevatorAlgae AE = new ElevatorAlgae();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                    "swerve/neo"));
 
@@ -129,6 +129,11 @@ public class RobotContainer
     NamedCommands.registerCommand("AlgaeUp", new AlgaeUpCommand(algae));    
     NamedCommands.registerCommand("AlgaeSuck", new AlgaeSuckCommand(algae));
     NamedCommands.registerCommand("AlgaeExtrude", new AlgaeExtrudeCommand(algae));    
+    //NamedCommands.registerCommand("AlgaeElevatorDown", new AlgaeElevatorDownCommand(AE));
+    //NamedCommands.registerCommand("AlgaeElevatorUp", new AlgaeElevatorUpCommand(AE));    
+    //NamedCommands.registerCommand("AlgaeElevatorSuck", new AlgaeElevatorSuckCommand(AE));
+    //NamedCommands.registerCommand("AlgaeElevatorExtrude", new AlgaeElevatorExtrudeCommand(AE));
+
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -197,12 +202,18 @@ public class RobotContainer
       //driverXbox.povRight().whileTrue(new BucketMoveF45(bucket));
       driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); //  full rotation test version
       driverXbox.povRight().whileTrue(new BucketMoveF45(bucket)); // 
+
       driverXbox.b().whileTrue(new AlgaeExtrudeCommand(algae));
       driverXbox.x().whileTrue(new AlgaeSuckCommand(algae));
-      driverXbox.y().whileTrue(new AlgaeUpCommand(algae));
-      driverXbox.a().whileTrue(new AlgaeDownCommand(algae));
+      driverXbox.a().whileTrue(new AlgaeUpCommand(algae));
+      driverXbox.y().whileTrue(new AlgaeDownCommand(algae));
+      //driverXbox.b().whileTrue(new AlgaeElevatorExtrudeCommand(AE));
+      //driverXbox.x().whileTrue(new AlgaeElevatorSuckCommand(AE));
+     // driverXbox.y().whileTrue(new AlgaeElevatorUpCommand(AE));
+      //driverXbox.a().whileTrue(new AlgaeElevatorDownCommand(AE));
       driverXbox.leftTrigger().whileTrue(new KerklunkCommand(kerklunk, 0.0));
       driverXbox.rightTrigger().whileTrue(new KerklunkCommand(kerklunk, 90.0));
+      
 
         
       }
