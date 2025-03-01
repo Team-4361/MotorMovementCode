@@ -1,12 +1,16 @@
-package frc.robot.commands.coral;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.BucketSubsystem;
 public class BucketMoveF45 extends Command {
 private final BucketSubsystem coral;
+private double currentAngle;
+private double targetAngle;
+
 
     public BucketMoveF45(BucketSubsystem subsystem) {
         this.coral = subsystem;
+
         // Declare subsystem dependency so no other command can use it at the same time.
         addRequirements(coral);
     }
@@ -14,15 +18,15 @@ private final BucketSubsystem coral;
     @Override
     public void initialize()
     {
-        if (!coral.atTarget());
+            currentAngle = coral.getCurrentAngle(); 
             coral.forwardBucketAngle();
+
         //coral.forwardBucket();
     }
     @Override
     public void execute()
     {
-        if (!coral.atTarget())
-            coral.forwardBucketAngle();
+        coral.forwardBucketAngle();
         //coral.forwardBucket();
     }
 
@@ -35,7 +39,7 @@ private final BucketSubsystem coral;
     @Override
     public boolean isFinished()
     {
-        return false; //idr how to implement this 
+        return currentAngle == coral.getTargetAngle(); //idr how to implement this 
     }
 
 }

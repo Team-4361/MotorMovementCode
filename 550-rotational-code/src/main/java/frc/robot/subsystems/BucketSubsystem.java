@@ -10,8 +10,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import javax.lang.model.util.ElementScanner14;
 
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+//import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+//import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 //import com.fasterxml.jackson.databind.cfg.ContextAttributes;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -159,7 +159,7 @@ public BucketSubsystem() {
 
 public void forwardBucketAngle()
 {
-    targetAngle1 += 360.0;
+    targetAngle1 += 5000;
 }
 
 public boolean atTarget()
@@ -177,19 +177,19 @@ public boolean atTarget()
 
 public void backwardsBucketAngle()
 {
-    targetAngle1 -= 360.0;
+    targetAngle1 -= 5000;
 }
 
-public void forwardBucket() {
+public void fBucket() {
     //targetAngle1 += 5.0;
     motor.set(MAX_POWER);
 }
 
-public void backwardsBucket() {
+public void bBucket() {
     //targetAngle1 -= 5.0;
     motor.set(-MAX_POWER);
 }
-
+/* 
 public void resetBucket() {
     //encoder.reset();
     targetAngle1 = 0.0;
@@ -198,11 +198,17 @@ public void resetBucket() {
 public void zeroBucket() {
     targetAngle1 = 0.0;
 }
-
+*/
 public void stopBucket() {
     motor.stopMotor();
 }
+public double getCurrentAngle(){
+    return encoder.getPosition();
+}
+public double getTargetAngle(){
+    return targetAngle1;
 
+}
 @Override
 public void periodic() {
     double currentAngle = encoder.getPosition();
@@ -220,7 +226,5 @@ public void periodic() {
     System.out.println(currentAngle);
     System.out.println(pidOutput);
 
-
 }
-
 }
