@@ -1,4 +1,4 @@
-package frc.robot.commands.coral;
+/*package frc.robot.commands.coral;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.BucketSubsystem;
@@ -21,7 +21,7 @@ private double currentAngle;
     public void execute()
     {
         
-        coral.setPower(0.5);
+        coral.setPower(0.25);
         //coral.backwardsBucket();
     }
 
@@ -37,4 +37,4 @@ private double currentAngle;
         return false;
     }
 
-}
+}*/

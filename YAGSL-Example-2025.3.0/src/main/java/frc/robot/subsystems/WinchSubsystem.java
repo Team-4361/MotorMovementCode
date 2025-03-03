@@ -8,6 +8,9 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
+import frc.robot.Constants;
+import frc.robot.Constants.climberConstants;
+
 public class WinchSubsystem extends SubsystemBase {
     private SparkMax winchMotor;
     private RelativeEncoder winchEncoder;
@@ -15,8 +18,7 @@ public class WinchSubsystem extends SubsystemBase {
    // private DigitalInput limitSwitch;
     private PIDController winchPID;
 
-    private static final int WINCH_MOTOR_ID = 15;
-    private static final double WINCH_SPEED = 0.8;
+
     private static final int LIMIT_SWITCH_PORT = 0;
 
     private static final double kP = 0.1;
@@ -27,7 +29,7 @@ public class WinchSubsystem extends SubsystemBase {
     
 
     public WinchSubsystem() {
-        winchMotor = new SparkMax(WINCH_MOTOR_ID, MotorType.kBrushless);
+        winchMotor = new SparkMax(Constants.climberConstants.WINCH_MOTOR_ID, MotorType.kBrushless);
         winchEncoder = winchMotor.getEncoder();
         //driverStationJoystick = new Joystick(0);
         //limitSwitch = new DigitalInput(LIMIT_SWITCH_PORT);
@@ -48,13 +50,13 @@ public class WinchSubsystem extends SubsystemBase {
 
 
     public void winchMoveDown() {
-        winchMotor.set(-WINCH_SPEED);
+        winchMotor.set(-Constants.climberConstants.WINCH_SPEED);
         targetPosition = 0.0;
     }
 
 
     public void winchMoveUp() {
-        winchMotor.set(WINCH_SPEED);
+        winchMotor.set(Constants.climberConstants.WINCH_SPEED);
         targetPosition = 30.0;
     }
 

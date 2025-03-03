@@ -26,9 +26,12 @@ import frc.robot.commands.algae.AlgaeDownCommand;
 //import frc.robot.commands.algae.AlgaeElevatorSuckCommand;
 //import frc.robot.commands.algae.AlgaeElevatorUpCommand;
 //import frc.robot.commands.algae.AlgaeElevatorDownCommand;
+//import frc.robot.commands.coral.BucketMoveB45;
+//import frc.robot.commands.coral.BucketMoveF45;
+import frc.robot.commands.coral.BucketMoveToPosition;
 import frc.robot.commands.coral.BucketMoveB45;
-import frc.robot.commands.coral.BucketMoveF45;
 import frc.robot.commands.coral.ElevatorDownCommand;
+import frc.robot.commands.coral.ElevatorMoveToPos;
 import frc.robot.commands.coral.ElevatorUpCommand;
 import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -38,7 +41,10 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
 import frc.robot.subsystems.KerklunkSubsystem;
+import frc.robot.subsystems.WinchSubsystem;
 import frc.robot.commands.climber.KerklunkCommand;
+import frc.robot.commands.climber.WinchUpCommand;
+import frc.robot.commands.climber.WinchDownCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -58,6 +64,7 @@ public class RobotContainer
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final BucketSubsystem bucket = new BucketSubsystem();
   private final algaesubsystem algae = new algaesubsystem();
+  private final WinchSubsystem winch = new WinchSubsystem();
   //private final ElevatorAlgae AE = new ElevatorAlgae();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                    "swerve/neo"));
@@ -121,10 +128,10 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevator));
-    NamedCommands.registerCommand("ElevatorDown", new ElevatorDownCommand(elevator));
-    NamedCommands.registerCommand("BucketMoveF45", new BucketMoveF45(bucket));
-    NamedCommands.registerCommand("BucketMoveB45", new BucketMoveB45(bucket));
+    NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevator, bucket));
+    NamedCommands.registerCommand("ElevatorDown", new ElevatorDownCommand(elevator, bucket));
+    //NamedCommands.registerCommand("BucketMoveF45", new BucketMoveF45(bucket));
+    //NamedCommands.registerCommand("BucketMoveB45", new BucketMoveB45(bucket));
     NamedCommands.registerCommand("AlgaeDown", new AlgaeDownCommand(algae));
     NamedCommands.registerCommand("AlgaeUp", new AlgaeUpCommand(algae));    
     NamedCommands.registerCommand("AlgaeSuck", new AlgaeSuckCommand(algae));
@@ -195,14 +202,19 @@ public class RobotContainer
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightBumper().onTrue(Commands.none());
-      driverXbox.povDown().whileTrue(new ElevatorDownCommand(elevator));
-      driverXbox.povUp().whileTrue(new ElevatorUpCommand(elevator));
+      //driverXbox.rightBumper().whileTrue(new BucketMoveB45(bucket, -0.05));
+      driverXbox.povDown().whileTrue(new ElevatorDownCommand(elevator, bucket));
+      //driverXbox.povUp().whileTrue(new ElevatorMoveToPos(elevator, 46.60));
+      //driverXbox.povDown().whileTrue(new ElevatorMoveToPos(elevator, 102.3));
+      driverXbox.povUp().whileTrue(new ElevatorUpCommand(elevator, bucket));
+
       //driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); // speed verision
       //driverXbox.povRight().whileTrue(new BucketMoveF45(bucket));
-      driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); //  full rotation test version
-      driverXbox.povRight().whileTrue(new BucketMoveF45(bucket)); // 
-
+      //driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); //  full rotation test version
+      //driverXbox.povRight().whileTrue(new BucketMoveF45(bucket)); // 
+      driverXbox.povRight().whileTrue(new BucketMoveToPosition(bucket, 33.76));
+      driverXbox.povLeft().whileTrue(new BucketMoveToPosition(bucket, 0));
+      driverXbox.leftStick().whileTrue(new BucketMoveToPosition(bucket, -60.67));
       driverXbox.b().whileTrue(new AlgaeExtrudeCommand(algae));
       driverXbox.x().whileTrue(new AlgaeSuckCommand(algae));
       driverXbox.a().whileTrue(new AlgaeUpCommand(algae));
@@ -213,6 +225,8 @@ public class RobotContainer
       //driverXbox.a().whileTrue(new AlgaeElevatorDownCommand(AE));
       driverXbox.leftTrigger().whileTrue(new KerklunkCommand(kerklunk, 0.0));
       driverXbox.rightTrigger().whileTrue(new KerklunkCommand(kerklunk, 90.0));
+      driverXbox.rightBumper().whileTrue(new WinchUpCommand(winch));
+      driverXbox.leftBumper().whileTrue(new WinchDownCommand(winch));
       
 
         

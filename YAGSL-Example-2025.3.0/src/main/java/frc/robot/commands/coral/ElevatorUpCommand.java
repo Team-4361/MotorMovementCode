@@ -5,17 +5,22 @@ import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 public class ElevatorUpCommand extends Command {
 private final ElevatorSubsystem elevator;
+private final BucketSubsystem bucket;
 
-    public ElevatorUpCommand(ElevatorSubsystem subsystem) {
+    public ElevatorUpCommand(ElevatorSubsystem subsystem, BucketSubsystem bucket) {
         this.elevator = subsystem;
+        this.bucket = bucket;
         // Declare subsystem dependency so no other command can use it at the same time.
         addRequirements(elevator);
+        addRequirements(bucket);
     }
 
     @Override
     public void initialize()
     {
         elevator.elevatorMoveUp();
+        bucket.setPosition(0.0);
+
     }
     @Override
     public void execute()

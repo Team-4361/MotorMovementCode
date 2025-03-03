@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.lang.annotation.Target;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -26,10 +28,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final RelativeEncoder lEncoder;
     private final RelativeEncoder rEncoder;
     //stuff from old talon code that idk is needed
-    /*private double integral = 0.0;
-    private double previousError = 0.0;
+    //private double integral = 0.0;
+    //private double previousError = 0.0;
     private double targetPosition = 0.0; // Target position for PID control
-    */
+    
     
 
     public ElevatorSubsystem() {
@@ -47,11 +49,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     /** Sets the target position for the PID loop */
-   /*  public void setTargetPosition(double position) {
+    public void setTargetPosition(double position) {
         targetPosition = position;
-        integral = 0.0; // Reset integral term when setting a new target
-        previousError = 0.0; // Reset previous error
-    }*/
+        //integral = 0.0; // Reset integral term when setting a new target
+        //previousError = 0.0; // Reset previous error
+    }
 
 
     /** Runs the PID loop to move the motor to the target position */
@@ -60,6 +62,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     {
         SmartDashboard.putNumber("Left Encoder Position", lEncoder.getPosition());
         SmartDashboard.putNumber("Right Encoder Position", rEncoder.getPosition());
+        double pidOutput1 = pidController1.calculate(lEncoder.getPosition(), targetPosition);
+        double pidOutput2 = pidController1.calculate(rEncoder.getPosition(), -targetPosition);
+
+
 
     }
     /*public void seedElevatorMotorPosition()
@@ -71,15 +77,35 @@ public class ElevatorSubsystem extends SubsystemBase {
         leftMotor.set(Constants.Coral.ELEVATOR_SPEED);
         rightMotor.set(-Constants.Coral.ELEVATOR_SPEED);
     }
+    public void setPosition(double height) {
+        double output = pidController1.calculate(lEncoder.getPosition(), height);
+        leftMotor.set(output);
+        rightMotor.set(-output);
+    }
+
     public void elevatorMoveDown()
     {
-        leftMotor.set(-Constants.Coral.ELEVATOR_SPEED);
-        rightMotor.set(Constants.Coral.ELEVATOR_SPEED);
+        if (lEncoder.getPosition() < 5 ||  rEncoder.getPosition() > -5 ) {
+            leftMotor.stopMotor();
+            rightMotor.stopMotor();
+        }
+        else {
+
+            leftMotor.set(-Constants.Coral.ELEVATOR_SPEED);
+            rightMotor.set(Constants.Coral.ELEVATOR_SPEED);
+
+        }
+
+
+
     }
     public void stopElevator()
     {
         leftMotor.set(0.0);
         rightMotor.set(0.0);
+    }
+    public boolean atSetpoint() {
+        return pidController1.atSetpoint();
     }
 
 }

@@ -5,8 +5,9 @@ import frc.robot.subsystems.BucketSubsystem;
 public class BucketMoveB45 extends Command {
 private final BucketSubsystem coral;
 private double currentAngle;
+private double speed;
 
-    public BucketMoveB45(BucketSubsystem subsystem) {
+    public BucketMoveB45(BucketSubsystem subsystem, double speed) {
         this.coral = subsystem;
         // Declare subsystem dependency so no other command can use it at the same time.
         addRequirements(coral);
@@ -21,7 +22,7 @@ private double currentAngle;
     public void execute()
     {
         
-        coral.setPower(-0.5);
+        coral.setPower(speed);
         //coral.backwardsBucket();
     }
 

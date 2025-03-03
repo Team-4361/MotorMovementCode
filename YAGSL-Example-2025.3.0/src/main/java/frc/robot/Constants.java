@@ -51,6 +51,7 @@ public final class Constants
   {
     public static final int KERKLUNK_PORT = 0; //placehodlr for when we get actual port
     public static final int WINCH_MOTOR_ID = 10;
+    public static final double WINCH_SPEED = 0.8;
   }
   
   // Maximum speed of the robot in meters per second, used to limit acceleration.
@@ -105,7 +106,7 @@ public static class AE {
 
   public static class Algae {
     public static final int LEFT_MOTOR_ID = 12;  // Set to your left motor's CAN ID
-    public static final int RIGHT_MOTOR_ID = 10; // Set to your right motor's CAN ID
+    public static final int RIGHT_MOTOR_ID = 13; // Set to your right motor's CAN ID
     public static final int ALGAE_MOTOR_ID = 11; // Set to your motor id for the thing that moves algae up and down i gues
     public static final double ALGAE_SPEED = 0.75; //motorspeed
     public static final double POSITION_TOLERANCE = 0.02;
