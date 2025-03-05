@@ -11,11 +11,17 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 //import com.fasterxml.jackson.databind.cfg.ContextAttributes;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.ExponentialProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
     private SparkMax leftMotor;
@@ -27,6 +33,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     private static final double kD = 0.0010;
     private final RelativeEncoder lEncoder;
     private final RelativeEncoder rEncoder;
+    private final ElevatorFeedforward m_feedForward;
+     private final ProfiledPIDController m_controller;
     //stuff from old talon code that idk is needed
     //private double integral = 0.0;
     //private double previousError = 0.0;
@@ -40,6 +48,17 @@ public class ElevatorSubsystem extends SubsystemBase {
         lEncoder  = leftMotor.getEncoder();
         rEncoder = rightMotor.getEncoder();
         SparkMaxConfig config = new SparkMaxConfig();
+        m_controller = new ProfiledPIDController(
+            Constants.ElevatorConstants.kElevatorKp,
+            Constants.ElevatorConstants.kElevatorKi,
+            Constants.ElevatorConstants.kElevatorKd,
+            new TrapezoidProfile.Constraints(
+                Constants.ElevatorConstants.kElevatorMaxVelocity,
+                Constants.ElevatorConstants.kElevatorMaxAcceleration));
+        m_feedForward = new ElevatorFeedforward(ElevatorConstants.kElevatorkS,
+            ElevatorConstants.kElevatorkG,
+            ElevatorConstants.kElevatorkV,
+            ElevatorConstants.kElevatorkA);
         //config.encoder.positionConversionFactor(0.0143);
         config.idleMode(IdleMode.kBrake);
         leftMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -47,11 +66,42 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController1 = new PIDController(kP, kI, kD);
         pidController1.setTolerance(0.5);
     }
-
-    public double getPositionMeters(){
-        return lEncoder.getPosition() * (2 * Math.PI * Constants.ElevatorConstants.kElevatorDrumRadius)/Constants.ElevatorConstants.kElevatorGearing;
+public double getPositionMeters() {
+        return lEncoder.getPosition() * (2 * Math.PI * ElevatorConstants.kElevatorDrumRadius)
+                / ElevatorConstants.kElevatorGearing;
     }
-    
+
+    public double getVelocityMetersPerSecond() {
+        return (lEncoder.getVelocity() / 60) * (2 * Math.PI * ElevatorConstants.kElevatorDrumRadius)
+                / ElevatorConstants.kElevatorGearing;
+    }
+
+    public void reachGoal(double goal){
+        double voltsOutput = MathUtil.clamp(
+                m_feedForward.calculateWithVelocities(getVelocityMetersPerSecond(), m_controller.getSetpoint().velocity)
+                + m_controller.calculate(getPositionMeters(), goal),
+                -12,
+                12);
+        leftMotor.setVoltage(voltsOutput);
+        rightMotor.setVoltage(-voltsOutput);
+
+    }
+
+    public Command setGoal(double goal){
+        return run(() -> reachGoal(goal));
+    }
+
+    public Command setElevatorHeight(double height){
+        return setGoal(height).until(()->aroundHeight(height));
+    }
+
+    public boolean aroundHeight(double height){
+        return aroundHeight(height, ElevatorConstants.kElevatorDefaultTolerance);
+    }
+    public boolean aroundHeight(double height, double tolerance){
+        return MathUtil.isNear(height,getPositionMeters(),tolerance);
+    }
+
     /** Sets the target position for the PID loop */
    /* *public void setTargetPosition(double position) {
         targetPosition = position;

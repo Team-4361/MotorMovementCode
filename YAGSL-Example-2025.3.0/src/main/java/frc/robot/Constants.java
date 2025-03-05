@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Second;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -132,18 +137,20 @@ public static class AE {
 
     // PID constants (tune these)
     public static final double kElevatorKp = 2.0; // wpi recommened 
-    public static final double kElevatorKi = 0.0;
+    public static final double kElevatorKi = 0.0; 
     public static final double kElevatorKd = 0.0;
 
     // Motion profiling constraints
-    public static final double kElevatorMaxVelocity = 1.5; // meters per second TO DO:need to do actual set up for mps
-    public static final double kElevatorMaxAcceleration = 1.0; // meters per second^2
+    public static final double kElevatorMaxVelocity = Meters.of(1.5).per(Second).in(MetersPerSecond); // meters per second TO DO:need to do actual set up for mps
+    public static final double kElevatorMaxAcceleration = Meters.of(1.0).per(Second).per(Second).in(MetersPerSecondPerSecond); // meters per second^2 TO DO: HOW DID WE CALCULATE THIS?
 
     // Feedforward constants (tune these)
     public static final double kElevatorkS = 0.2; // Static friction voltage
     public static final double kElevatorkG = 2.28; // Gravity feedforward (wpi recommended)
     public static final double kElevatorkV = 3.07; // Velocity feedforward (wpi recommeneded)
     public static final double kElevatorkA = 0.41; // Acceleration feedforward (wpi recommended)
+    public static final double kElevatorDefaultTolerance = 0.2;
+    public static double kMaxVelocity;
 
   }
 
