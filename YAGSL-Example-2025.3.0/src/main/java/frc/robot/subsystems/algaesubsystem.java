@@ -42,6 +42,7 @@ public class algaesubsystem extends SubsystemBase {
         // Initialize PID Controller
         //pidController = new PIDController(Constants.Algae.kP, Constants.Algae.kI, Constants.Algae.kD);
         //pidController.setTolerance(Constants.Algae.POSITION_TOLERANCE);
+        SmartDashboard.putNumber("algae position", encoder.getPosition());
 
         if (Constants.isDebug) {
             // Send initial PID values to SmartDashboard
@@ -114,7 +115,7 @@ public class algaesubsystem extends SubsystemBase {
 
     /** Helper method to set left and right motors safely */
     private void setMotors(double speed) {
-        leftMotor.set(speed);
+        leftMotor.set(-speed);
         rightMotor.set(speed);
     }
 }

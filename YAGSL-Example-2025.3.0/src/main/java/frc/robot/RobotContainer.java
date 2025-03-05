@@ -78,9 +78,10 @@ public class RobotContainer
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 //() -> driverXbox.getLeftY() * -1,
-                                                                () -> joystickL.getY() * -1,
-                                                                () -> joystickL.getX() * -1)
-                                                            .withControllerRotationAxis(joystickR::getZ)
+                                                                () -> joystickL.getY(),//was multiplied by -1
+                                                                () -> joystickL.getX() )
+                                                            //.withControllerRotationAxis(joystickR::getZ)
+                                                            .withControllerRotationAxis(() -> -joystickR.getZ())
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -213,10 +214,10 @@ public class RobotContainer
       //driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); //  full rotation test version
       //driverXbox.povRight().whileTrue(new BucketMoveF45(bucket)); // 
       driverXbox.povRight().whileTrue(new BucketMoveToPosition(bucket, 33.76));
-      driverXbox.povLeft().whileTrue(new BucketMoveToPosition(bucket, 0));
-      driverXbox.leftStick().whileTrue(new BucketMoveToPosition(bucket, -60.67));
-      driverXbox.b().whileTrue(new AlgaeExtrudeCommand(algae));
-      driverXbox.x().whileTrue(new AlgaeSuckCommand(algae));
+      driverXbox.leftStick().whileTrue(new BucketMoveToPosition(bucket, 0));
+      driverXbox.povLeft().whileTrue(new BucketMoveToPosition(bucket, -60.67));
+      driverXbox.rightTrigger().whileTrue(new AlgaeExtrudeCommand(algae));
+      driverXbox.leftTrigger().whileTrue(new AlgaeSuckCommand(algae));
       driverXbox.a().whileTrue(new AlgaeUpCommand(algae));
       driverXbox.y().whileTrue(new AlgaeDownCommand(algae));
       //driverXbox.b().whileTrue(new AlgaeElevatorExtrudeCommand(AE));
@@ -224,7 +225,7 @@ public class RobotContainer
      // driverXbox.y().whileTrue(new AlgaeElevatorUpCommand(AE));
       //driverXbox.a().whileTrue(new AlgaeElevatorDownCommand(AE));
       driverXbox.leftTrigger().whileTrue(new KerklunkCommand(kerklunk, 0.0));
-      driverXbox.rightTrigger().whileTrue(new KerklunkCommand(kerklunk, 90.0));
+      driverXbox.rightStick().whileTrue(new KerklunkCommand(kerklunk, 90.0));
       driverXbox.rightBumper().whileTrue(new WinchUpCommand(winch));
       driverXbox.leftBumper().whileTrue(new WinchDownCommand(winch));
       
