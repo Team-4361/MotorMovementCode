@@ -48,6 +48,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController1.setTolerance(0.5);
     }
 
+    public double getPositionMeters(){
+        return lEncoder.getPosition() * (2 * Math.PI * Constants.ElevatorConstants.kElevatorDrumRadius)/Constants.ElevatorConstants.kElevatorGearing;
+    }
+    
     /** Sets the target position for the PID loop */
    /* *public void setTargetPosition(double position) {
         targetPosition = position;
@@ -84,8 +88,18 @@ public class ElevatorSubsystem extends SubsystemBase {
     }*/
     public void elevatorMoveUp()
     {
-        leftMotor.set(Constants.Coral.ELEVATOR_SPEED);
-        rightMotor.set(-Constants.Coral.ELEVATOR_SPEED);
+        if(lEncoder.getPosition() > 146.8 || rEncoder.getPosition() < -146.8)
+        {
+            leftMotor.stopMotor();
+            rightMotor.stopMotor();
+        }
+        else
+        {
+            leftMotor.set(Constants.Coral.ELEVATOR_SPEED);
+            rightMotor.set(-Constants.Coral.ELEVATOR_SPEED);
+
+        }
+
     }
 
 

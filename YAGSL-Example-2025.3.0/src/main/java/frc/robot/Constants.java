@@ -116,6 +116,36 @@ public static class AE {
   
 
   } 
+  public static class ElevatorConstants {
+    public static final double kElevatorGearing = 35.0; // Gear ratio
+    public static final double kCarriageMass = 5.0; // Mass of the elevator carriage (kg), adjust as needed
+    public static final double kElevatorDrumRadius = 0.02; // Drum radius (meters), adjust based on real mechanism
+    public static final double kMinElevatorHeightMeters = 0.0; // Minimum elevator height in meters
+    public static final double kMaxElevatorHeightMeters = 2.4384; // 8 feet in meters (8 * 0.3048)
+    public static final double ELEVATOR_TOLERANCE = 0.02;
+    public static final double ELEVATOR_SPEED = 0.15;
+    public static final double kElevatorRampRate = 0.1;
+
+    // Conversion factors
+    public static final double kRotaionToMeters = (2 * Math.PI * kElevatorDrumRadius) / kElevatorGearing;
+    public static final double kRPMtoMPS = kRotaionToMeters / 60.0;
+
+    // PID constants (tune these)
+    public static final double kElevatorKp = 2.0; // wpi recommened 
+    public static final double kElevatorKi = 0.0;
+    public static final double kElevatorKd = 0.0;
+
+    // Motion profiling constraints
+    public static final double kElevatorMaxVelocity = 1.5; // meters per second TO DO:need to do actual set up for mps
+    public static final double kElevatorMaxAcceleration = 1.0; // meters per second^2
+
+    // Feedforward constants (tune these)
+    public static final double kElevatorkS = 0.2; // Static friction voltage
+    public static final double kElevatorkG = 2.28; // Gravity feedforward (wpi recommended)
+    public static final double kElevatorkV = 3.07; // Velocity feedforward (wpi recommeneded)
+    public static final double kElevatorkA = 0.41; // Acceleration feedforward (wpi recommended)
+
+  }
 
 
 
