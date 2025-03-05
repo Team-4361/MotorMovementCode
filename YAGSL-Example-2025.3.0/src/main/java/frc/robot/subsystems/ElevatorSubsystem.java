@@ -49,11 +49,21 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     /** Sets the target position for the PID loop */
-    public void setTargetPosition(double position) {
+   /* *public void setTargetPosition(double position) {
         targetPosition = position;
         //integral = 0.0; // Reset integral term when setting a new target
         //previousError = 0.0; // Reset previous error
     }
+
+    public boolean atSetpoint() {
+        return pidController1.atSetpoint();
+    }
+
+    public void setPosition(double height) {
+        double output = pidController1.calculate(lEncoder.getPosition(), height);
+        leftMotor.set(output);
+        rightMotor.set(-output);
+    } */
 
 
     /** Runs the PID loop to move the motor to the target position */
@@ -77,11 +87,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         leftMotor.set(Constants.Coral.ELEVATOR_SPEED);
         rightMotor.set(-Constants.Coral.ELEVATOR_SPEED);
     }
-    public void setPosition(double height) {
-        double output = pidController1.calculate(lEncoder.getPosition(), height);
-        leftMotor.set(output);
-        rightMotor.set(-output);
-    }
+
 
     public void elevatorMoveDown()
     {
@@ -104,8 +110,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         leftMotor.set(0.0);
         rightMotor.set(0.0);
     }
-    public boolean atSetpoint() {
-        return pidController1.atSetpoint();
-    }
+
 
 }
