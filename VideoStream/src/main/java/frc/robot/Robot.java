@@ -54,9 +54,7 @@ public class Robot extends TimedRobot {
                   continue;
                 }
                 // Put a rectangle on the image
-                Imgproc.rectangle(
-                    mat, new Point(100, 100), new Point(400, 400), new Scalar(255, 255, 255), 5);
-                // Give the output stream a new image to display
+
                 outputStream.putFrame(mat);
               }
             });
