@@ -31,7 +31,7 @@ import frc.robot.commands.algae.AlgaeDownCommand;
 import frc.robot.commands.coral.BucketMoveToPosition;
 import frc.robot.commands.coral.BucketMoveB45;
 import frc.robot.commands.coral.ElevatorDownCommand;
-//import frc.robot.commands.coral.ElevatorMoveToPos;
+import frc.robot.commands.coral.ElevatorMoveToPos;
 import frc.robot.commands.coral.ElevatorUpCommand;
 import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -195,11 +195,11 @@ public class RobotContainer
     } else
     {
       joystickL.button(11).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      driverXbox.b().whileTrue(
+      //driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+     /*driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-                              );
+                              ); */ 
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
@@ -219,7 +219,12 @@ public class RobotContainer
       driverXbox.rightTrigger().whileTrue(new AlgaeExtrudeCommand(algae));
       driverXbox.leftTrigger().whileTrue(new AlgaeSuckCommand(algae));
       driverXbox.a().whileTrue(new AlgaeUpCommand(algae));
-      driverXbox.b().whileTrue(ele)
+      driverXbox.b().whileTrue(new ElevatorMoveToPos(elevator, 10));
+      driverXbox.x().whileTrue(new ElevatorMoveToPos(elevator, 0));
+
+      
+
+
       driverXbox.y().whileTrue(new AlgaeDownCommand(algae));
       //driverXbox.b().whileTrue(new AlgaeElevatorExtrudeCommand(AE));
       //driverXbox.x().whileTrue(new AlgaeElevatorSuckCommand(AE));

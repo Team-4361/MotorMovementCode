@@ -1,4 +1,4 @@
-/*package frc.robot.commands.coral;
+package frc.robot.commands.coral;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -16,17 +16,17 @@ public class ElevatorMoveToPos extends Command {
 
     @Override
     public void initialize() {
-        elevator.setPosition(targetHeight);
+        elevator.setTarget(targetHeight);
     }
 
     @Override
     public void execute() {
-        elevator.setPosition(targetHeight);
+        elevator.setTarget(targetHeight);
     }
 
     @Override
     public boolean isFinished() {
-        return elevator.atSetpoint(); // Check if it's at the target position
+        return elevator.atTarget(); // Check if it's at the target position
     }
 
     @Override
@@ -35,4 +35,4 @@ public class ElevatorMoveToPos extends Command {
             elevator.stopElevator();
         }
     }
-}*/
+}
