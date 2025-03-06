@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -11,6 +12,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -68,6 +71,7 @@ public class RobotContainer
   //private final ElevatorAlgae AE = new ElevatorAlgae();
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                    "swerve/neo"));
+  private SendableChooser<Command> autoChooser;
 
 
   
@@ -146,6 +150,10 @@ public class RobotContainer
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    //autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser("GET_OUT");
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+
   }
 
   /**
@@ -200,9 +208,13 @@ public class RobotContainer
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               ); */ 
-      driverXbox.start().whileTrue(Commands.none());
-      driverXbox.back().whileTrue(Commands.none());
-      driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      joystickL.button(4).whileTrue(
+        drivebase.driveToPose(
+          new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+                        );
+      //driverXbox.start().whileTrue(Commands.none());
+      //driverXbox.back().whileTrue(Commands.none());
+      //driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       //driverXbox.rightBumper().whileTrue(new BucketMoveB45(bucket, -0.05));
       driverXbox.povDown().whileTrue(new ElevatorDownCommand(elevator, bucket));
       //driverXbox.povUp().whileTrue(new ElevatorMoveToPos(elevator, 46.60));
@@ -247,11 +259,15 @@ public class RobotContainer
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand()
+  /*public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return drivebase.getAutonomousCommand("GET_OUT");
+  }*/
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
+  
 
   public void setMotorBrake(boolean brake)
   {
