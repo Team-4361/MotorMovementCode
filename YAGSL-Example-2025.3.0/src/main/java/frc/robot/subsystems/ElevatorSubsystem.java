@@ -29,8 +29,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     // private static final double POSITION_TOLERANCE = 0.02;
     private PIDController pidController1;
 
-    private final RelativeEncoder lEncoder;
-    private final RelativeEncoder rEncoder;
+    public final RelativeEncoder lEncoder;
+    public final RelativeEncoder rEncoder;
     private final ElevatorFeedforward m_feedForward;
     // stuff from old talon code that idk is needed
     // private double integral = 0.0;
@@ -103,10 +103,29 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
 
     }
+    public void elevatorPosUp(double position, double speed)
+    {
+        leftMotor.set(speed);
+        rightMotor.set(-speed);
+        if(lEncoder.getPosition() > position && rEncoder.getPosition() < -position)
+        {
+            stopElevator();
+        }
+    }
+    public void elevatorPosDown(double position, double speed)
+    {
+        leftMotor.set(-speed);
+        rightMotor.set(speed);
+        if(lEncoder.getPosition() < position && rEncoder.getPosition() > -position)
+        {
+            stopElevator();
+        }
+
+    }
 
     public void stopElevator() {
-        leftMotor.set(0.0);
-        rightMotor.set(0.0);
+        leftMotor.stopMotor();
+        rightMotor.stopMotor();
     }
 
     /** Runs the PID loop to move the motor to the target position */
