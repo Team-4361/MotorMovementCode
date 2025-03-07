@@ -148,9 +148,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
         else  {
             if (!Constants.isManual) {
-                 pidOutput1 = pidController1.calculate(lEncoder.getPosition(), targetPosition);
+                /*  pidOutput1 = pidController1.calculate(lEncoder.getPosition(), targetPosition);
                 leftMotor.set(pidOutput1);
-                rightMotor.set(-pidOutput1);
+                rightMotor.set(-pidOutput1);*/
 
             }
 

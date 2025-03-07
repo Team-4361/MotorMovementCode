@@ -33,7 +33,7 @@ public class algaesubsystem extends SubsystemBase {
 
         // Configure motors
         SparkMaxConfig config = new SparkMaxConfig();
-        config.encoder.positionConversionFactor(0.0143);
+        config.encoder.positionConversionFactor(POSITION_CONVERSION_FACTOR);
         config.idleMode(IdleMode.kBrake);
 
         sparkMax.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -59,7 +59,15 @@ public class algaesubsystem extends SubsystemBase {
 
     public void setMotor(double speed)
     {
-        sparkMax.set(speed);
+        if (encoder.getPosition() < 0.05  || encoder.getPosition() > 138.0) 
+        {
+            sparkMax.stopMotor();
+        }
+        else
+        {
+            sparkMax.set(speed);
+        }
+        
     }
     /** Sets the target position for PID control */
    /*  public void setTargetPosition(double position) {
@@ -71,16 +79,18 @@ public class algaesubsystem extends SubsystemBase {
     public void periodic() {
         double currentPosition = encoder.getPosition();
         double pidOutput = pidController.calculate(currentPosition, targetPosition);
+        SmartDashboard.putNumber("algae position", encoder.getPosition());
+
 
         // Limit motor power
        pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
 
         // Only move if outside tolerance
-        if (!pidController.atSetpoint()) {
+       /*  if (!pidController.atSetpoint()) {
             sparkMax.set(pidOutput);
         } else {
             sparkMax.set(0);
-        }
+        }*/
 
         if (Constants.isDebug) {
             // Update PID values from SmartDashboard

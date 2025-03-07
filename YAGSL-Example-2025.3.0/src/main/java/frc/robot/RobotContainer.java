@@ -23,8 +23,8 @@ import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.algae.AlgaeExtrudeCommand;
 import frc.robot.commands.algae.AlgaeSuckCommand;
-import frc.robot.commands.algae.AlgaeUpCommand;
 import frc.robot.commands.algae.AlgaeDownCommand;
+import frc.robot.commands.algae.AlgaeUpCommand;
 //import frc.robot.commands.algae.AlgaeElevatorExtrudeCommand;
 //import frc.robot.commands.algae.AlgaeElevatorSuckCommand;
 //import frc.robot.commands.algae.AlgaeElevatorUpCommand;
@@ -138,8 +138,8 @@ public class RobotContainer
     NamedCommands.registerCommand("ElevatorDown", new ElevatorDownCommand(elevator, bucket));
     //NamedCommands.registerCommand("BucketMoveF45", new BucketMoveF45(bucket));
     //NamedCommands.registerCommand("BucketMoveB45", new BucketMoveB45(bucket));
-    NamedCommands.registerCommand("AlgaeDown", new AlgaeDownCommand(algae));
-    NamedCommands.registerCommand("AlgaeUp", new AlgaeUpCommand(algae));    
+    NamedCommands.registerCommand("AlgaeDown", new AlgaeUpCommand(algae));
+    NamedCommands.registerCommand("AlgaeUp", new AlgaeDownCommand(algae));    
     NamedCommands.registerCommand("AlgaeSuck", new AlgaeSuckCommand(algae));
     NamedCommands.registerCommand("AlgaeExtrude", new AlgaeExtrudeCommand(algae));    
     //NamedCommands.registerCommand("AlgaeElevatorDown", new AlgaeElevatorDownCommand(AE));
@@ -209,10 +209,10 @@ public class RobotContainer
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               ); */ 
-      joystickL.button(4).whileTrue(
+      /*joystickL.button(4).whileTrue(
         drivebase.driveToPose(
           new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-                        );
+                        );*/
       //driverXbox.start().whileTrue(Commands.none());
       //driverXbox.back().whileTrue(Commands.none());
       //driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
@@ -231,14 +231,14 @@ public class RobotContainer
       driverXbox.povLeft().whileTrue(new BucketMoveToPosition(bucket, -60.67));
       driverXbox.rightTrigger().whileTrue(new AlgaeExtrudeCommand(algae));
       driverXbox.leftTrigger().whileTrue(new AlgaeSuckCommand(algae));
-      driverXbox.a().whileTrue(new AlgaeUpCommand(algae));
+      driverXbox.a().whileTrue(new AlgaeDownCommand(algae));
       driverXbox.b().whileTrue(new elevatorPosUp(elevator, 97.2, 1));
       driverXbox.x().whileTrue(new elevatorPosUp(elevator, 48.5, 1));
 
       
 
 
-      driverXbox.y().whileTrue(new AlgaeDownCommand(algae));
+      driverXbox.y().whileTrue(new AlgaeUpCommand(algae));
       //driverXbox.b().whileTrue(new AlgaeElevatorExtrudeCommand(AE));
       //driverXbox.x().whileTrue(new AlgaeElevatorSuckCommand(AE));
      // driverXbox.y().whileTrue(new AlgaeElevatorUpCommand(AE));
