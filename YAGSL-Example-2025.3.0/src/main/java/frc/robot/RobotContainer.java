@@ -36,6 +36,7 @@ import frc.robot.commands.coral.BucketMoveB45;
 import frc.robot.commands.coral.ElevatorDownCommand;
 import frc.robot.commands.coral.ElevatorMoveToPos;
 import frc.robot.commands.coral.ElevatorUpCommand;
+import frc.robot.commands.coral.elevatorPosUp;
 import frc.robot.subsystems.BucketSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.algaesubsystem;
@@ -232,7 +233,7 @@ public class RobotContainer
       driverXbox.leftTrigger().whileTrue(new AlgaeSuckCommand(algae));
       driverXbox.a().whileTrue(new AlgaeUpCommand(algae));
       driverXbox.b().whileTrue(new ElevatorMoveToPos(elevator, 10));
-      driverXbox.x().whileTrue(new ElevatorMoveToPos(elevator, 0));
+      driverXbox.x().whileTrue(new elevatorPosUp(elevator, 48.5, 0.15));
 
       
 
