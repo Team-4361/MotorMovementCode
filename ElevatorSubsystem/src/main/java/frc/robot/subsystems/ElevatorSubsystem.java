@@ -18,8 +18,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     private SparkMax LeftMotor;
     private SparkMax RightMotor;
     private RelativeEncoder LeftEncoder;
-    private final RelativeEncoder RightEncoder;
-
    // private Joystick driverStationJoystick;
    // private DigitalInput limitSwitch;
     private PIDController MotorPID;
@@ -33,10 +31,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private static final double POSITION_CONVERSION_FACTOR = 1;
 
     public ElevatorSubsystem() {
-        LeftMotor = new SparkMax(28, MotorType.kBrushless);
-        RightMotor = new SparkMax(12, MotorType.kBrushless);
+        LeftMotor = new SparkMax(9, MotorType.kBrushless);
+        RightMotor = new SparkMax(14, MotorType.kBrushless);
         LeftEncoder = LeftMotor.getEncoder();
-        RightEncoder = RightMotor.getEncoder();
         
         SparkMaxConfig config = new SparkMaxConfig();
         //config.encoder.positionConversionFactor(POSITION_CONVERSION_FACTOR); // Converts encoder readings to degrees
@@ -62,30 +59,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void periodic() {
 
 
-
         double currentPos = LeftEncoder.getPosition();
-
-
-
         double pidOutput = MotorPID.calculate(currentPos, targetPosition);
         pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
-
-
-        if (LeftEncoder.getPosition() > 146.8 || RightEncoder.getPosition() < -146.8 || LeftEncoder.getPosition() < 4 || RightEncoder.getPosition() > -4) {
-            LeftMotor.stopMotor();
-            RightMotor.stopMotor();
-
-
-        }
-    
-        if (!Constants.isManual) {
-
-            LeftMotor.set(pidOutput);
-            RightMotor.set(-pidOutput);
-
-        }
-
-
+        LeftMotor.set(pidOutput);
+        RightMotor.set(-pidOutput);
 
 
 
@@ -101,36 +79,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
 
-    public void elevatorMoveUp() {
-        // TODO: put this in constants
-        if (LeftEncoder.getPosition() > 146.8 || RightEncoder.getPosition() < -146.8) {
-            LeftMotor.stopMotor();
-            RightMotor.stopMotor();
-        } else {
-            LeftMotor.set(Constants.Coral.ELEVATOR_SPEED);
-            RightMotor.set(-Constants.Coral.ELEVATOR_SPEED);
-
-        }
-
-    }
-
-    public void elevatorMoveDown() {
-        if (LeftEncoder.getPosition() < 4 || RightEncoder.getPosition() > -4) {
-            LeftMotor.stopMotor();
-            RightMotor.stopMotor();
-        } else {
-            LeftMotor.set(-Constants.Coral.ELEVATOR_SPEED);
-            RightMotor.set(Constants.Coral.ELEVATOR_SPEED);
-        }
-
-    }
-
-    public void stopElevator() {
-        LeftMotor.set(0.0);
-        RightMotor.set(0.0);
-    }
-
-
     public void setPower(double speed)
     {
         LeftMotor.set(speed);
@@ -141,6 +89,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
 
+    public void stopBucket() {
+        LeftMotor.stopMotor();
+        RightMotor.stopMotor();
+    }
 
     public void stop() {
         LeftMotor.set(0);

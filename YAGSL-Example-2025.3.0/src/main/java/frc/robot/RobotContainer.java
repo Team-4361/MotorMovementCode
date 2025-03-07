@@ -232,8 +232,8 @@ public class RobotContainer
       driverXbox.rightTrigger().whileTrue(new AlgaeExtrudeCommand(algae));
       driverXbox.leftTrigger().whileTrue(new AlgaeSuckCommand(algae));
       driverXbox.a().whileTrue(new AlgaeUpCommand(algae));
-      driverXbox.b().whileTrue(new ElevatorMoveToPos(elevator, 10));
-      driverXbox.x().whileTrue(new elevatorPosUp(elevator, 48.5, 0.15));
+      driverXbox.b().whileTrue(new elevatorPosUp(elevator, 97.2, 1));
+      driverXbox.x().whileTrue(new elevatorPosUp(elevator, 48.5, 1));
 
       
 
