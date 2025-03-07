@@ -13,7 +13,26 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final boolean isManual = true;
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+  }
+
+  public static final class Coral
+  { public static final int CPR_TALON = 2048;
+    public static final double MOTOR_GEAR_RATIO = 1.0;
+    public static final int LEFT_ELEVATOR_ID = 9;
+    public static final int RIGHT_ELEVATOR_ID = 14;
+    public static final int BUCKET_ID = 15;
+    public static final double KP = 0.0666;
+    public static final double KI = 0.00002;
+    public static final double KD = 0.0010; 
+    public static double L1_POS;
+    public static double L2_POS;
+    public static double L3_POS;
+    public static double L4_POS;
+    public static final double ELEVATOR_SPEED = 0.15;
+    
   }
 }
