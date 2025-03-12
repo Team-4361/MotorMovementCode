@@ -50,6 +50,7 @@ import frc.robot.commands.climber.KerklunkCommand;
 import frc.robot.commands.climber.WinchUpCommand;
 import frc.robot.commands.climber.WinchDownCommand;
 
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
  * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
@@ -84,9 +85,9 @@ public class RobotContainer
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 //() -> driverXbox.getLeftY() * -1,
                                                                 () -> joystickL.getY(),//was multiplied by -1
-                                                                () -> joystickL.getX() )
+                                                                () -> joystickL.getX())
                                                             //.withControllerRotationAxis(joystickR::getZ)
-                                                            .withControllerRotationAxis(() -> -joystickR.getZ())
+                                                            .withControllerRotationAxis(() -> joystickR.getZ())
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -132,6 +133,19 @@ public class RobotContainer
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+
+   private final Command teleopFlightDriveCommand = drivebase.driveFieldOriented(
+    SwerveInputStream.of(
+        drivebase.getSwerveDrive(),
+        () -> -joystickL.getY() * -1,  // Forward/Backward
+        () -> -joystickL.getX() * -1  // Left/Right
+    )
+    .withControllerRotationAxis(() -> -joystickR.getTwist()) // Rotation using right stick twist
+    .deadband(OperatorConstants.DEADBAND) // Apply deadband as a setting
+    .scaleTranslation(0.8)
+    .allianceRelativeControl(true)
+);
+
   public RobotContainer()
   {
     NamedCommands.registerCommand("ElevatorUp", new ElevatorUpCommand(elevator, bucket));
@@ -152,7 +166,7 @@ public class RobotContainer
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
     //autoChooser = AutoBuilder.buildAutoChooser();
-    autoChooser = AutoBuilder.buildAutoChooser("GET_OUT");
+    autoChooser = AutoBuilder.buildAutoChooser("New Auto");
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
   }
@@ -179,10 +193,10 @@ public class RobotContainer
 
     if (RobotBase.isSimulation())
     {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
+      drivebase.setDefaultCommand(teleopFlightDriveCommand);
     } else
     {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+      drivebase.setDefaultCommand(teleopFlightDriveCommand);
     }
 
     if (Robot.isSimulation())
@@ -225,15 +239,20 @@ public class RobotContainer
       //driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); // speed verision
       //driverXbox.povRight().whileTrue(new BucketMoveF45(bucket));
       //driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket)); //  full rotation test version
-      //driverXbox.povRight().whileTrue(new BucketMoveF45(bucket)); // 
-      driverXbox.povRight().whileTrue(new BucketMoveToPosition(bucket, 33.76));
+      //driverXbox.povRight().whileTrue(new BucketMoveB45(bucket, -0.4)); // 
+      driverXbox.povRight().whileTrue(new BucketMoveToPosition(bucket, 38));
+      //driverXbox.povLeft().whileTrue(new BucketMoveB45(bucket, 0.4));
       driverXbox.leftStick().whileTrue(new BucketMoveToPosition(bucket, 0));
+      joystickL.button(4).whileTrue(new KerklunkCommand(kerklunk, 0.0));
+      joystickL.button(6).whileTrue(new KerklunkCommand(kerklunk, 180.0));
+    
+    
       driverXbox.povLeft().whileTrue(new BucketMoveToPosition(bucket, -60.67));
       driverXbox.rightTrigger().whileTrue(new AlgaeExtrudeCommand(algae));
       driverXbox.leftTrigger().whileTrue(new AlgaeSuckCommand(algae));
       driverXbox.a().whileTrue(new AlgaeDownCommand(algae));
       driverXbox.b().whileTrue(new elevatorPosUp(elevator, 97.2, 1));
-      driverXbox.x().whileTrue(new elevatorPosUp(elevator, 48.5, 1));
+      driverXbox.x().whileTrue(new elevatorPosUp(elevator, 46, 1));
 
       
 
@@ -243,8 +262,8 @@ public class RobotContainer
       //driverXbox.x().whileTrue(new AlgaeElevatorSuckCommand(AE));
      // driverXbox.y().whileTrue(new AlgaeElevatorUpCommand(AE));
       //driverXbox.a().whileTrue(new AlgaeElevatorDownCommand(AE));
-      driverXbox.leftTrigger().whileTrue(new KerklunkCommand(kerklunk, 0.0));
-      driverXbox.rightStick().whileTrue(new KerklunkCommand(kerklunk, 90.0));
+      //driverXbox.leftTrigger().whileTrue(new KerklunkCommand(kerklunk, 0.0));
+      //driverXbox.rightStick().whileTrue(new KerklunkCommand(kerklunk, 90.0));
       driverXbox.rightBumper().whileTrue(new WinchUpCommand(winch));
       driverXbox.leftBumper().whileTrue(new WinchDownCommand(winch));
       

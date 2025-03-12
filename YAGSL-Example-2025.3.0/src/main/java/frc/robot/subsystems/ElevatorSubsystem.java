@@ -31,12 +31,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public final RelativeEncoder lEncoder;
     public final RelativeEncoder rEncoder;
-    private final ElevatorFeedforward m_feedForward;
+    //private final ElevatorFeedforward m_feedForward;
     // stuff from old talon code that idk is needed
     // private double integral = 0.0;
     // private double previousError = 0.0;
     private double targetPosition = 0.0; // Target position for PID control
-    private double pidOutput1 = 0.0;
+    //private double pidOutput1 = 0.0;
 
     public ElevatorSubsystem() {
         leftMotor = new SparkMax(Constants.Coral.LEFT_ELEVATOR_ID, MotorType.kBrushless);
@@ -45,17 +45,17 @@ public class ElevatorSubsystem extends SubsystemBase {
         rEncoder = rightMotor.getEncoder();
         SparkMaxConfig config = new SparkMaxConfig();
 
-        m_feedForward = new ElevatorFeedforward(ElevatorConstants.kElevatorkS,
+       /*  m_feedForward = new ElevatorFeedforward(ElevatorConstants.kElevatorkS,
                 ElevatorConstants.kElevatorkG,
                 ElevatorConstants.kElevatorkV,
-                ElevatorConstants.kElevatorkA);
+                ElevatorConstants.kElevatorkA);*/
 
         config.idleMode(IdleMode.kBrake);
         leftMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        pidController1 = new PIDController(Constants.ElevatorConstants.kElevatorKp,
-                Constants.ElevatorConstants.kElevatorKi, Constants.ElevatorConstants.kElevatorKd);
-        pidController1.setTolerance(0.5);
+       //pidController1 = new PIDController(Constants.ElevatorConstants.kElevatorKp,
+                //Constants.ElevatorConstants.kElevatorKi, Constants.ElevatorConstants.kElevatorKd);
+        //pidController1.setTolerance(0.5);
     }
 
     public void setTarget(double position) {
@@ -132,10 +132,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() 
     {
-        SmartDashboard.putNumber("Left Encoder Position", lEncoder.getPosition());
-        SmartDashboard.putNumber("Right Encoder Position", rEncoder.getPosition());
-        SmartDashboard.putNumber("target pos", targetPosition);
-        SmartDashboard.putNumber("pid output", pidOutput1);
+        //SmartDashboard.putNumber("Left Encoder Position", lEncoder.getPosition());
+        //SmartDashboard.putNumber("Right Encoder Position", rEncoder.getPosition());
+        //SmartDashboard.putNumber("target pos", targetPosition);
+        //SmartDashboard.putNumber("pid output", pidOutput1);
 
         //todo - Softlock so it stops motor if it is below a position or above a position.
 
@@ -143,16 +143,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (lEncoder.getPosition() > 146.8 || rEncoder.getPosition() < -146.8 || lEncoder.getPosition() < 4 || rEncoder.getPosition() > -4) {
             leftMotor.stopMotor();
             rightMotor.stopMotor();
-
-
-        }
-        else  {
-            if (!Constants.isManual) {
-                /*  pidOutput1 = pidController1.calculate(lEncoder.getPosition(), targetPosition);
-                leftMotor.set(pidOutput1);
-                rightMotor.set(-pidOutput1);*/
-
-            }
 
 
         }

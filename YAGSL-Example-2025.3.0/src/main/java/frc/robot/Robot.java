@@ -64,6 +64,8 @@ public class Robot extends TimedRobot
 
   public Robot()
   {
+
+    /*
     instance = this;
     m_visionThread =
     new Thread(
@@ -102,6 +104,7 @@ public class Robot extends TimedRobot
         });
   m_visionThread.setDaemon(true);
   m_visionThread.start();
+   */
     
 
   }

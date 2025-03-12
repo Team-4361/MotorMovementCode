@@ -48,7 +48,7 @@ public final class Constants
     public static double L2_POS;
     public static double L3_POS;
     public static double L4_POS;
-    public static final double ELEVATOR_SPEED = 0.75;
+    public static final double ELEVATOR_SPEED = 0.25;
     
   }
   
@@ -56,7 +56,7 @@ public final class Constants
   {
     public static final int KERKLUNK_PORT = 0; //placehodlr for when we get actual port
     public static final int WINCH_MOTOR_ID = 10;
-    public static final double WINCH_SPEED = 0.8;
+    public static final double WINCH_SPEED = 1;
   }
   
   // Maximum speed of the robot in meters per second, used to limit acceleration.

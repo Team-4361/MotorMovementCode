@@ -59,6 +59,7 @@ public class algaesubsystem extends SubsystemBase {
 
     public void setMotor(double speed)
     {
+        /* 
         if (encoder.getPosition() < 0.05  || encoder.getPosition() > 138.0) 
         {
             sparkMax.stopMotor();
@@ -67,6 +68,11 @@ public class algaesubsystem extends SubsystemBase {
         {
             sparkMax.set(speed);
         }
+        
+        
+    */
+
+        sparkMax.set(speed);
         
     }
     /** Sets the target position for PID control */
@@ -77,13 +83,13 @@ public class algaesubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double currentPosition = encoder.getPosition();
-        double pidOutput = pidController.calculate(currentPosition, targetPosition);
-        SmartDashboard.putNumber("algae position", encoder.getPosition());
+        //double currentPosition = encoder.getPosition();
+        //double pidOutput = pidController.calculate(currentPosition, targetPosition);
+        //SmartDashboard.putNumber("algae position", encoder.getPosition());
 
 
         // Limit motor power
-       pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
+      // pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
 
         // Only move if outside tolerance
        /*  if (!pidController.atSetpoint()) {

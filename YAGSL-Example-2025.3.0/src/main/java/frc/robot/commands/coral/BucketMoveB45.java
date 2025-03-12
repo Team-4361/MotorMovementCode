@@ -9,6 +9,7 @@ private double speed;
 
     public BucketMoveB45(BucketSubsystem subsystem, double speed) {
         this.coral = subsystem;
+        this.speed = speed;
         // Declare subsystem dependency so no other command can use it at the same time.
         addRequirements(coral);
     }
@@ -17,6 +18,7 @@ private double speed;
     public void initialize()
     {
 
+        
     }
     @Override
     public void execute()

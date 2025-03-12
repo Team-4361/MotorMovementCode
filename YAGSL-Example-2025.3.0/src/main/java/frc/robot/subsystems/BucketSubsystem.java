@@ -101,15 +101,16 @@ public class BucketSubsystem extends SubsystemBase {
         double currentPos = bucketEncoder.getPosition();
         double pidOutput = bucketPID.calculate(currentPos, targetPosition);
         pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
+
         bucketMotor.set(pidOutput);
 
 
-        if (Constants.isDebug) {
+       /* if (Constants.isDebug) {
         SmartDashboard.putNumber("Bucket Current Position: ", currentPos);
         SmartDashboard.putNumber("Bucket Target Position: ", targetPosition);
         SmartDashboard.putNumber("Bucket PID Output: ", pidOutput);
 
-        }
+        }*/ 
 
 
        
