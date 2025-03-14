@@ -52,18 +52,20 @@ public class PhotoelectricSensorSubsystem extends SubsystemBase {
     }
     public void setMotor()
     {
-        SparkMax.set(0.1);
-       
-        /*if(!getSensor1())
-        {
-            SparkMax.set(0.4);
-        }
+        //SparkMax.set(0.1);
         if(!getSensor2())
         {
             SparkMax.stopMotor();
-        }*/
+        }
+        else if(!getSensor1())
+        {
+            SparkMax.set(0.10);
+        }
+
         
     }
+
+
     @Override
     public void periodic()
     {

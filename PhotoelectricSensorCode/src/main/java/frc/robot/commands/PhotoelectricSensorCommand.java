@@ -21,8 +21,9 @@ private boolean sensor2;
   public PhotoelectricSensorCommand(PhotoelectricSensorSubsystem subsystem) {
     coral = subsystem;
 
+
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements();
+    addRequirements(coral);
   }
 
   // Called when the command is initially scheduled.
@@ -43,7 +44,6 @@ private boolean sensor2;
   @Override
   public void end(boolean interrupted) 
   {
-
         coral.stop();
     
   }
@@ -51,6 +51,7 @@ private boolean sensor2;
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+
     return false;
   }
     

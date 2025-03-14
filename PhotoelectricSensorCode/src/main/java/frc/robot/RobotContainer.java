@@ -37,6 +37,7 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     configureBindings();
+    sensorSubsystem.setDefaultCommand(new PhotoelectricSensorCommand(sensorSubsystem));
     SmartDashboard.putBoolean("sensor 1 value", sensorSubsystem.getSensor1());
     SmartDashboard.putBoolean("sensor 2 value", sensorSubsystem.getSensor2());
   }
