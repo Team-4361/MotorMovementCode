@@ -38,8 +38,8 @@ public class RobotContainer {
 
     configureBindings();
     sensorSubsystem.setDefaultCommand(new PhotoelectricSensorCommand(sensorSubsystem));
-    SmartDashboard.putBoolean("sensor 1 value", sensorSubsystem.getSensor1());
-    SmartDashboard.putBoolean("sensor 2 value", sensorSubsystem.getSensor2());
+    //SmartDashboard.putBoolean("sensor 1 value", sensorSubsystem.getSensor1());
+    //SmartDashboard.putBoolean("sensor 2 value", sensorSubsystem.getSensor2());
   }
 
   /**
