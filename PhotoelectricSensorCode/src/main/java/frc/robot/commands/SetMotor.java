@@ -4,18 +4,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.PhotoelectricSensorSubsystem;
 
-public class PhotoelectricSensorCommand extends Command{
+public class SetMotor extends Command{
 //private PhotoelectricSensorSubsystem sensorSubsystem;
 
 private final PhotoelectricSensorSubsystem coral;
-
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public PhotoelectricSensorCommand(PhotoelectricSensorSubsystem subsystem) {
+  public SetMotor(PhotoelectricSensorSubsystem subsystem) {
     coral = subsystem;
 
 
@@ -34,7 +33,7 @@ private final PhotoelectricSensorSubsystem coral;
   @Override
   public void execute() 
   {
-    coral.setMotor();
+    coral.release();
   }
 
   // Called once the command ends or is interrupted.
@@ -51,5 +50,4 @@ private final PhotoelectricSensorSubsystem coral;
 
     return false;
   }
-    
 }

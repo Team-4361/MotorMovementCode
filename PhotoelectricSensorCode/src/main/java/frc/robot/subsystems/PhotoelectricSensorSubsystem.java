@@ -1,42 +1,35 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.filter.Debouncer;
+//all needed imports for system
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkBase.PersistMode;
-
 import frc.robot.Constants; 
 
-
-import java.util.Map;
-
-//import static edu.wpi.first.math.filter.Debouncer.DebounceType.kBoth;
-import static java.util.Map.entry;
-
 public class PhotoelectricSensorSubsystem extends SubsystemBase {
+    
+    // all needed variables for subsystem
     private final DigitalInput sensor1;
     private final DigitalInput sensor2;
-    private final SparkBase SparkMax;
-    //private final Debouncer debouncer;
-    //private boolean sensorActivated = false;
+    private final SparkMax SparkMax;
 
     public PhotoelectricSensorSubsystem(){
+            //add the sensor port to the constants
             this.sensor1 = new DigitalInput(Constants.PHOTOELECTRIC_SENSOR_1_PORT);
             this.sensor2 = new DigitalInput(Constants.PHOTOELECTRIC_SENSOR_2_PORT);
+            //change id for used sparkmax
             SparkMax = new SparkMax(6, MotorType.kBrushless);
+            SparkMaxConfig config = new SparkMaxConfig();
+            //sets config to brake for no movement after the sensor is triggered 
+            config.idleMode(IdleMode.kBrake);
+            //saves the brake configuration
+            SparkMax.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
     public boolean getSensor1()
     {
@@ -50,16 +43,21 @@ public class PhotoelectricSensorSubsystem extends SubsystemBase {
     {
         SparkMax.set(0.0);
     }
+    public void release()
+    {
+        //invert depending on rotation 
+        SparkMax.set(0.3); 
+    }
     public void setMotor()
     {
-        //SparkMax.set(0.1);
+        //sensors are normally true, when they change to false, the action is triggered
         if(!getSensor2())
         {
             SparkMax.stopMotor();
         }
         else if(!getSensor1())
         {
-            SparkMax.set(0.10);
+            SparkMax.set(0.70);
         }
 
         
@@ -69,6 +67,7 @@ public class PhotoelectricSensorSubsystem extends SubsystemBase {
     @Override
     public void periodic()
     {
+        //for testing purposes, to see if sensor needs to be adjusted via the screw on the back
         SmartDashboard.putString("Sensor 1 value", "" + sensor1.get());
         SmartDashboard.putString("Sensor 2 value", "" + sensor2.get());
     }

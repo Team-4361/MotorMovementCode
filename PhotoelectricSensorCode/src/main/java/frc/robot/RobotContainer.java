@@ -4,14 +4,8 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.PhotoelectricSensorCommand;
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.SetMotor;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.PhotoelectricSensorSubsystem;
@@ -24,22 +18,17 @@ import frc.robot.subsystems.PhotoelectricSensorSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final PhotoelectricSensorSubsystem sensorSubsystem = new PhotoelectricSensorSubsystem();
+  //change the port if needed
   private final CommandXboxController xbox = new CommandXboxController(0);
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  //private final CommandXboxController m_driverController =
-    //  new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
 
     configureBindings();
+    //runs the check for the sensors as the default command, allowing for 'autonomous' checking w/o the need for buttons
+    // gets interrupted when another command requiring this subsystem is called.
     sensorSubsystem.setDefaultCommand(new PhotoelectricSensorCommand(sensorSubsystem));
-    //SmartDashboard.putBoolean("sensor 1 value", sensorSubsystem.getSensor1());
-    //SmartDashboard.putBoolean("sensor 2 value", sensorSubsystem.getSensor2());
   }
 
   /**
@@ -52,12 +41,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-   //driverXbox.a().whileTrue(new AlgaeDownCommand(algae));
-
-    xbox.b().whileTrue(new PhotoelectricSensorCommand(sensorSubsystem));
+    //while the b button returns true, the motor runs. Stops when button is released. 
+    xbox.b().whileTrue(new SetMotor(sensorSubsystem));
   
 
 
@@ -71,8 +56,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  //not needed, just something from the example code that I may use 
+  /*public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return Autos.exampleAuto(m_exampleSubsystem);
-  }
+  }*/
 }
