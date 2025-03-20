@@ -5,9 +5,11 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkRelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -37,16 +39,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double setpoint = 0.0; // Target position in meters
 
   public ElevatorSubsystem() {
-      motor1 = new SparkMax(10, MotorType.kBrushless);
-      motor2 = new SparkMax(11, MotorType.kBrushless);
+      motor1 = new SparkMax(6, MotorType.kBrushless);
+      motor2 = new SparkMax(12, MotorType.kBrushless);
 
 
 
     
 
       // Get absolute encoders from each motor
-      encoder1 = motor1.getAbsoluteEncoder(com.revrobotics.SparkMaxAbsoluteEncoder.Type.kDutyCycle);
-      encoder2 = motor2.getAbsoluteEncoder(com.revrobotics.AbsoluteEncoder.Type.kDutyCycle);
+      //encoder1 = motor1.getAbsoluteEncoder(com.revrobotics.SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+      encoder1 = motor1.getAbsoluteEncoder(SparkRelativeEncoder.Type.kDutyCycle);
+      encoder2 = motor2.getAbsoluteEncoder();
+      //encoder2 = motor2.getAbsoluteEncoder(com.revrobotics.AbsoluteEncoder.Type.kDutyCycle);
 
 
       pidController = new PIDController(kP, kI, kD);
@@ -62,14 +66,19 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double getAverageVelocity() {
       return (encoder1.getVelocity() + encoder2.getVelocity()) / 2.0;
   }
+  public boolean atSetpoint(double setpoint)
+  {
+    return getAveragePosition() == setpoint;
+  }
 
   public void setElevatorPosition(double positionMeters) {
       setpoint = positionMeters;
   }
 
+  
   @Override
   public void periodic() {
-      double position = getAveragePosition(); // Current height in meters
+      double position = getAveragePosition(); // Currently, 0.0 - 1.0 of rotation of the encoder, needs testing 
       double velocity = getAverageVelocity(); // Velocity in m/s
 
       double pidOutput = pidController.calculate(position, setpoint);
