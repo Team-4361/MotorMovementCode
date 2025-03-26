@@ -17,6 +17,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   //store the id for the motor and the sensor port here...
+  public static int MOTOR_ID;
   public static final int PHOTOELECTRIC_SENSOR_1_PORT = 0;
   public static final int PHOTOELECTRIC_SENSOR_2_PORT = 1;
 }
