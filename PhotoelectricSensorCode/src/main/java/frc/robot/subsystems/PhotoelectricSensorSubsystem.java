@@ -45,22 +45,22 @@ public class PhotoelectricSensorSubsystem extends SubsystemBase {
     }
     public boolean getSensor1()
     {
-        return sensor1.get();
+        return sensor1.get(); //gets if sensor 1 detects something
     }
     public boolean getSensor2()
     {
-        return sensor2.get();
+        return sensor2.get(); //gets if sensor 1 detects something
     }
     public void stop()
     {
         double targetPos = encoder.getPosition() - 7.0;
         if(encoder.getPosition() <= targetPos)
         {
-            SparkMax.set(0.0);
+            SparkMax.set(0.0); //sets the speed if it reaches the target position
         }
         else if(encoder.getPosition() > targetPos)
         {
-            SparkMax.set(-0.1);
+            SparkMax.set(-0.1); //goes back if it goes over the target position
         }
         
         targetPos-=7.0;

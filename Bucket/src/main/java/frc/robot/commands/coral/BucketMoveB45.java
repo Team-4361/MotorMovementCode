@@ -28,13 +28,13 @@ private double currentAngle;
     @Override
     public void end(boolean interrupted)
     {
-        coral.stop();
+        coral.stop(); //stops the mechanism
     }
 
     @Override
     public boolean isFinished()
     {
-        return false;
+        return false; //checks to see if it moved enough
     }
 
 }

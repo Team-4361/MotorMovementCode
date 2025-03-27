@@ -25,8 +25,8 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
-      private final ElevatorSubsystem elevator = new ElevatorSubsystem();
+      new CommandXboxController(OperatorConstants.kDriverControllerPort); //Makes the Xbox Controller part of the operator's constants
+      private final ElevatorSubsystem elevator = new ElevatorSubsystem(); 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -49,8 +49,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    m_driverController.povUp().whileTrue(new ElevatorMoveToPosition(elevator, 10));
-    m_driverController.povDown().whileTrue(new ElevatorMoveToPosition(elevator, 0));
+    m_driverController.povUp().whileTrue(new ElevatorMoveToPosition(elevator, 10)); //moves the elevator up
+    m_driverController.povDown().whileTrue(new ElevatorMoveToPosition(elevator, 0)); //moves the elevator down
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

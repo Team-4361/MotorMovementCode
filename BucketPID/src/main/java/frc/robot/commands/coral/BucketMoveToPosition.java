@@ -20,7 +20,7 @@ public class BucketMoveToPosition extends Command {
 
     @Override
     public void execute() {
-        bucket.setPosition(targetDegrees);
+        bucket.setPosition(targetDegrees);  //sets the position
     }
 
     @Override
@@ -31,7 +31,7 @@ public class BucketMoveToPosition extends Command {
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            bucket.stop();
+            bucket.stop(); //stops the bucket
         }
     }
 }

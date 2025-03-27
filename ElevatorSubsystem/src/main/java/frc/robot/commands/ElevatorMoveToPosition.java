@@ -20,7 +20,7 @@ public class ElevatorMoveToPosition extends Command {
 
     @Override
     public void execute() {
-        elevator.setPosition(targetDegrees);
+        elevator.setPosition(targetDegrees); //moves the elevator to the target
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ElevatorMoveToPosition extends Command {
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            elevator.stop();
+            elevator.stop(); //stops if interrupted
         }
     }
 } 

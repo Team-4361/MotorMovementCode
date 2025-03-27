@@ -1,13 +1,13 @@
 package frc.robot.commands.coral;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.BucketSubsystem;
+import frc.robot.subsystems.AlgaeSubsystem;
 
 public class BucketMoveToPosition extends Command {
-    private final BucketSubsystem bucket;
+    private final AlgaeSubsystem bucket;
     private final double targetDegrees;
 
-    public BucketMoveToPosition(BucketSubsystem bucket, double degrees) {
+    public BucketMoveToPosition(AlgaeSubsystem bucket, double degrees) {
         this.bucket = bucket;
         this.targetDegrees = degrees;
         addRequirements(bucket);
@@ -15,12 +15,12 @@ public class BucketMoveToPosition extends Command {
 
     @Override
     public void initialize() {
-        bucket.setPosition(targetDegrees);
+        bucket.setPosition(targetDegrees); 
     }
 
     @Override
     public void execute() {
-        bucket.setPosition(targetDegrees);
+        bucket.setPosition(targetDegrees); //goes to the target degrees
     }
 
     @Override
@@ -31,7 +31,7 @@ public class BucketMoveToPosition extends Command {
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            bucket.stop();
+            bucket.stop(); //if interrupted, stops the bucket
         }
     }
 }

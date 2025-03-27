@@ -42,11 +42,11 @@ public class Robot extends TimedRobot {
 
     // PID variables
     private double integral = 0.0;
-    private double previousError = 0.0;
+    private double previousError = 0.0; //zeros the values
 
     // Target position for the motor
     private double targetPosition = 0.0;
-    private double elevatorPosition = 0.0;
+    private double elevatorPosition = 0.0; //zeros everything
     @Override
     public void robotInit() {
         // Initialize the SPARK MAX motor controller

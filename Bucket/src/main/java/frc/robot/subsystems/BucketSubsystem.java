@@ -30,10 +30,10 @@ public class BucketSubsystem extends SubsystemBase {
     }
 
     public void setPower(double power) {
-        bucketMotor.set(power);
+        bucketMotor.set(power); //sets the power for the bucket
     }
 
     public void stop() {
-        bucketMotor.set(0);
+        bucketMotor.set(0); //stops the bucket from moving
     }
 }

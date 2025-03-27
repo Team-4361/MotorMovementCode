@@ -18,28 +18,28 @@ private double targetAngle;
     @Override
     public void initialize()
     {
-            currentAngle = coral.getCurrentAngle(); 
+            currentAngle = coral.getCurrentAngle(); //gets the current angle
             coral.forwardBucketAngle();
 
         //coral.forwardBucket();
     }
     @Override
-    public void execute()
+    public void execute() 
     {
-        coral.forwardBucketAngle();
+        coral.forwardBucketAngle(); //rotates the bucket forwards
         //coral.forwardBucket();
     }
 
     @Override
     public void end(boolean interrupted)
     {
-        coral.stopBucket();
+        coral.stopBucket(); //stops if interrupted
     }
 
     @Override
     public boolean isFinished()
     {
-        return currentAngle == coral.getTargetAngle(); //idr how to implement this 
+        return currentAngle == coral.getTargetAngle(); //checks to see if it reached its position
     }
 
 }

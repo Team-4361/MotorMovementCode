@@ -60,7 +60,7 @@ public class BucketSubsystem extends SubsystemBase {
 }
 */
 
-public class BucketSubsystem extends SubsystemBase {
+public class AlgaeSubsystem extends SubsystemBase {
     private SparkMax bucketMotor;
     private RelativeEncoder bucketEncoder;
    // private Joystick driverStationJoystick;
@@ -68,7 +68,7 @@ public class BucketSubsystem extends SubsystemBase {
     private PIDController winchPID;
 
     private static final int BUCKET_MOTOR_ID = 6;
-    private static final double BUCKET_SPEED = 0.8;
+    private static final double BUCKET_SPEED = 0.8; //sets the speed
 
     private static final double kP = 0.01;
     private static final double kI = 0.0;
@@ -81,7 +81,7 @@ public class BucketSubsystem extends SubsystemBase {
 
     private static final double POSITION_CONVERSION_FACTOR = 1;
 
-    public BucketSubsystem() {
+    public AlgaeSubsystem() {
         bucketMotor = new SparkMax(6, MotorType.kBrushless);
         bucketEncoder = bucketMotor.getEncoder();
         
@@ -105,12 +105,12 @@ public class BucketSubsystem extends SubsystemBase {
 
 
         double currentPos = bucketEncoder.getPosition();
-        double pidOutput = winchPID.calculate(currentPos, targetPosition);
+        double pidOutput = winchPID.calculate(currentPos, targetPosition); //PID stuff
         pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
         bucketMotor.set(pidOutput);
 
         System.out.println("Current Position: " + currentPos);
-        System.out.println("Target Position: " + targetPosition);
+        System.out.println("Target Position: " + targetPosition); //debugging stuff
         System.out.println("PID Output: " + pidOutput);
 
 
@@ -124,25 +124,25 @@ public class BucketSubsystem extends SubsystemBase {
     }
 
     public void setPosition(double degrees) {
-        targetPosition = degrees;
+        targetPosition = degrees; //sets the position
     }
 
 
     public void winchMoveUp() {
-        targetPosition = 30.0;
+        targetPosition = 30.0; //moves the winch up
     }
 
 
     public void stopWinch() {
-        bucketMotor.stopMotor();
+        bucketMotor.stopMotor(); //stops the winch
     }
 
     public void stop() {
-        bucketMotor.set(0);
+        bucketMotor.set(0); //stops the bucket
     }
 
     public boolean atSetpoint() {
-        return winchPID.atSetpoint();
+        return winchPID.atSetpoint(); //returns whether its at the point or not
     }
 
 }

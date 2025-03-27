@@ -48,31 +48,31 @@ public class ElevatorSubsystem extends SubsystemBase {
 
       // Get absolute encoders from each motor
       //encoder1 = motor1.getAbsoluteEncoder(com.revrobotics.SparkMaxAbsoluteEncoder.Type.kDutyCycle);
-      encoder1 = motor1.getAbsoluteEncoder(SparkRelativeEncoder.Type.kDutyCycle);
-      encoder2 = motor2.getAbsoluteEncoder();
+      encoder1 = motor1.getAbsoluteEncoder();//SparkRelativeEncoder.Type.kDutyCycle);
+      encoder2 = motor2.getAbsoluteEncoder(); //gets their absolute encoders
       //encoder2 = motor2.getAbsoluteEncoder(com.revrobotics.AbsoluteEncoder.Type.kDutyCycle);
 
 
-      pidController = new PIDController(kP, kI, kD);
-      feedforward = new SimpleMotorFeedforward(kS, kG, kV, kA);
+      pidController = new PIDController(kP, kI, kD); //defines PID
+      feedforward = new SimpleMotorFeedforward(kS, kG, kV, kA); //defines feedforward values
   }
 
 
 
   private double getAveragePosition() {
-      return (encoder1.getPosition() + encoder2.getPosition()) / 2.0;
+      return (encoder1.getPosition() + encoder2.getPosition()) / 2.0; //Gets the average between the two positions
   }
 
   private double getAverageVelocity() {
-      return (encoder1.getVelocity() + encoder2.getVelocity()) / 2.0;
+      return (encoder1.getVelocity() + encoder2.getVelocity()) / 2.0; //Gets the average between the two positions
   }
   public boolean atSetpoint(double setpoint)
   {
-    return getAveragePosition() == setpoint;
+    return getAveragePosition() == setpoint; //Sets their averages as the setpoint
   }
 
   public void setElevatorPosition(double positionMeters) {
-      setpoint = positionMeters;
+      setpoint = positionMeters; //the position's meters is where the two motors will go to
   }
 
   
@@ -86,16 +86,16 @@ public class ElevatorSubsystem extends SubsystemBase {
 
       double output = pidOutput + ffOutput;
 
-      motor1.set(output);
+      motor1.set(output); //sets their output from the PID and FF values
       motor2.set(output);
 
-      SmartDashboard.putNumber("Elevator Position", position);
+      SmartDashboard.putNumber("Elevator Position", position); //puts the numbers for the position, set point, and outpoint
       SmartDashboard.putNumber("Elevator Target", setpoint);
       SmartDashboard.putNumber("Elevator Output", output);
   }
 
   public void stop() {
-      motor1.stopMotor();
+      motor1.stopMotor(); //stops the motors from moving
       motor2.stopMotor();
   }
 }

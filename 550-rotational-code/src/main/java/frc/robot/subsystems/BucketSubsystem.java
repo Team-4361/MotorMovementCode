@@ -182,12 +182,12 @@ public void backwardsBucketAngle()
 
 public void fBucket() {
     //targetAngle1 += 5.0;
-    motor.set(MAX_POWER);
+    motor.set(MAX_POWER); //sets the power for going forward
 }
 
 public void bBucket() {
     //targetAngle1 -= 5.0;
-    motor.set(-MAX_POWER);
+    motor.set(-MAX_POWER); //sets the power for going backwards
 }
 /* 
 public void resetBucket() {
@@ -200,21 +200,21 @@ public void zeroBucket() {
 }
 */
 public void stopBucket() {
-    motor.stopMotor();
+    motor.stopMotor(); //stops the bucket
 }
 public double getCurrentAngle(){
-    return encoder.getPosition();
+    return encoder.getPosition(); //gets the position of the bucket
 }
 public double getTargetAngle(){
-    return targetAngle1;
+    return targetAngle1; //gets a target angle
 
 }
 @Override
 public void periodic() {
-    double currentAngle = encoder.getPosition();
-    double pidOutput = pidController.calculate(currentAngle, targetAngle1);
+    double currentAngle = encoder.getPosition(); //gets the position of the bucket
+    double pidOutput = pidController.calculate(currentAngle, targetAngle1); //tells the bucket its PID value
 
-    pidOutput = Math.max(-1, Math.min(1, pidOutput));
+    pidOutput = Math.max(-1, Math.min(1, pidOutput)); //PID stuff
 
     pidOutput *= MAX_POWER;
 
@@ -223,7 +223,7 @@ public void periodic() {
     } else {
         motor.set(0);
     }
-    System.out.println(currentAngle);
+    System.out.println(currentAngle); //prints the current angle and PID output for debugging
     System.out.println(pidOutput);
 
 }

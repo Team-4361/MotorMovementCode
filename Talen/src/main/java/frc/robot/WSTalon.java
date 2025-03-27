@@ -64,7 +64,7 @@ public class WSTalon extends TimedRobot {
             
             } 
         if (joystick.getRawButtonPressed(3)) {
-             targetAngle1 -= 60.0;
+             targetAngle1 -= 60.0; 
              targetAngle2 += 60.0; 
             } 
         if (joystick.getRawButtonPressed(2)) { targetAngle1 = 0.0; targetAngle2 = 0.0; } 
@@ -80,6 +80,7 @@ public class WSTalon extends TimedRobot {
 
         if (joystick.getRawButtonPressed(7)) { targetAngle2 = 0.0; } 
 
+        //PID and Angle stuff
         double currentAngle1 = encoder.getDistance();
         //double currentAngle2 = encoder2.getDistance();
 

@@ -15,12 +15,12 @@ public class KerklunkCommand extends Command{
     }
     @Override
     public void initialize(){
-        kerklunk.setAngle(targetAngle);
+        kerklunk.setAngle(targetAngle); //sets the target angle
     }
 
     @Override
     public void execute(){
-        kerklunk.setAngle(targetAngle);
+        kerklunk.setAngle(targetAngle); //goes to the target angle
     }
 
     @Override 
@@ -32,7 +32,7 @@ public class KerklunkCommand extends Command{
     @Override
     public boolean isFinished()
     {
-        return true;
+        return true; //checks to see if it went to the angle
     }
     
 }

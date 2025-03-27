@@ -40,7 +40,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
         config.idleMode(IdleMode.kBrake);
-        LeftMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        LeftMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters); //configures the motors with safe parameters
         RightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
         //driverStationJoystick = new Joystick(0);

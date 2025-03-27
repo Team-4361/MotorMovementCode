@@ -24,12 +24,12 @@ public class Robot extends TimedRobot {
     private XboxController xboxController;
 
     // SPARK MAX CAN ID and speed settings
-    private static final int SPARK_MAX_CAN_ID = 11;
+    private static final int SPARK_MAX_CAN_ID = 11; //Set to your current SparkMax's ID
     private static final int LEFT_MOTOR_ID = 6;  // Set to your left motor's CAN ID
     private static final int RIGHT_MOTOR_ID = 29; // Set to your right motor's CAN ID
 
 
-    private static final double POSITION_TOLERANCE = 0.01;
+    private static final double POSITION_TOLERANCE = 0.01; //The interval the motor will stop at
 
     // PID constants
     private static final double kP = 2.0; // Proportional gain
@@ -110,13 +110,13 @@ public class Robot extends TimedRobot {
         }
         
         if (rightBumperHeld) {
-            leftMotor.set(-0.5);
+            leftMotor.set(-0.5); //If its held it will set it to a certain position
             rightMotor.set(-0.5);
         } else if (leftBumperHeld) {
-            leftMotor.set(0.5);
+            leftMotor.set(0.5); //Sets the speed
             rightMotor.set(0.5);
         } else {
-            leftMotor.set(0);
+            leftMotor.set(0); //Stops the motor
             rightMotor.set(0);
         }
 

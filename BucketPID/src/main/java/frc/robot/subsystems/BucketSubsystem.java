@@ -68,9 +68,9 @@ public class BucketSubsystem extends SubsystemBase {
     private PIDController winchPID;
 
     private static final int BUCKET_MOTOR_ID = 6;
-    private static final double BUCKET_SPEED = 0.8;
+    private static final double BUCKET_SPEED = 0.8; //Sets the speed of the bucket
 
-    private static final double kP = 0.01;
+    private static final double kP = 0.01; //PID configs
     private static final double kI = 0.0;
     private static final double kD = 0.0;
     
@@ -109,7 +109,7 @@ public class BucketSubsystem extends SubsystemBase {
         pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
         bucketMotor.set(pidOutput);
 
-        System.out.println("Current Position: " + currentPos);
+        System.out.println("Current Position: " + currentPos); //PID output for debugging
         System.out.println("Target Position: " + targetPosition);
         System.out.println("PID Output: " + pidOutput);
 

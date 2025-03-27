@@ -19,14 +19,14 @@ public class bucketmove extends Command {
 
     @Override
     public void execute() {
-        bucket.resetEncoder();
+        bucket.resetEncoder(); //resets the encoder
     }
 
 
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            bucket.stop();
+            bucket.stop(); //stops the bucket
         }
     }
 }

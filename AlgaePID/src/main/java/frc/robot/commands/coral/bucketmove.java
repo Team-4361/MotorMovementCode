@@ -1,12 +1,12 @@
 package frc.robot.commands.coral;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.BucketSubsystem;
+import frc.robot.subsystems.AlgaeSubsystem;
 
 public class bucketmove extends Command {
-    private final BucketSubsystem bucket;
+    private final AlgaeSubsystem bucket;
 
-    public bucketmove(BucketSubsystem bucket) {
+    public bucketmove(AlgaeSubsystem bucket) {
         this.bucket = bucket;
 
         addRequirements(bucket);
@@ -19,14 +19,14 @@ public class bucketmove extends Command {
 
     @Override
     public void execute() {
-        bucket.resetEncoder();
+        bucket.resetEncoder(); //resets the encoder
     }
 
 
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            bucket.stop();
+            bucket.stop(); //if interrupted, stops the bucket
         }
     }
 }

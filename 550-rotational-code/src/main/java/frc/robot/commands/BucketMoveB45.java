@@ -15,7 +15,7 @@ private double currentAngle;
     @Override
     public void initialize()
     {
-        currentAngle = coral.getCurrentAngle(); 
+        currentAngle = coral.getCurrentAngle(); //gets the current angle of the bucket
         coral.bBucket();
         //coral.backwardsBucket();
     }
@@ -23,20 +23,20 @@ private double currentAngle;
     public void execute()
     {
         
-        coral.bBucket();
+        coral.bBucket(); //moves the backet backwards
         //coral.backwardsBucket();
     }
 
     @Override
     public void end(boolean interrupted)
     {
-        coral.stopBucket();
+        coral.stopBucket(); //stops if interrupted
     }
 
     @Override
     public boolean isFinished()
     {
-        return false; //idr how to implement this 
+        return false; //checks to see if it reached its position
     }
 
 }
