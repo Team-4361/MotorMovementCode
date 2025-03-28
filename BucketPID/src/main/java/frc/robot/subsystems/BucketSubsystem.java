@@ -1,148 +1,114 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.RelativeEncoder;
 import frc.robot.Constants;
 
-
-/* 
 public class BucketSubsystem extends SubsystemBase {
-    private final SparkMax bucketMotor;
-    private final RelativeEncoder encoder;
-    private final PIDController pidController;
-
-    private static final double GEAR_RATIO = 500.0; // 500:1 gear ratio
-    private static final double COUNTS_PER_REV = 42.0; // 42 counts per revolution
-    private static final double DEGREES_PER_MOTOR_REV = 360.0; // 1 motor rev = 360 degrees
-
-    private static final double POSITION_CONVERSION_FACTOR = 1 / (GEAR_RATIO * COUNTS_PER_REV);
-
-    // PID Constants
-    private static final double kP = 0.1;
-    private static final double kI = 0.0;
-    private static final double kD = 0.0;
-
-    public BucketSubsystem(int motorID) {
-        bucketMotor = new SparkMax(motorID, MotorType.kBrushless);
-        SparkMaxConfig config = new SparkMaxConfig();
-        config.encoder.positionConversionFactor(POSITION_CONVERSION_FACTOR); // Converts encoder readings to degrees
-        bucketMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        encoder = bucketMotor.getEncoder();
-        
-        pidController = new PIDController(kP, kI, kD);
-        pidController.setTolerance(1.0); // Tolerance in degrees
-    }
-
-    public void setPosition(double degrees) {
-        double output = pidController.calculate(encoder.getPosition(), degrees);
-        bucketMotor.set(output);
-    }
-
-    public double getPosition() {
-        return encoder.getPosition(); // Already in degrees due to conversion factor
-    }
-
-    public boolean atSetpoint() {
-        return pidController.atSetpoint();
-    }
-
-    public void stop() {
-        bucketMotor.set(0);
-    }
-}
-*/
-
-public class BucketSubsystem extends SubsystemBase {
-    private SparkMax bucketMotor;
-    private RelativeEncoder bucketEncoder;
-   // private Joystick driverStationJoystick;
-   // private DigitalInput limitSwitch;
-    private PIDController winchPID;
-
-    private static final int BUCKET_MOTOR_ID = 6;
-    private static final double BUCKET_SPEED = 0.8; //Sets the speed of the bucket
-
-    private static final double kP = 0.01; //PID configs
-    private static final double kI = 0.0;
-    private static final double kD = 0.0;
+    private SparkMax coral;
+    private final DigitalInput sensor1;
+    private final DigitalInput sensor2;
+    private RelativeEncoder encoder;
     
-    private double targetPosition = 0.0;
-    private static final double GEAR_RATIO = 500.0; // 500:1 gear ratio
-    private static final double COUNTS_PER_REV = 42.0; // 42 counts per revolution
-    private static final double DEGREES_PER_MOTOR_REV = 360.0; // 1 motor rev = 360 degrees
+    public final boolean HasCoral;
+   // private RelativeEncoder bucketEncoder;
+    //private PIDController bucketPID;
 
-    private static final double POSITION_CONVERSION_FACTOR = 1;
+    
+    //private double targetPosition = 0.0;
+    //private static final double GEAR_RATIO = 500.0; // 500:1 gear ratio
+    //private static final double COUNTS_PER_REV = 42.0; // 42 counts per revolution
+    //private static final double DEGREES_PER_MOTOR_REV = 360.0; // 1 motor rev = 360 degrees
+
+   // private static final double POSITION_CONVERSION_FACTOR = 1;
 
     public BucketSubsystem() {
-        bucketMotor = new SparkMax(6, MotorType.kBrushless);
-        bucketEncoder = bucketMotor.getEncoder();
+        //Declares variables
+        coral = new SparkMax(Constants.Coral.BUCKET_ID, MotorType.kBrushless);
+        this.sensor1 = new DigitalInput(Constants.Coral.PHOTOELECTRIC_SENSOR_1_PORT);
+        this.sensor2 = new DigitalInput(Constants.Coral.PHOTOELECTRIC_SENSOR_2_PORT);
+        HasCoral = false;        
         
         SparkMaxConfig config = new SparkMaxConfig();
-        config.encoder.positionConversionFactor(POSITION_CONVERSION_FACTOR); // Converts encoder readings to degrees
-        bucketMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        
+        config.idleMode(IdleMode.kBrake);
+        coral.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        encoder = coral.getEncoder();
         //driverStationJoystick = new Joystick(0);
         //limitSwitch = new DigitalInput(LIMIT_SWITCH_PORT);
-        winchPID = new PIDController(kP, kI, kD);
-        
-
-        
-
-        
+        //bucketPID = new PIDController(Constants.Coral.KP, Constants.Coral.KI, Constants.Coral.KD);        
     }
 
 
     @Override
     public void periodic() {
+        //Checks if it has coral currently
+        SmartDashboard.putBoolean("Got Coral", getSensor1());
+        SmartDashboard.putBoolean("Has Coral", getSensor2());
+       if (Constants.isDebug) {
+        SmartDashboard.putString("Sensor 1 value", "" + sensor1.get());
+        SmartDashboard.putString("Sensor 2 value", "" + sensor2.get());
+        }
 
 
-        double currentPos = bucketEncoder.getPosition();
-        double pidOutput = winchPID.calculate(currentPos, targetPosition);
-        pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
-        bucketMotor.set(pidOutput);
-
-        System.out.println("Current Position: " + currentPos); //PID output for debugging
-        System.out.println("Target Position: " + targetPosition);
-        System.out.println("PID Output: " + pidOutput);
-
-
+        if (sensor2.get() == true) {
+            Boolean HasCoral = false;
+        }
+        else {
+            Boolean HasCoral = true;
+        }
+        
     }
 
-
-    public void resetEncoder() {
-        bucketEncoder.setPosition(0);
-        targetPosition = 0.0; // Sync target position
-
+    public void SetMotorSpeed(Double speed) {
+        coral.set(speed);
     }
 
-    public void setPosition(double degrees) {
-        targetPosition = degrees;
+    public void ResetEncoder() {
+        encoder.setPosition(0.0);
     }
 
-
-    public void winchMoveUp() {
-        targetPosition = 30.0;
+    public double GetEncoderPos() {
+        return encoder.getPosition();
     }
 
-
-    public void stopWinch() {
-        bucketMotor.stopMotor();
+    public boolean getSensor1()
+    {
+        return sensor1.get(); //Returns the first sensor's photon electric port
     }
-
-    public void stop() {
-        bucketMotor.set(0);
+    public boolean getSensor2()
+    {
+        return sensor2.get(); //Return the second sensor's phonton electric port
     }
+    public void stop()
+    {
+        coral.set(0.0); //stops the mechanism
+    }
+    public void release()
+    {
+        //invert depending on rotation 
+        coral.set(0.3); 
+    }
+    public void setMotor()
+    {
+        //sensors are normally true, when they change to false, the action is triggered
+        if(!getSensor2())
+        {
+            coral.stopMotor();
+        }
+        else if(!getSensor1())
+        {
+            coral.set(0.70);
+        }
 
-    public boolean atSetpoint() {
-        return winchPID.atSetpoint();
+        
     }
 
 }

@@ -5,8 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.coral.BucketMoveToPosition;
-import frc.robot.commands.coral.bucketmove;
+import frc.robot.commands.coral.BucketIntakeCommand;
 import frc.robot.subsystems.BucketSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -43,10 +42,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    driverXbox.povLeft().whileTrue(new BucketMoveToPosition(bucket, -5)); // Move bucket to -45 degrees 
-    driverXbox.povRight().whileTrue(new BucketMoveToPosition(bucket, 5)); // Move bucket to 45 degrees
-    driverXbox.povUp().whileTrue(new BucketMoveToPosition(bucket, 0)); // Move bucket to 45 degrees
-    driverXbox.povDown().whileTrue(new bucketmove(bucket)); // Move bucket to 45 degrees
+    driverXbox.povLeft().onTrue(new BucketIntakeCommand(bucket)); // Move bucket to -45 degrees 
+
 
   }
 

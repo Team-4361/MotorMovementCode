@@ -60,7 +60,11 @@ public class BucketSubsystem extends SubsystemBase {
 }
 */
 
+<<<<<<< HEAD
 public class AlgaeSubsystem extends SubsystemBase {
+=======
+public class BucketSubsystem extends SubsystemBase {
+>>>>>>> parent of 6d86ae0 (Updated BucketPID with PID now and updated subsystem from actual code and stuff)
     private SparkMax bucketMotor;
     private RelativeEncoder bucketEncoder;
    // private Joystick driverStationJoystick;
@@ -68,7 +72,11 @@ public class AlgaeSubsystem extends SubsystemBase {
     private PIDController winchPID;
 
     private static final int BUCKET_MOTOR_ID = 6;
+<<<<<<< HEAD
     private static final double BUCKET_SPEED = 0.8; //sets the speed
+=======
+    private static final double BUCKET_SPEED = 0.8;
+>>>>>>> parent of 6d86ae0 (Updated BucketPID with PID now and updated subsystem from actual code and stuff)
 
     private static final double kP = 0.01;
     private static final double kI = 0.0;
@@ -81,7 +89,11 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     private static final double POSITION_CONVERSION_FACTOR = 1;
 
+<<<<<<< HEAD
     public AlgaeSubsystem() {
+=======
+    public BucketSubsystem() {
+>>>>>>> parent of 6d86ae0 (Updated BucketPID with PID now and updated subsystem from actual code and stuff)
         bucketMotor = new SparkMax(6, MotorType.kBrushless);
         bucketEncoder = bucketMotor.getEncoder();
         
@@ -105,12 +117,20 @@ public class AlgaeSubsystem extends SubsystemBase {
 
 
         double currentPos = bucketEncoder.getPosition();
+<<<<<<< HEAD
         double pidOutput = winchPID.calculate(currentPos, targetPosition); //PID stuff
+=======
+        double pidOutput = winchPID.calculate(currentPos, targetPosition);
+>>>>>>> parent of 6d86ae0 (Updated BucketPID with PID now and updated subsystem from actual code and stuff)
         pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
         bucketMotor.set(pidOutput);
 
         System.out.println("Current Position: " + currentPos);
+<<<<<<< HEAD
         System.out.println("Target Position: " + targetPosition); //debugging stuff
+=======
+        System.out.println("Target Position: " + targetPosition);
+>>>>>>> parent of 6d86ae0 (Updated BucketPID with PID now and updated subsystem from actual code and stuff)
         System.out.println("PID Output: " + pidOutput);
 
 
@@ -124,16 +144,25 @@ public class AlgaeSubsystem extends SubsystemBase {
     }
 
     public void setPosition(double degrees) {
+<<<<<<< HEAD
         targetPosition = degrees; //sets the position
+=======
+        targetPosition = degrees;
+>>>>>>> parent of 6d86ae0 (Updated BucketPID with PID now and updated subsystem from actual code and stuff)
     }
 
 
     public void winchMoveUp() {
+<<<<<<< HEAD
         targetPosition = 30.0; //moves the winch up
+=======
+        targetPosition = 30.0;
+>>>>>>> parent of 6d86ae0 (Updated BucketPID with PID now and updated subsystem from actual code and stuff)
     }
 
 
     public void stopWinch() {
+<<<<<<< HEAD
         bucketMotor.stopMotor(); //stops the winch
     }
 
@@ -143,6 +172,17 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public boolean atSetpoint() {
         return winchPID.atSetpoint(); //returns whether its at the point or not
+=======
+        bucketMotor.stopMotor();
+    }
+
+    public void stop() {
+        bucketMotor.set(0);
+    }
+
+    public boolean atSetpoint() {
+        return winchPID.atSetpoint();
+>>>>>>> parent of 6d86ae0 (Updated BucketPID with PID now and updated subsystem from actual code and stuff)
     }
 
 }
