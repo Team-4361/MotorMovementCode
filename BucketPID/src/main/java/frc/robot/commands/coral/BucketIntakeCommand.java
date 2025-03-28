@@ -58,6 +58,7 @@ public class BucketIntakeCommand extends Command {
   @Override
   public void execute() 
   {
+    //Uses PID & Tolerence set to go to the position
       intakePID = new PIDController(kP, kI, kD);
       double currentPos = coral.GetEncoderPos();
       intakePID.setTolerance(0.2);
@@ -65,11 +66,11 @@ public class BucketIntakeCommand extends Command {
       
       double pidOutput = intakePID.calculate(currentPos, targetPosition);
       pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
-      SmartDashboard.putNumber("PidOutput:", pidOutput);
+      SmartDashboard.putNumber("PidOutput:", pidOutput); //Debugging stuff
       SmartDashboard.putNumber("Stuff: ", coral.GetEncoderPos());
       SmartDashboard.putNumber("TargetPos", targetPosition);
 
-      coral.SetMotorSpeed(pidOutput);
+      coral.SetMotorSpeed(pidOutput); //Sets the speed depending on the PID's output
   }
 
   // Called once the command ends or is interrupted.

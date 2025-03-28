@@ -13,6 +13,7 @@ import com.revrobotics.RelativeEncoder;
 import frc.robot.Constants;
 
 public class BucketSubsystem extends SubsystemBase {
+    //declares SparkMax and sensors 
     private SparkMax coral;
     private final DigitalInput sensor1;
     private final DigitalInput sensor2;
@@ -68,14 +69,17 @@ public class BucketSubsystem extends SubsystemBase {
     }
 
     public void SetMotorSpeed(Double speed) {
+        //sets the speed of the coral
         coral.set(speed);
     }
 
     public void ResetEncoder() {
+        //zeroes the encoder
         encoder.setPosition(0.0);
     }
 
     public double GetEncoderPos() {
+        //goes to the position then returns when it reaches there
         return encoder.getPosition();
     }
 
