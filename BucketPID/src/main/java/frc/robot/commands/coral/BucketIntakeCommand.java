@@ -2,21 +2,9 @@ package frc.robot.commands.coral;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.BucketSubsystem;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.revrobotics.spark.config.EncoderConfig;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.controller.PIDController;
-import com.revrobotics.spark.config.SparkMaxConfig;
 
 //certified sahas code trust not gonna break neo550 motor cuz i built different
 
