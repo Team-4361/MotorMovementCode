@@ -1,27 +1,17 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
 
-import javax.lang.model.util.ElementScanner14;
 
 //import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 //import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 //import com.fasterxml.jackson.databind.cfg.ContextAttributes;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 
 
 public class BucketSubsystem extends SubsystemBase {
@@ -128,56 +118,49 @@ public class BucketSubsystem extends SubsystemBase {
         
     }
 */
-private final SparkMax motor;
-private final RelativeEncoder encoder;
-private final PIDController pidController;
+// setup for PID movement of a NEO550
+private final SparkMax motor;  //create the sparkmax motor object
+private final RelativeEncoder encoder; // create the relative encoder that is attached to the motor, could change to alt 
+private final PIDController pidController; //create the pidcontroller object, needs 3 values
 
-private static final int MOTOR_ID = 6; // Change if needed
-private static final int CPR = 42; // Encoder counts per revolution, was 2048 with one on rio, 42 for neo550
-private static final double MOTOR_GEAR_RATIO = 500;
-private static final double KP = 0.0666;
-private static final double KI = 0.00002;
-private static final double KD = 0.0010;
-private static final double MAX_POWER = 0.15;
+private static final int MOTOR_ID = 6; // the id of the sparkmax that the motor is attached  
+private static final int CPR = 42; // Encoder counts per revolution, was 2048 with the talon lea 42 for neo550
+private static final double KP = 0.0666; // the P value of the PID controller, porportional 
+private static final double KI = 0.00002; // the I value of the PID controller, intergral
+private static final double KD = 0.0010; // the D value of te PID controller, derivative
+private static final double MAX_POWER = 0.2; // the max power that the pidcontroller can set the motor to
 //private final DCMotor bGearbox;
 //private final Encoder e;
 
-private double targetAngle1 = 0.0; 
+private double targetAngle1 = 0.0; // the desired encoder units that the motor needs to move to
 
 public BucketSubsystem() {
-    motor = new SparkMax(MOTOR_ID, MotorType.kBrushed);
-    //encoder = new Encoder(0, 1); // External encoder on RoboRIO
-    encoder = motor.getEncoder();
-    //e.setDistancePerPulse(CPR);
-    //bGearbox = new DCMotor(MOTOR_GEAR_RATIO, MAX_POWER, KP, KI, KD, MOTOR_ID);
+    motor = new SparkMax(MOTOR_ID, MotorType.kBrushless); // initialtize the the motor with the id and with the brushless type 
+    encoder = motor.getEncoder(); // initialtize the encoder object by using the getEncoder() method to interface with the physical encoder
+    //if gearbox is used
+    /*e.setDistancePerPulse(CPR);
+    bGearbox = new DCMotor(MOTOR_GEAR_RATIO, MAX_POWER, KP, KI, KD, MOTOR_ID);*/
 
     //encoder.setDistancePerPulse(360.0 / (CPR * MOTOR_GEAR_RATIO));
-    pidController = new PIDController(KP, KI, KD);
-    pidController.setTolerance(0.5);
-    SmartDashboard.putNumber("Encoder Pos" , encoder.getPosition());
+    pidController = new PIDController(KP, KI, KD); //initialtize the pid controller with the related P, I, and D values
+    pidController.setTolerance(0.5); // the unit tolerance in which the pidcontroller will stop moving the motor to the setpoint
 }
 
 public void forwardBucketAngle()
 {
-    targetAngle1 += 5000;
+    targetAngle1 += 50; //add 50 encoder units to the target angle variable
 }
 
 public boolean atTarget()
 {
-    if (encoder.getPosition()==targetAngle1)
-    {
-        return true;
-    }
-    else 
-    {
-        return false;
-    }
+    //if the encoder is currently at the target angle 
+    return encoder.getPosition()>=targetAngle1;
 
 }
 
 public void backwardsBucketAngle()
 {
-    targetAngle1 -= 5000;
+    targetAngle1 -= 50;
 }
 
 public void fBucket() {
@@ -223,8 +206,11 @@ public void periodic() {
     } else {
         motor.set(0);
     }
-    System.out.println(currentAngle); //prints the current angle and PID output for debugging
-    System.out.println(pidOutput);
+    SmartDashboard.putNumber("current angle", currentAngle);
+    SmartDashboard.putNumber("target angle", targetAngle1);
+    SmartDashboard.putNumber("pid output", pidOutput);
+    //System.out.println(currentAngle); //prints the current angle and PID output for debugging
+    //System.out.println(pidOutput);
 
 }
 }

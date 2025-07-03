@@ -16,14 +16,14 @@ private double currentAngle;
     public void initialize()
     {
         currentAngle = coral.getCurrentAngle(); //gets the current angle of the bucket
-        coral.bBucket();
+        coral.backwardsBucketAngle();
         //coral.backwardsBucket();
     }
     @Override
     public void execute()
     {
         
-        coral.bBucket(); //moves the backet backwards
+        coral.backwardsBucketAngle(); //moves the backet backwards
         //coral.backwardsBucket();
     }
 
