@@ -1,18 +1,15 @@
 package frc.robot.subsystems;
 
-import java.security.GeneralSecurityException;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class AlgaeSubsystem extends SubsystemBase {
     private SparkMax bucketMotor;
@@ -23,7 +20,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     private static final double kP = 0.1; //PID damping values
     private static final double kI = 0.0;
-    private static final double kD = 0.01;
+    private static final double kD = 0.0;
     
     private double targetPosition = 0.0;
     private static final double GEAR_RATIO = 500.0; // 500:1 gear ratio
