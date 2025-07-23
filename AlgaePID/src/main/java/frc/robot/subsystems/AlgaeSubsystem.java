@@ -21,9 +21,9 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     private static final int BUCKET_MOTOR_ID = 6;
 
-    private static final double kP = 0.5; //PID damping values
+    private static final double kP = 0.1; //PID damping values
     private static final double kI = 0.0;
-    private static final double kD = 0.0;
+    private static final double kD = 0.01;
     
     private double targetPosition = 0.0;
     private static final double GEAR_RATIO = 500.0; // 500:1 gear ratio
