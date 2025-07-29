@@ -18,13 +18,19 @@ public class BucketSubsystem extends SubsystemBase {
     private final DigitalInput sensor1;
     private final DigitalInput sensor2;
     private RelativeEncoder encoder;
+
     
     public final boolean HasCoral;
+    
    // private RelativeEncoder bucketEncoder;
     //private PIDController bucketPID;
 
     
     //private double targetPosition = 0.0;
+    private static final int BUCKET_ID = 1;
+    private static final int PHOTOELECTRIC_SENSOR_1_PORT = 0;
+    private static final int PHOTOELECTRIC_SENSOR_2_PORT = 1;
+    public final boolean isDebug = false;
     //private static final double GEAR_RATIO = 500.0; // 500:1 gear ratio
     //private static final double COUNTS_PER_REV = 42.0; // 42 counts per revolution
     //private static final double DEGREES_PER_MOTOR_REV = 360.0; // 1 motor rev = 360 degrees
@@ -33,10 +39,11 @@ public class BucketSubsystem extends SubsystemBase {
 
     public BucketSubsystem() {
         //Declares variables
-        coral = new SparkMax(Constants.Coral.BUCKET_ID, MotorType.kBrushless);
-        this.sensor1 = new DigitalInput(Constants.Coral.PHOTOELECTRIC_SENSOR_1_PORT);
-        this.sensor2 = new DigitalInput(Constants.Coral.PHOTOELECTRIC_SENSOR_2_PORT);
+        coral = new SparkMax(BUCKET_ID, MotorType.kBrushless);
+        this.sensor1 = new DigitalInput(PHOTOELECTRIC_SENSOR_1_PORT); //photoelectic sensor 1
+        this.sensor2 = new DigitalInput(PHOTOELECTRIC_SENSOR_2_PORT); // photoelectic sensor 2 
         HasCoral = false;        
+        
         
         SparkMaxConfig config = new SparkMaxConfig();
         config.idleMode(IdleMode.kBrake);
@@ -53,7 +60,7 @@ public class BucketSubsystem extends SubsystemBase {
         //Checks if it has coral currently
         SmartDashboard.putBoolean("Got Coral", getSensor1());
         SmartDashboard.putBoolean("Has Coral", getSensor2());
-       if (Constants.isDebug) {
+       if (isDebug) {
         SmartDashboard.putString("Sensor 1 value", "" + sensor1.get());
         SmartDashboard.putString("Sensor 2 value", "" + sensor2.get());
         }
