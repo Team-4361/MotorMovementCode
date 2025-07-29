@@ -1,32 +1,30 @@
 package frc.robot.subsystems;
 
-
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-
-
-
- public class KerklunkSubsystem extends SubsystemBase {//it is a HS-322HD Servo that we called Kerklunk
-    private Servo kerklunk;
-
-
+ public class KerklunkSubsystem extends SubsystemBase 
+ {
+    //HS-322HD Servo 
+    private Servo servo;
+    private static final int kerklunkPort = 0;
 
 
     public KerklunkSubsystem() {
-        kerklunk = new Servo(Constants.kerklunkConstants.kerklunkPort);
+        servo = new Servo(kerklunkPort);
     }
 
-    public void setAngle(double targetAngle) {
-        kerklunk.setAngle(targetAngle);
+    public void setAngle(double targetAngle)
+    {
+        servo.setAngle(targetAngle);
     }
     public double getAngle()
     {
-        return kerklunk.getAngle();
+        return servo.getAngle();
     }
     public void zeroAngle() {
-        kerklunk.setAngle(0.0);
+        servo.setAngle(0.0);
       
     }
 } 
