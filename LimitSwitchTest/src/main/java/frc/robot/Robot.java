@@ -10,10 +10,10 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Robot extends TimedRobot {
     // Create a motor controller object for the NEO motor.
-    private SparkMax neoMotor = new SparkMax(12, MotorType.kBrushless);
+    private SparkMax neoMotor = new SparkMax(6, MotorType.kBrushless);
 
     // Create a DigitalInput object for the limit switch.
-    private DigitalInput limitSwitch = new DigitalInput(2); // Digital channel 
+    private DigitalInput limitSwitch = new DigitalInput(0); // Digital channel 
     
 
     @Override
