@@ -16,7 +16,7 @@ import frc.robot.Constants;
     }
 
     public void setAngle(double targetAngle)
-    {
+    {     
         servo.setAngle(targetAngle);
     }
     public double getAngle()
