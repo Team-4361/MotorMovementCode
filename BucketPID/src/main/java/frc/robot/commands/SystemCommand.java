@@ -1,17 +1,13 @@
-package frc.robot.commands.coral;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.BucketSubsystem;
+import frc.robot.subsystems.SensorBasedSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import edu.wpi.first.math.controller.PIDController;
 
-//certified sahas code trust not gonna break neo550 motor cuz i built different
-
-
-public class BucketIntakeCommand extends Command {
-    private final BucketSubsystem coral;
-    private PIDController intakePID;
+public class SystemCommand extends Command {
+    private final SensorBasedSubsystem motor;
+    private PIDController pidController;
 
 
     private static final double kP = 0.04; // Proportional gain
@@ -20,16 +16,15 @@ public class BucketIntakeCommand extends Command {
     double targetPosition;
 
   /**
-   * Creates a new ExampleCommand.
-   *
+
    * @param subsystem The subsystem used by this command.
    */
-  public BucketIntakeCommand(BucketSubsystem subsystem) {
-    coral = subsystem;
+  public SystemCommand(SensorBasedSubsystem subsystem) {
+    motor = subsystem;
 
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(coral);
+    addRequirements(motor);
   }
 
   // Called when the command is initially scheduled.
@@ -37,7 +32,7 @@ public class BucketIntakeCommand extends Command {
   public void initialize()
   {
     
-    coral.ResetEncoder();
+    motor.ResetEncoder();
     targetPosition = -7;
 
   }
@@ -47,26 +42,26 @@ public class BucketIntakeCommand extends Command {
   public void execute() 
   {
     //Uses PID & Tolerence set to go to the position
-      intakePID = new PIDController(kP, kI, kD);
-      double currentPos = coral.GetEncoderPos();
-      intakePID.setTolerance(0.2);
+      pidController = new PIDController(kP, kI, kD);
+      double currentPos =motor.GetEncoderPos();
+      pidController.setTolerance(0.2);
       targetPosition = -7;
       
-      double pidOutput = intakePID.calculate(currentPos, targetPosition);
+      double pidOutput = pidController.calculate(currentPos, targetPosition);
       pidOutput = Math.max(-1.0, Math.min(1.0, pidOutput));
       SmartDashboard.putNumber("PidOutput:", pidOutput); //Debugging stuff
-      SmartDashboard.putNumber("Stuff: ", coral.GetEncoderPos());
+      SmartDashboard.putNumber("Stuff: ",motor.GetEncoderPos());
       SmartDashboard.putNumber("TargetPos", targetPosition);
 
-      coral.SetMotorSpeed(pidOutput); //Sets the speed depending on the PID's output
+    motor.SetMotorSpeed(pidOutput); //Sets the speed depending on the PID's output
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-      coral.stop();
-      coral.ResetEncoder();
+    motor.stop();
+    motor.ResetEncoder();
       targetPosition = 0;
     
   }
@@ -75,7 +70,7 @@ public class BucketIntakeCommand extends Command {
   @Override
   public boolean isFinished() {
 
-    return intakePID.atSetpoint(); // Stop when PID reaches setpointreturn false;
+    return pidController.atSetpoint(); // Stop when PID reaches setpointreturn false;
   }
     
 }

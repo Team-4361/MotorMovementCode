@@ -5,8 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.coral.BucketIntakeCommand;
-import frc.robot.subsystems.BucketSubsystem;
+import frc.robot.commands.SystemCommand;
+import frc.robot.subsystems.SensorBasedSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final BucketSubsystem bucket = new BucketSubsystem();
+  private final SensorBasedSubsystem subsystem = new SensorBasedSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverXbox =
@@ -42,7 +42,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    driverXbox.povLeft().onTrue(new BucketIntakeCommand(bucket)); // Move bucket to -45 degrees 
+    driverXbox.povLeft().onTrue(new SystemCommand(subsystem)); // Move subsystem to -45 degrees 
 
 
   }
