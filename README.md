@@ -1,1 +1,1 @@
-Code for various motor types and movements
+In the process of cleaning our template code
