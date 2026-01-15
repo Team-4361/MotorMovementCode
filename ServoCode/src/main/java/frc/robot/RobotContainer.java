@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.KerklunkCommand;
+import frc.robot.commands.LinearActuatorCommand;
 import frc.robot.subsystems.KerklunkSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -20,7 +21,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   final CommandXboxController driverXbox = new CommandXboxController(0);
-  public static KerklunkSubsystem kerklunk = new KerklunkSubsystem();
+  public static KerklunkSubsystem Longestkerklunk = new KerklunkSubsystem(3);
+  public static KerklunkSubsystem Longerkerklunk = new KerklunkSubsystem(2);
+  public static KerklunkSubsystem Shorterkerklunk = new KerklunkSubsystem(1);
+  public static KerklunkSubsystem Shortestkerklunk = new KerklunkSubsystem(0);
+
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -46,8 +52,22 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    driverXbox.a().onTrue(new KerklunkCommand(kerklunk, 90.0));
-    driverXbox.y().onTrue(new KerklunkCommand(kerklunk, 180.0));
+    driverXbox.rightBumper().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.30));
+    driverXbox.a().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.20));
+    driverXbox.x().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.50));
+    driverXbox.y().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.6));
+    driverXbox.b().onTrue(new LinearActuatorCommand(Longestkerklunk, 1));
+    //driverXbox.b().onTrue(new KerklunkCommand(Longestkerklunk, 180.0));
+    //driverXbox.y().onTrue(new LinearActuatorCommand(Longestkerklunk, 90.0));
+
+  
+    
+
+    
+    
+
+
+
   }
 
 }

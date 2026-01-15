@@ -8,10 +8,10 @@ import frc.robot.Constants;
  {
     //HS-322HD Servo 
     private Servo servo;
-    private static final int kerklunkPort = 0;
+   
 
 
-    public KerklunkSubsystem() {
+    public KerklunkSubsystem(int kerklunkPort) {
         servo = new Servo(kerklunkPort);
     }
 
@@ -22,6 +22,11 @@ import frc.robot.Constants;
     public double getAngle()
     {
         return servo.getAngle();
+    }
+
+    public void setLength(double length)
+    {
+        servo.set(length);
     }
     public void zeroAngle() {
         servo.setAngle(0.0);
