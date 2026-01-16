@@ -52,14 +52,17 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    driverXbox.rightBumper().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.30));
-    //goes 1.25 in + 7/8 in from start
-   
+    
+    //goes 1 5/8" in + 10/8 in from start
+     // longest starting shaft length 3/8 in ~0.9 cm
     driverXbox.a().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.20));
-     // longest starting shaft length 3/8 in
-    driverXbox.x().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.50));
-    driverXbox.y().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.6));
+    driverXbox.rightBumper().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.30));
+    driverXbox.x().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.40));
+   //2 1/4"
+    driverXbox.y().onTrue(new LinearActuatorCommand(Longestkerklunk, 0.60));
+    //10.7 cm
     driverXbox.b().onTrue(new LinearActuatorCommand(Longestkerklunk, 1));
+    //full extentsion 14.7 cm / 5 1/2" in
     //driverXbox.b().onTrue(new KerklunkCommand(Longestkerklunk, 180.0));
     //driverXbox.y().onTrue(new LinearActuatorCommand(Longestkerklunk, 90.0));
 
